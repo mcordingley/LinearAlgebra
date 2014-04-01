@@ -153,6 +153,16 @@ class Matrix {
         }
     }
     
+    /**
+     * subtract
+     * 
+     * Subtracts either another matrix or a scalar from the current matrix,
+     * returning a new matrix instance.
+     * 
+     * @param mixed $value Matrix or scalar to subtract from this matrix
+     * @return \MCordingley\Matrix\Matrix New matrix with the subtracted value
+     * @throws MatrixException
+     */
     public function subtract($value) {
         if ($value instanceof Matrix) {
             if ($this->rows != $value->rows || $this->columns != $value->columns) {
