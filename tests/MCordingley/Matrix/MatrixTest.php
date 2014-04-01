@@ -3,12 +3,16 @@
 namespace MCordingley\Matrix;
 
 class MatrixTest extends \PHPUnit_Framework_TestCase {
-    public function testConstruction() {
-        $matrix = new Matrix([
+    private function buildMatrix() {
+        return new Matrix([
             [1, 2, 3, 4],
             [5, 6, 7, 8],
             [9, 10, 11, 12]
         ]);
+    }
+    
+    public function testConstruction() {
+        $matrix = $this->buildMatrix();
         
         // This won't execute if there's an exception. If there is one,
         // pull a full stop, something's very wrong.
@@ -31,13 +35,22 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testSize() {
-        $matrix = new Matrix([
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12]
-        ]);
+        $matrix = $this->buildMatrix();
         
         $this->assertEquals(3, $matrix->rows);
         $this->assertEquals(4, $matrix->columns);
+    }
+    
+    public function testGetSet() {
+        $matrix = $this->buildMatrix();
+        
+        // Check constructed value
+        $this->assertEquals(8, $matrix->get(1, 3));
+        
+        // Check chainable return value
+        $this->assertInstanceOf('\MCordingley\Matrix\Matrix', $matrix->set(1, 3, 20));
+        
+        // Check that the expected element was set to the expected value
+        $this->assertEquals(20, $matrix->get(1, 3));
     }
 }
