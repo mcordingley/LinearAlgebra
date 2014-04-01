@@ -32,6 +32,19 @@ class Matrix {
         $this->columnCount = count($literal[0]);
     }
     
+    /**
+     * map
+     * 
+     * Iterates over the current matrix with a callback function to return a new
+     * matrix with the mapped values. $callback takes four arguments:
+     * - The current matrix element
+     * - The current row
+     * - The current column
+     * - The matrix being iterated over
+     * 
+     * @param callable $callback A function that returns the computed new values.
+     * @return \MCordingley\Matrix\Matrix A new matrix with the mapped values.
+     */
     public function map(callable $callback) {
         $class = get_called_class();
         
@@ -124,38 +137,20 @@ class Matrix {
      * @throws MatrixException
      */
     public function add($value) {
-        $class = get_called_class();
-        
-        $literal = array();
-        
         if ($value instanceof Matrix) {
             if ($this->rows != $value->rows || $this->columns != $value->columns) {
                 throw new MatrixException('Cannot add two matrices of different size.');
             }
             
-            for ($i = 0; $i < $this->rows; $i++) {
-                $row = array();
-                
-                for ($j = 0; $j < $this->columns; $j++) {
-                    $row[] = $this->get($i, $j) + $value->get($i, $j);
-                }
-                
-                $literal[] = $row;
-            }
+            return $this->map(function($element, $i, $j) use ($value) {
+                return $element + $value->get($i, $j);
+            });
         }
         else {
-            for ($i = 0; $i < $this->rows; $i++) {
-                $row = array();
-                
-                for ($j = 0; $j < $this->columns; $j++) {
-                    $row[] = $this->get($i, $j) + $value;
-                }
-                
-                $literal[] = $row;
-            }
+            return $this->map(function($element) use ($value) {
+                return $element + $value;
+            });
         }
-        
-        return new $class($literal);
     }
     
     /**
