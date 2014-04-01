@@ -95,6 +95,16 @@ class Matrix {
         return $this;
     }
     
+    /**
+     * add
+     * 
+     * Adds either another matrix or a scalar to the current matrix, returning
+     * a new matrix instance.
+     * 
+     * @param mixed $value Matrix or scalar to add to this matrix
+     * @return \MCordingley\Matrix\Matrix New matrix with the added value
+     * @throws MatrixException
+     */
     public function add($value) {
         $class = get_called_class();
         
