@@ -107,6 +107,42 @@ class Matrix {
         return new $class($literal);
     }
     
+    	/**
+         * reduce
+         *
+         * Returns a new matrix with the selected row and column removed, useful for
+         * calculating determinants or other recursive operations on matrices.
+         *
+         * @param int $row Row to remove, null to remove no row.
+         * @param int $column Column to remove, null to remove no column.
+         * @return \MCordingley\Matrix\Matrix Reduced matrix.
+         */
+        public function reduce($row = null, $column = null) {
+            $class = get_called_class();
+            
+            $literal = array();
+
+            for ($i = 0; $i < $this->rows; $i++) {
+                if ($i === $row) {
+                    continue;
+                }
+                
+                $rowLiteral = array();
+                
+                for ($j = 0; $j < $this->columns; $j++) {
+                    if ($j === $column) {
+                        continue;
+                    }
+                    
+                    $rowLiteral[] = $this->get($i, $j);	
+                }
+                
+                $literal[] = $rowLiteral;
+            }
+
+            return new $class($literal);
+        }
+    
     public function __get($property) {
         switch ($property) {
             case 'columns':
