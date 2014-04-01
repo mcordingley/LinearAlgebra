@@ -119,6 +119,43 @@ class Matrix {
     }
     
     /**
+      * Determinant function
+      *
+      * Returns the determinant of the matrix
+      *
+      * @return float The matrix's determinant
+      */
+    public function determinant() {
+        /* TODO: This function is a good candidate for optimization by the
+                 mathematically-inclined. Suggest doing the operation without
+                 generating new matrices during the calculation. */
+        
+        if (!$this->isSquare($this)) {
+            throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->literal, true));
+        }
+
+        // Base case for a 1 by 1 matrix
+        if ($this->rows == 1) {
+            return $this->get(0, 0);
+        }
+
+        $sum = 0;
+        
+        // Statically choose the first row for cofactor expansion, because it
+        // doesn't matter which row we choose for it.
+        for ($j = 0; $j < $this->columns; $j++) {
+            $sum += pow(-1, $j) * $this->get(0, $j) * $this->reduce(0, $j)->determinant();
+        }
+        
+        return $sum;
+    }
+    
+    // Potentially a good thing to take public. We'll see if that's a good idea.
+    protected function isSquare() {
+        return $this->rows == $this->columns;
+    }
+    
+    /**
      * reduce
      *
      * Returns a new matrix with the selected row and column removed, useful for
