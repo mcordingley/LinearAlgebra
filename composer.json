@@ -1,0 +1,8 @@
+{
+    "name": "mcordingley/matrix",
+    "autoload": {
+        "psr-0": {
+            "MCordingley\\Matrix": "src"
+        }
+    }
+}
