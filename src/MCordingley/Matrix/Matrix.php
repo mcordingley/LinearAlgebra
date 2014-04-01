@@ -181,6 +181,32 @@ class Matrix {
     }
     
     /**
+     * multiply
+     * 
+     * Multiplies either another matrix or a scalar with the current matrix,
+     * returning a new matrix instance. In the case of matrix multiplication,
+     * this is equivalent to the dot product.
+     * 
+     * @param mixed $value Matrix or scalar to multiply with tnis matrix
+     * @return \MCordingley\Matrix\Matrix New multiplied matrix
+     * @throws MatrixException
+     */
+    public function multiply($value) {
+        if ($value instanceof Matrix) {
+            if ($this->rows != $value->columns || $this->columns != $value->rows) {
+                throw new MatrixException('Cannot multiply two matrices of different size.');
+            }
+            
+            // Stubbed
+        }
+        else {
+            return $this->map(function($element) use ($value) {
+                return $element * $value;
+            });
+        }
+    }
+    
+    /**
      * transpose
      * 
      * Creates and returns a new matrix that is a transposition of this matrix.
