@@ -116,6 +116,52 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(6, $added->get(2, 2));
     }
     
+    public function testSubtractMatrix() {
+        $matrix1 = new Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]);
+        
+        $matrix2 = new Matrix([
+            [4, 2, 6],
+            [1, 7, 3],
+            [7, 3, 2]
+        ]);
+        
+        $subtracted = $matrix1->subtract($matrix2);
+        
+        $this->assertEquals(-3, $subtracted->get(0, 0));
+        $this->assertEquals(0, $subtracted->get(0, 1));
+        $this->assertEquals(-3, $subtracted->get(0, 2));
+        $this->assertEquals(3, $subtracted->get(1, 0));
+        $this->assertEquals(-2, $subtracted->get(1, 1));
+        $this->assertEquals(3, $subtracted->get(1, 2));
+        $this->assertEquals(0, $subtracted->get(2, 0));
+        $this->assertEquals(5, $subtracted->get(2, 1));
+        $this->assertEquals(7, $subtracted->get(2, 2));
+    }
+    
+    public function testSubtractScalar() {
+        $matrix = new Matrix([
+            [4, 2, 6],
+            [1, 7, 3],
+            [7, 3, 2]
+        ]);
+        
+        $subtracted = $matrix->subtract(4);
+        
+        $this->assertEquals(0, $subtracted->get(0, 0));
+        $this->assertEquals(-2, $subtracted->get(0, 1));
+        $this->assertEquals(2, $subtracted->get(0, 2));
+        $this->assertEquals(-3, $subtracted->get(1, 0));
+        $this->assertEquals(3, $subtracted->get(1, 1));
+        $this->assertEquals(-1, $subtracted->get(1, 2));
+        $this->assertEquals(3, $subtracted->get(2, 0));
+        $this->assertEquals(-1, $subtracted->get(2, 1));
+        $this->assertEquals(-2, $subtracted->get(2, 2));
+    }
+    
     public function testTranspose() {
         $matrix = $this->buildMatrix()->transpose();
         

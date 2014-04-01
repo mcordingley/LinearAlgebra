@@ -153,6 +153,23 @@ class Matrix {
         }
     }
     
+    public function subtract($value) {
+        if ($value instanceof Matrix) {
+            if ($this->rows != $value->rows || $this->columns != $value->columns) {
+                throw new MatrixException('Cannot subtract two matrices of different size.');
+            }
+            
+            return $this->map(function($element, $i, $j) use ($value) {
+                return $element - $value->get($i, $j);
+            });
+        }
+        else {
+            return $this->map(function($element) use ($value) {
+                return $element - $value;
+            });
+        }
+    }
+    
     /**
      * transpose
      * 
