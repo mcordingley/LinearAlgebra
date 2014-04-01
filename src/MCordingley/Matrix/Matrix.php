@@ -42,10 +42,18 @@ class Matrix {
      * @return boolean True if a valid representation. False otherwise.
      */
     protected function isLiteralValid(array $literal) {
-        // Check size
+        // Matrix must have at least one row
+        if (!count($literal)) {
+            return false;
+        }
         
+        // Matrix must have at least one column
+        if (!count($literal[0])) {
+            return false;
+        }
+        
+        // Matrix must have the same number of columns in each row
         $lastRow = false;
-        
         foreach ($literal as $row) {
             $thisRow = count($row);
             
