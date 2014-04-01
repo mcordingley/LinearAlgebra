@@ -32,6 +32,24 @@ class Matrix {
         $this->columnCount = count($literal[0]);
     }
     
+    public function map(callable $callback) {
+        $class = get_called_class();
+        
+        $literal = array();
+
+        for ($i = 0; $i < $this->rows; $i++) {
+            $row = array();
+
+            for ($j = 0; $j < $this->columns; $j++) {
+                $row[] = $callback($this->get($i, $j), $i, $j, $this);
+            }
+
+            $literal[] = $row;
+        }
+        
+        return new $class($literal);
+    }
+    
     /**
      * isLiteralValid
      * 

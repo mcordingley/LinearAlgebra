@@ -41,6 +41,22 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(4, $matrix->columns);
     }
     
+    public function testMap() {
+        $matrix = new Matrix([
+            [1, 2],
+            [3, 4]
+        ]);
+        
+        $mapped = $matrix->map(function($value, $row, $column) {
+            return $value + $row + $column;
+        });
+        
+        $this->assertEquals(1, $mapped->get(0, 0));
+        $this->assertEquals(3, $mapped->get(0, 1));
+        $this->assertEquals(4, $mapped->get(1, 0));
+        $this->assertEquals(6, $mapped->get(1, 1));
+    }
+    
     public function testGetSet() {
         $matrix = $this->buildMatrix();
         
