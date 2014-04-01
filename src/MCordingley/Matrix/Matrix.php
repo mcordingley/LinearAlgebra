@@ -95,6 +95,33 @@ class Matrix {
         return $this;
     }
     
+    public function add($value) {
+        $class = get_called_class();
+        
+        $literal = array();
+        
+        if ($value instanceof Matrix) {
+            if ($this->rows != $value->rows || $this->columns != $value->columns) {
+                throw new MatrixException('Cannot add two matrices of different size.');
+            }
+            
+            for ($i = 0; $i < $this->rows; $i++) {
+                $row = array();
+                
+                for ($j = 0; $j < $this->columns; $j++) {
+                    $row[] = $this->get($i, $j) + $value->get($i, $j);
+                }
+                
+                $literal[] = $row;
+            }
+        }
+        else {
+            // Stubbed for scalar addition
+        }
+        
+        return new $class($literal);
+    }
+    
     /**
      * transpose
      * 
