@@ -80,6 +80,26 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(11, $added->get(2, 2));
     }
     
+    public function testAddScalar() {
+        $matrix = new Matrix([
+            [4, 2, 6],
+            [1, 7, 3],
+            [7, 3, 2]
+        ]);
+        
+        $added = $matrix->add(4);
+        
+        $this->assertEquals(8, $added->get(0, 0));
+        $this->assertEquals(6, $added->get(0, 1));
+        $this->assertEquals(10, $added->get(0, 2));
+        $this->assertEquals(5, $added->get(1, 0));
+        $this->assertEquals(11, $added->get(1, 1));
+        $this->assertEquals(7, $added->get(1, 2));
+        $this->assertEquals(11, $added->get(2, 0));
+        $this->assertEquals(7, $added->get(2, 1));
+        $this->assertEquals(6, $added->get(2, 2));
+    }
+    
     public function testTranspose() {
         $matrix = $this->buildMatrix()->transpose();
         

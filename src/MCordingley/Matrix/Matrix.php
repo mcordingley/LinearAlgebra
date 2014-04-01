@@ -116,7 +116,15 @@ class Matrix {
             }
         }
         else {
-            // Stubbed for scalar addition
+            for ($i = 0; $i < $this->rows; $i++) {
+                $row = array();
+                
+                for ($j = 0; $j < $this->columns; $j++) {
+                    $row[] = $this->get($i, $j) + $value;
+                }
+                
+                $literal[] = $row;
+            }
         }
         
         return new $class($literal);
