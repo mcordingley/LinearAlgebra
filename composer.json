@@ -1,5 +1,15 @@
 {
     "name": "mcordingley/matrix",
+    "authors": [
+        {
+            "name": "Michael Cordingley",
+            "email": "Michael.Cordingley@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit": ">=3.7.*"
+    },
     "autoload": {
         "psr-0": {
             "MCordingley\\Matrix": "src"
