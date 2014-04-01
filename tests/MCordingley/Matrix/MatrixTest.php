@@ -53,4 +53,12 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         // Check that the expected element was set to the expected value
         $this->assertEquals(20, $matrix->get(1, 3));
     }
+    
+    public function testTranspose() {
+        $matrix = $this->buildMatrix()->transpose();
+        
+        $this->assertEquals(5, $matrix->get(0, 1));
+        $this->assertEquals(7, $matrix->get(2, 1));
+        $this->assertEquals(10, $matrix->get(1, 2));
+    }
 }

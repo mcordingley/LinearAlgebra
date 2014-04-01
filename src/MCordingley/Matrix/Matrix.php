@@ -84,6 +84,29 @@ class Matrix {
         return $this;
     }
     
+    /**
+     * transpose
+     * 
+     * Creates and returns a new matrix that is a transposition of this matrix.
+     * 
+     * @return \MCordingley\Matrix\Matrix Transposed matrix.
+     */
+    public function transpose() {
+        $class = get_called_class();
+        
+        $literal = array();
+        
+        for ($i = 0; $i < $this->columns; $i++) {
+            $literal[] = array();
+            
+            for ($j = 0; $j < $this->rows; $j++) {
+                $literal[$i][] = $this->get($j, $i);
+            }
+        }
+        
+        return new $class($literal);
+    }
+    
     public function __get($property) {
         switch ($property) {
             case 'columns':
