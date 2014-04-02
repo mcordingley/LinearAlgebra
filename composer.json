@@ -1,6 +1,10 @@
 {
     "name": "mcordingley/linearalgebra",
     "description": "Matrix math for PHP.",
+    "keywords": [
+        "linear-algebra",
+        "matrix"
+    ],
     "authors": [
         {
             "name": "Michael Cordingley",
