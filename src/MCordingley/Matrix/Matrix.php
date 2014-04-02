@@ -224,6 +224,27 @@ class Matrix {
             });
         }
     }
+ 
+    /**
+     * trace
+     * 
+     * 
+     * 
+     * @return type
+     */
+    public function trace() {
+        if (!$this->isSquare($this)) {
+            throw new MatrixException('Trace can only be called on square matrices: ' . print_r($this->literal, true));
+        }
+
+        $trace = 0;
+        
+        for ($i = 0; $i < $this->rows; $i++) {
+            $trace += $this->get($i, $i);
+        }
+
+        return $trace;
+    }
     
     /**
      * transpose

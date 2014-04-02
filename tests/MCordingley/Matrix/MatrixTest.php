@@ -202,6 +202,16 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(4, $multiplied->get(2, 2));
     }
     
+    public function testTrace() {
+        $matrix = new Matrix([
+            [1, 2, 3],
+            [0, 1, 4],
+            [5, 6, 0]
+        ]);
+        
+        $this->assertEquals(2, $matrix->trace());
+    }
+    
     public function testTranspose() {
         $matrix = $this->buildMatrix()->transpose();
         
