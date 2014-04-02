@@ -1,5 +1,5 @@
 {
-    "name": "mcordingley/matrix",
+    "name": "mcordingley/linearalgebra",
     "description": "Matrix math for PHP.",
     "authors": [
         {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "MCordingley\\Matrix": "src"
+            "mcordingley\\LinearAlgebra": "src"
         }
     }
 }
