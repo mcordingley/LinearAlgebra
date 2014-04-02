@@ -46,8 +46,6 @@ class Matrix {
      * @return \MCordingley\Matrix\Matrix A new matrix with the mapped values.
      */
     public function map(callable $callback) {
-        $class = get_called_class();
-        
         $literal = array();
 
         for ($i = 0; $i < $this->rows; $i++) {
@@ -60,6 +58,7 @@ class Matrix {
             $literal[] = $row;
         }
         
+        $class = get_called_class();
         return new $class($literal);
     }
     
@@ -184,8 +183,7 @@ class Matrix {
      * multiply
      * 
      * Multiplies either another matrix or a scalar with the current matrix,
-     * returning a new matrix instance. In the case of matrix multiplication,
-     * this is equivalent to the dot product.
+     * returning a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to multiply with tnis matrix
      * @return \MCordingley\Matrix\Matrix New multiplied matrix
@@ -193,11 +191,32 @@ class Matrix {
      */
     public function multiply($value) {
         if ($value instanceof Matrix) {
-            if ($this->rows != $value->columns || $this->columns != $value->rows) {
-                throw new MatrixException('Cannot multiply two matrices of different size.');
+            // TODO: This is another good candidate for optimization. Too many loops!
+            
+            if ($this->columns != $value->rows) {
+                throw new MatrixException('Cannot multiply matrices of these sizes.');
             }
             
-            // Stubbed
+            $literal = array();
+            
+            for ($i = 0; $i < $this->rows; $i++) {
+                $row = array();
+                
+                for ($j = 0; $j < $value->columns; $j++) {
+                    $sum = 0;
+                    
+                    for ($k = 0; $k < $this->columns; $k++) {
+                        $sum += $this->get($i, $k) * $value->get($k, $j);
+                    }
+                    
+                    $row[] = $sum;
+                }
+                
+                $literal[] = $row;
+            }
+
+            $class = get_called_class();
+            return new $class($literal);
         }
         else {
             return $this->map(function($element) use ($value) {
@@ -214,8 +233,6 @@ class Matrix {
      * @return \MCordingley\Matrix\Matrix Transposed matrix.
      */
     public function transpose() {
-        $class = get_called_class();
-        
         $literal = array();
         
         for ($i = 0; $i < $this->columns; $i++) {
@@ -226,6 +243,7 @@ class Matrix {
             }
         }
         
+        $class = get_called_class();
         return new $class($literal);
     }
     
@@ -277,8 +295,6 @@ class Matrix {
      * @return \MCordingley\Matrix\Matrix Reduced matrix.
      */
     public function reduce($row = null, $column = null) {
-        $class = get_called_class();
-
         $literal = array();
 
         for ($i = 0; $i < $this->rows; $i++) {
@@ -299,6 +315,7 @@ class Matrix {
             $literal[] = $rowLiteral;
         }
 
+        $class = get_called_class();
         return new $class($literal);
     }
     
