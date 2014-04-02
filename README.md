@@ -4,6 +4,8 @@ Stand-alone Linear Algebra Library for PHP
 
 ## Installation
 
+BIG RED WARNING: THIS LIBRARY HAS NOT YET BEEN RELEASED. PLEASE DO NOT USE!
+
 Include this in your composer.json and then run `composer install`:
 
     "mcordingley/matrix": "0.1.*"
