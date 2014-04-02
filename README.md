@@ -8,13 +8,13 @@ BIG RED WARNING: THIS LIBRARY HAS NOT YET BEEN RELEASED. PLEASE DO NOT USE!
 
 Include this in your composer.json and then run `composer install`:
 
-    "mcordingley/matrix": "0.1.*"
+    "mcordingley/linearalgebra": "0.1.*"
 
 ## Usage
 
 Instantiate a new instance of the matrix class like so:
 
-    $matrix = new \MCordingley\Matrix\Matrix([
+    $matrix = new \mcordingley\LinearAlgebra\Matrix([
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8]
