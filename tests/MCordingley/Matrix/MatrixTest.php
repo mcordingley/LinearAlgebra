@@ -210,6 +210,26 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $matrix->get(1, 2));
     }
     
+    public function testAdjoint() {
+        $matrix = new Matrix([
+            [0, 2, 1],
+            [2, 1, 0],
+            [1, 0, 2]
+        ]);
+        
+        $adjoint = $matrix->adjoint();
+        
+        $this->assertEquals(2, $adjoint->get(0, 0));
+        $this->assertEquals(-4, $adjoint->get(0, 1));
+        $this->assertEquals(-1, $adjoint->get(0, 2));
+        $this->assertEquals(-4, $adjoint->get(1, 0));
+        $this->assertEquals(-1, $adjoint->get(1, 1));
+        $this->assertEquals(2, $adjoint->get(1, 2));
+        $this->assertEquals(-1, $adjoint->get(2, 0));
+        $this->assertEquals(2, $adjoint->get(2, 1));
+        $this->assertEquals(-4, $adjoint->get(2, 2));
+    }
+    
     public function testDeterminant() {
         $matrix = new Matrix([
             [6, 1, 1],

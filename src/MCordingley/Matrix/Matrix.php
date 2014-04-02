@@ -246,6 +246,16 @@ class Matrix {
         $class = get_called_class();
         return new $class($literal);
     }
+ 
+    public function adjoint() {
+    	if (!$this->isSquare($this)) {
+            throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
+        }
+        
+        return $this->map(function($element, $i, $j, $matrix) {
+            return pow(-1, $i + $j) * $matrix->reduce($i, $j)->determinant();
+        });
+    }
     
     /**
       * Determinant function
