@@ -281,7 +281,7 @@ class Matrix {
         }
         
         return $this->map(function($element, $i, $j, $matrix) {
-            return pow(-1, $i + $j) * $matrix->reduce($i, $j)->determinant();
+            return pow(-1, $i + $j) * $matrix->submatrix($i, $j)->determinant();
         })->transpose();
     }
     
@@ -311,7 +311,7 @@ class Matrix {
         // Statically choose the first row for cofactor expansion, because it
         // doesn't matter which row we choose for it.
         for ($j = 0; $j < $this->columns; $j++) {
-            $sum += pow(-1, $j) * $this->get(0, $j) * $this->reduce(0, $j)->determinant();
+            $sum += pow(-1, $j) * $this->get(0, $j) * $this->submatrix(0, $j)->determinant();
         }
         
         return $sum;
@@ -332,7 +332,7 @@ class Matrix {
      * @param int $column Column to remove, null to remove no column.
      * @return \MCordingley\Matrix\Matrix Reduced matrix.
      */
-    public function reduce($row = null, $column = null) {
+    public function submatrix($row = null, $column = null) {
         $literal = array();
 
         for ($i = 0; $i < $this->rows; $i++) {

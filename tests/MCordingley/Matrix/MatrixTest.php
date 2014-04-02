@@ -260,8 +260,8 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(-306, $matrix->determinant());
     }
     
-    public function testReduce() {
-        $matrix = $this->buildMatrix()->reduce(1, 2);
+    public function testSubmatrix() {
+        $matrix = $this->buildMatrix()->submatrix(1, 2);
         
         $this->assertEquals(1, $matrix->get(0, 0));
         $this->assertEquals(2, $matrix->get(0, 1));
