@@ -30,6 +30,12 @@ the current matrix for convenience in chaining:
 
     $matrix->set($row, $column, 21);
 
+It's also possible to find out how large the matrix is with the `rows` and
+`columns` properties:
+
+    $rows = $matrix->rows;
+    $columns = $matrix->columns;
+
 You can also add, subtract, and multiply the matrix with scalar values and other
 matrices. All operations return a new Matrix and do not modify the underlying matrix:
 
