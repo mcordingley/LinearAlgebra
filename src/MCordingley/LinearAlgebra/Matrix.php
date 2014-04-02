@@ -1,6 +1,6 @@
 <?php
 
-namespace MCordingley\Matrix;
+namespace MCordingley\LinearAlgebra;
 
 class Matrix {
     protected $rowCount;

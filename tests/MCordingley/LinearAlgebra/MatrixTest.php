@@ -1,6 +1,6 @@
 <?php
 
-namespace MCordingley\Matrix;
+namespace MCordingley\LinearAlgebra;
 
 class MatrixTest extends \PHPUnit_Framework_TestCase {
     private function buildMatrix() {
