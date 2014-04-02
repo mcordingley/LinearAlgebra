@@ -246,7 +246,35 @@ class Matrix {
         $class = get_called_class();
         return new $class($literal);
     }
+    
+    /**
+     * inverse
+     * 
+     * Creates and returns a new matrix that is the inverse of this matrix.
+     * 
+     * @return \MCordingley\Matrix\Matrix The adjoint matrix
+     * @throws MatrixException
+     */
+    public function inverse() {
+        if (!$this->isSquare($this)) {
+            throw new MatrixException('Inverse can only be called on square matrices: ' . print_r($this->literal, true));
+        }
+        
+        if ($this->determinant() == 0) {
+            throw new MatrixException('This matrix has a zero determinant: ' . print_r($this->literal, true));
+        }
+        
+        return $this->adjoint()->multiply(1 / $this->determinant());
+    }
  
+    /**
+     * adjoint
+     * 
+     * Creates and returns a new matrix that is the adjoint of this matrix.
+     * 
+     * @return \MCordingley\Matrix\Matrix The adjoint matrix
+     * @throws MatrixException
+     */
     public function adjoint() {
     	if (!$this->isSquare($this)) {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
@@ -254,7 +282,7 @@ class Matrix {
         
         return $this->map(function($element, $i, $j, $matrix) {
             return pow(-1, $i + $j) * $matrix->reduce($i, $j)->determinant();
-        });
+        })->transpose();
     }
     
     /**

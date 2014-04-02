@@ -210,24 +210,44 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(10, $matrix->get(1, 2));
     }
     
+    public function testInverse() {
+        $matrix = new Matrix([
+            [1, 2, 3],
+            [0, 1, 4],
+            [5, 6, 0]
+        ]);
+        
+        $inverse = $matrix->inverse();
+        
+        $this->assertEquals(-24, $inverse->get(0, 0));
+        $this->assertEquals(18, $inverse->get(0, 1));
+        $this->assertEquals(5, $inverse->get(0, 2));
+        $this->assertEquals(20, $inverse->get(1, 0));
+        $this->assertEquals(-15, $inverse->get(1, 1));
+        $this->assertEquals(-4, $inverse->get(1, 2));
+        $this->assertEquals(-5, $inverse->get(2, 0));
+        $this->assertEquals(4, $inverse->get(2, 1));
+        $this->assertEquals(1, $inverse->get(2, 2));
+    }
+    
     public function testAdjoint() {
         $matrix = new Matrix([
-            [0, 2, 1],
-            [2, 1, 0],
-            [1, 0, 2]
+            [1, -1, 2],
+            [4, 0, 6],
+            [0, 1, -1]
         ]);
         
         $adjoint = $matrix->adjoint();
         
-        $this->assertEquals(2, $adjoint->get(0, 0));
-        $this->assertEquals(-4, $adjoint->get(0, 1));
-        $this->assertEquals(-1, $adjoint->get(0, 2));
-        $this->assertEquals(-4, $adjoint->get(1, 0));
+        $this->assertEquals(-6, $adjoint->get(0, 0));
+        $this->assertEquals(1, $adjoint->get(0, 1));
+        $this->assertEquals(-6, $adjoint->get(0, 2));
+        $this->assertEquals(4, $adjoint->get(1, 0));
         $this->assertEquals(-1, $adjoint->get(1, 1));
         $this->assertEquals(2, $adjoint->get(1, 2));
-        $this->assertEquals(-1, $adjoint->get(2, 0));
-        $this->assertEquals(2, $adjoint->get(2, 1));
-        $this->assertEquals(-4, $adjoint->get(2, 2));
+        $this->assertEquals(4, $adjoint->get(2, 0));
+        $this->assertEquals(-1, $adjoint->get(2, 1));
+        $this->assertEquals(4, $adjoint->get(2, 2));
     }
     
     public function testDeterminant() {
