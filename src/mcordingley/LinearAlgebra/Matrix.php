@@ -228,9 +228,9 @@ class Matrix {
     /**
      * trace
      * 
+     * Sums the main diagonal values of a square matrix.
      * 
-     * 
-     * @return type
+     * @return numeric
      */
     public function trace() {
         if (!$this->isSquare($this)) {
