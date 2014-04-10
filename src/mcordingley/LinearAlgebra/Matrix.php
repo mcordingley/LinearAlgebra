@@ -58,8 +58,7 @@ class Matrix {
             $literal[] = $row;
         }
         
-        $class = get_called_class();
-        return new $class($literal);
+        return new self($literal);
     }
     
     /**
@@ -215,8 +214,7 @@ class Matrix {
                 $literal[] = $row;
             }
 
-            $class = get_called_class();
-            return new $class($literal);
+            return new self($literal);
         }
         else {
             return $this->map(function($element) use ($value) {
@@ -264,8 +262,7 @@ class Matrix {
             }
         }
         
-        $class = get_called_class();
-        return new $class($literal);
+        return new self($literal);
     }
     
     /**
@@ -374,8 +371,7 @@ class Matrix {
             $literal[] = $rowLiteral;
         }
 
-        $class = get_called_class();
-        return new $class($literal);
+        return new self($literal);
     }
     
     public function __get($property) {
