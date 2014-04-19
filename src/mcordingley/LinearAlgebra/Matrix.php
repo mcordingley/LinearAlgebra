@@ -333,7 +333,7 @@ class Matrix {
     }
     
     /**
-     * reduce
+     * submatrix
      *
      * Returns a new matrix with the selected row and column removed, useful for
      * calculating determinants or other recursive operations on matrices.
