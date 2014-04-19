@@ -211,7 +211,7 @@ class Matrix {
                 $literal[] = $row;
             }
 
-            return new self($literal);
+            return new static($literal);
         }
         else {
             return $this->map(function($element) use ($value) {
