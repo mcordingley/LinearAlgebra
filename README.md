@@ -6,7 +6,7 @@ Stand-alone Linear Algebra Library for PHP
 
 Include this in your composer.json and then run `composer install`:
 
-    "mcordingley/linearalgebra": "0.1.*"
+    "mcordingley/linearalgebra": "0.2.*"
 
 ## Usage
 
@@ -59,6 +59,14 @@ It's also possible to run a map over the matrix:
     $squaredElements = $matrix->map(function($element, $row, $column, $matrix) {
         return $element * $element
     });
+
+The LinearAlgebra library also supports Vectors that can be constructed like so:
+
+    $vector = new \mcordingley\LinearAlgebra\Vector([0, 1, 2]);
+
+As a child class of `Matrix`, Vectors behave the same way as their parent class,
+with the exception that `get` and `set` support short-hand access (e.g. $vector->get(1))
+and vectors will automatically be transposed if necessary when multiplied together.
 
 ## Change-log
 
