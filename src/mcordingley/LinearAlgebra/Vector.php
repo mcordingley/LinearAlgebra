@@ -4,8 +4,13 @@ namespace mcordingley\LinearAlgebra;
 
 class Vector extends Matrix {
     public function __construct(array $literal) {
-        // Just wrap the incoming array, so we again have an array of arrays.
-        parent::__construct(array($literal));
+        // Just wrap the incoming array, so we again have an array of arrays,
+        // if it isn't already so.
+        if (!is_array($literal[0])) {
+            $literal = array($literal);
+        }
+        
+        parent::__construct($literal);
     }
     
     protected function isHorizontal() {
