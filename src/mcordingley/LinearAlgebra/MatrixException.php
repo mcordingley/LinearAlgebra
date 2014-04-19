@@ -1,6 +1,6 @@
 <?php
 
-namespace MCordingley\Matrix;
+namespace mcordingley\LinearAlgebra;
 
 class MatrixException extends \Exception {
     
