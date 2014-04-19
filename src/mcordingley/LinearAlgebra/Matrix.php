@@ -279,7 +279,7 @@ class Matrix {
         }
         
         if ($this->determinant() == 0) {
-            throw new MatrixException('This matrix has a zero determinant: ' . print_r($this->literal, true));
+            throw new MatrixException('This matrix has a zero determinant and is therefore not intertable: ' . print_r($this->literal, true));
         }
         
         return $this->adjoint()->multiply(1 / $this->determinant());
