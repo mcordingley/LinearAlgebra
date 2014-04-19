@@ -32,6 +32,38 @@ class Matrix {
         $this->columnCount = count($literal[0]);
     }
     
+    // Tests an array representation of a matrix to see if it would make a valid matrix
+    protected function isLiteralValid(array $literal) {
+        // Matrix must have at least one row
+        if (!count($literal)) {
+            return false;
+        }
+        
+        // Matrix must have at least one column
+        if (!count($literal[0])) {
+            return false;
+        }
+        
+        // Matrix must have the same number of columns in each row
+        $lastRow = false;
+        foreach ($literal as $row) {
+            $thisRow = count($row);
+            
+            if ($lastRow !== false && $lastRow != $thisRow) {
+                return false;
+            }
+            
+            $lastRow = $thisRow;
+        }
+        
+        return true;
+    }
+    
+    // Potentially a good thing to take public. We'll see if that's a good idea.
+    protected function isSquare() {
+        return $this->rows == $this->columns;
+    }
+    
     /**
      * map
      * 
@@ -59,41 +91,6 @@ class Matrix {
         }
         
         return new self($literal);
-    }
-    
-    /**
-     * isLiteralValid
-     * 
-     * Tests a literal value to see if it's valid input for a new instance of
-     * this class.
-     * 
-     * @param array $literal Array literal representation of this class.
-     * @return boolean True if a valid representation. False otherwise.
-     */
-    protected function isLiteralValid(array $literal) {
-        // Matrix must have at least one row
-        if (!count($literal)) {
-            return false;
-        }
-        
-        // Matrix must have at least one column
-        if (!count($literal[0])) {
-            return false;
-        }
-        
-        // Matrix must have the same number of columns in each row
-        $lastRow = false;
-        foreach ($literal as $row) {
-            $thisRow = count($row);
-            
-            if ($lastRow !== false && $lastRow != $thisRow) {
-                return false;
-            }
-            
-            $lastRow = $thisRow;
-        }
-        
-        return true;
     }
     
     /**
@@ -333,11 +330,6 @@ class Matrix {
         }
         
         return $sum;
-    }
-    
-    // Potentially a good thing to take public. We'll see if that's a good idea.
-    protected function isSquare() {
-        return $this->rows == $this->columns;
     }
     
     /**
