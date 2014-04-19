@@ -1,6 +1,6 @@
 <?php
 
-namespace MCordingley\LinearAlgebra;
+namespace mcordingley\LinearAlgebra;
 
 class MatrixTest extends \PHPUnit_Framework_TestCase {
     private function buildMatrix() {
@@ -64,7 +64,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(8, $matrix->get(1, 3));
         
         // Check chainable return value
-        $this->assertInstanceOf('\MCordingley\Matrix\Matrix', $matrix->set(1, 3, 20));
+        $this->assertInstanceOf('\mcordingley\Matrix\Matrix', $matrix->set(1, 3, 20));
         
         // Check that the expected element was set to the expected value
         $this->assertEquals(20, $matrix->get(1, 3));

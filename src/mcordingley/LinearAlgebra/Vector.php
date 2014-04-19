@@ -1,6 +1,6 @@
 <?php
 
-namespace MCordingley\LinearAlgebra;
+namespace mcordingley\LinearAlgebra;
 
 class Vector extends Matrix {
     public function __construct(array $literal) {
@@ -48,7 +48,7 @@ class Vector extends Matrix {
      * @param int $row
      * @param numeric $column
      * @param numeric|null $value
-     * @return \MCordingley\Matrix\Vector
+     * @return \mcordingley\Matrix\Vector
      */
     public function set($row, $column, $value = NULL) {
         // If called with 2 arguments, second one is the value and first is the row/column
@@ -77,7 +77,7 @@ class Vector extends Matrix {
      * together.
      * 
      * @param mixed $value Another matrix or a numeric scalar value.
-     * @return \MCordingley\Matrix\Vector
+     * @return \mcordingley\Matrix\Vector
      */
     public function multiply($value) {
         // Multiplying vectors yields a scalar, so make sure that the two vectors are in the appropriate orientations

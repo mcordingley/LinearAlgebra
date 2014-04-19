@@ -1,6 +1,6 @@
 <?php
 
-namespace MCordingley\LinearAlgebra;
+namespace mcordingley\LinearAlgebra;
 
 class Matrix {
     protected $rowCount;
@@ -75,7 +75,7 @@ class Matrix {
      * - The matrix being iterated over
      * 
      * @param callable $callback A function that returns the computed new values.
-     * @return \MCordingley\Matrix\Matrix A new matrix with the mapped values.
+     * @return \mcordingley\Matrix\Matrix A new matrix with the mapped values.
      */
     public function map(callable $callback) {
         $literal = array();
@@ -113,7 +113,7 @@ class Matrix {
      * @param int $row Which zero-based row index to set.
      * @param int $column Which zero-based column index to set.
      * @param numeric $value The new value for the position at $row, $column.
-     * @return \MCordingley\Matrix\Matrix
+     * @return \mcordingley\Matrix\Matrix
      */
     public function set($row, $column, $value) {
         $this->internal[$row][$column] = $value;
@@ -128,7 +128,7 @@ class Matrix {
      * a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to add to this matrix
-     * @return \MCordingley\Matrix\Matrix New matrix with the added value
+     * @return \mcordingley\Matrix\Matrix New matrix with the added value
      * @throws MatrixException
      */
     public function add($value) {
@@ -155,7 +155,7 @@ class Matrix {
      * returning a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to subtract from this matrix
-     * @return \MCordingley\Matrix\Matrix New matrix with the subtracted value
+     * @return \mcordingley\Matrix\Matrix New matrix with the subtracted value
      * @throws MatrixException
      */
     public function subtract($value) {
@@ -182,7 +182,7 @@ class Matrix {
      * returning a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to multiply with tnis matrix
-     * @return \MCordingley\Matrix\Matrix New multiplied matrix
+     * @return \mcordingley\Matrix\Matrix New multiplied matrix
      * @throws MatrixException
      */
     public function multiply($value) {
@@ -246,7 +246,7 @@ class Matrix {
      * 
      * Creates and returns a new matrix that is a transposition of this matrix.
      * 
-     * @return \MCordingley\Matrix\Matrix Transposed matrix.
+     * @return \mcordingley\Matrix\Matrix Transposed matrix.
      */
     public function transpose() {
         $literal = array();
@@ -267,7 +267,7 @@ class Matrix {
      * 
      * Creates and returns a new matrix that is the inverse of this matrix.
      * 
-     * @return \MCordingley\Matrix\Matrix The adjoint matrix
+     * @return \mcordingley\Matrix\Matrix The adjoint matrix
      * @throws MatrixException
      */
     public function inverse() {
@@ -287,7 +287,7 @@ class Matrix {
      * 
      * Creates and returns a new matrix that is the adjoint of this matrix.
      * 
-     * @return \MCordingley\Matrix\Matrix The adjoint matrix
+     * @return \mcordingley\Matrix\Matrix The adjoint matrix
      * @throws MatrixException
      */
     public function adjoint() {
@@ -340,7 +340,7 @@ class Matrix {
      *
      * @param int $row Row to remove, null to remove no row.
      * @param int $column Column to remove, null to remove no column.
-     * @return \MCordingley\Matrix\Matrix Reduced matrix.
+     * @return \mcordingley\Matrix\Matrix Reduced matrix.
      */
     public function submatrix($row = null, $column = null) {
         $literal = array();
