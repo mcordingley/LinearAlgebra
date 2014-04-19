@@ -62,6 +62,11 @@ It's also possible to run a map over the matrix:
 
 ## Change-log
 
+- 0.2.0
+    - Created the Vector type
+    - `\MCordingley` namespace is now `\mcordingley`
+    - Matrix functions that return a new Matrix now return a new instance of the called class
+
 - 0.1.0
     - Created the Matrix type
     - Scalar Addition
