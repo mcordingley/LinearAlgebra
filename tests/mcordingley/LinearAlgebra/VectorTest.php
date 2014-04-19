@@ -114,22 +114,6 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(8, $multiplied->get(3));
     }
     
-    public function testTrace() {
-        
-    }
-    
-    public function testTranspose() {
-    }
-    
-    public function testInverse() {
-    }
-    
-    public function testAdjoint() {
-    }
-    
-    public function testDeterminant() {
-    }
-    
     public function testSubmatrix() {
         $matrix = $this->buildVector()->submatrix(1, 2);
         
