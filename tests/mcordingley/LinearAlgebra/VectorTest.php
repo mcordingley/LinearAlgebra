@@ -115,13 +115,10 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testSubmatrix() {
-        $matrix = $this->buildVector()->submatrix(1, 2);
+        $matrix = $this->buildVector()->submatrix(NULL, 1);
         
-        $this->assertEquals(1, $matrix->get(0, 0));
-        $this->assertEquals(2, $matrix->get(0, 1));
-        $this->assertEquals(4, $matrix->get(0, 2));
-        $this->assertEquals(9, $matrix->get(1, 0));
-        $this->assertEquals(10, $matrix->get(1, 1));
-        $this->assertEquals(12, $matrix->get(1, 2));
+        $this->assertEquals(1, $matrix->get(0));
+        $this->assertEquals(3, $matrix->get(1));
+        $this->assertEquals(4, $matrix->get(2));
     }
 }
