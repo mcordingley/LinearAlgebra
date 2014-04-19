@@ -65,7 +65,7 @@ The LinearAlgebra library also supports Vectors that can be constructed like so:
     $vector = new \mcordingley\LinearAlgebra\Vector([0, 1, 2]);
 
 As a child class of `Matrix`, Vectors behave the same way as their parent class,
-with the exception that `get` and `set` support short-hand access (e.g. $vector->get(1))
+with the exception that `get` and `set` support short-hand access (e.g. `$vector->get(1)`)
 and vectors will automatically be transposed if necessary when multiplied together.
 
 ## Change-log
