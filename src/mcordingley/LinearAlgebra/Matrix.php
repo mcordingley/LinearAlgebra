@@ -363,7 +363,7 @@ class Matrix {
             $literal[] = $rowLiteral;
         }
 
-        return new self($literal);
+        return new static($literal);
     }
     
     public function __get($property) {
