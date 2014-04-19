@@ -90,7 +90,7 @@ class Matrix {
             $literal[] = $row;
         }
         
-        return new self($literal);
+        return new static($literal);
     }
     
     /**
