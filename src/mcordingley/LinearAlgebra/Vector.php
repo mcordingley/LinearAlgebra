@@ -27,10 +27,10 @@ class Vector extends Matrix {
         if (is_null($column)) {
             if ($this->isHorizontal()) {
                 $column = $row;
-                $row = 1;
+                $row = 0;
             }
             else {
-                $column = 1;
+                $column = 0;
             }
         }
         
@@ -58,11 +58,11 @@ class Vector extends Matrix {
             // For a horizontal vector, argument 1 specifies the column.
             if ($this->isHorizontal()) {
                 $column = $row;
-                $row = 1;
+                $row = 0;
             }
             // For vertical vectors, argument 1 specifies the row.
             else {
-                $column = 1;
+                $column = 0;
             }
         }
         
