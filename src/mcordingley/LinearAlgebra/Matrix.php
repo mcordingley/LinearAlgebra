@@ -122,6 +122,17 @@ class Matrix {
     }
     
     /**
+     * literal
+     * 
+     * Returns the array literal representation of this matrix.
+     * 
+     * @return array
+     */
+    public function literal() {
+        return $this->internal;
+    }
+    
+    /**
      * add
      * 
      * Adds either another matrix or a scalar to the current matrix, returning
