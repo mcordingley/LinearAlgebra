@@ -2,7 +2,7 @@
 
 namespace mcordingley\LinearAlgebra;
 
-class Matrix {
+class Matrix implements ArrayAccess {
     protected $rowCount;
     protected $columnCount;
 
@@ -119,17 +119,6 @@ class Matrix {
         $this->internal[$row][$column] = $value;
         
         return $this;
-    }
-    
-    /**
-     * literal
-     * 
-     * Returns the array literal representation of this matrix.
-     * 
-     * @return array
-     */
-    public function literal() {
-        return $this->internal;
     }
     
     /**
@@ -386,5 +375,27 @@ class Matrix {
             default:
                 return null;
         }
+    }
+    
+    //
+    // Array Access Interface
+    //
+    
+    public function offsetExists($offset) {
+        return isset($this->internal[$offset]);
+    }
+    
+    public function offsetGet($offset) {
+        return $this->internal[$offset];
+    }
+    
+    // Matrix objects are immutable
+    public function offsetSet($offset, $value) {
+        return;
+    }
+    
+    // Matrix objects are immutable
+    public function offsetUnset($offset) {
+        return;
     }
 }

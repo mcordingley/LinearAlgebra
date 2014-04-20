@@ -92,4 +92,34 @@ class Vector extends Matrix {
         
         return parent::multiply($value);
     }
+    
+    //
+    // ArrayAccess interface
+    //
+    
+    public function offsetExists($offset) {
+        if ($this->isHorizontal()) {
+            $column = $offset;
+            $row = 0;
+        }
+        else {
+            $column = 0;
+            $row = $offset;
+        }
+            
+        return isset($this->internal[$row][$column]);
+    }
+    
+    public function offsetGet($offset) {
+        if ($this->isHorizontal()) {
+            $column = $offset;
+            $row = 0;
+        }
+        else {
+            $column = 0;
+            $row = $offset;
+        }
+        
+        return $this->internal[$row][$column];
+    }
 }
