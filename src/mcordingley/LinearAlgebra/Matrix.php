@@ -291,7 +291,7 @@ class Matrix {
      * @throws MatrixException
      */
     public function adjoint() {
-    	if (!$this->isSquare($this)) {
+        if (!$this->isSquare($this)) {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
         }
         
