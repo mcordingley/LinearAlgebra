@@ -147,23 +147,6 @@ class Matrix implements \ArrayAccess {
     }
     
     /**
-     * set
-     * 
-     * Alters the current matrix to have a new value and then returns $this for
-     * method chaining.
-     * 
-     * @param int $row Which zero-based row index to set.
-     * @param int $column Which zero-based column index to set.
-     * @param numeric $value The new value for the position at $row, $column.
-     * @return \mcordingley\LinearAlgebra\Matrix
-     */
-    public function set($row, $column, $value) {
-        $this->internal[$row][$column] = $value;
-        
-        return $this;
-    }
-    
-    /**
      * eq
      * 
      * Checks to see if two matrices are equal in value.
@@ -414,6 +397,8 @@ class Matrix implements \ArrayAccess {
                 }
             }
         }
+        
+        //return $t;
         
         // Cholesky Inverse
 
