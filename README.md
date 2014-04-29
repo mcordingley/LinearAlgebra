@@ -43,9 +43,9 @@ matrices. All operations return a new Matrix and do not modify the underlying ma
     $multipliedByScalar = $matrix->multiply(4);
     $multipliedByMatrix = $matrix->multiply($anotherMatrix);
 
-Matrices can be compared with `eq` to see if they're equal:
+Matrices can be compared with `equals` to see if they're equal:
 
-    if ($matrix1->eq($matrix2)) {
+    if ($matrix1->equals($matrix2)) {
         // Equality for all!
     }
 
@@ -75,6 +75,8 @@ and vectors will automatically be transposed if necessary when multiplied togeth
 
 ## Change-log
 
+
+    - Renamed `eq` to `equals`.
     - Removed `set` function, so instantiated objects are immutable.
 
 - 0.3.0

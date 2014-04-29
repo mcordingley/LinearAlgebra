@@ -147,14 +147,14 @@ class Matrix implements \ArrayAccess {
     }
     
     /**
-     * eq
+     * equals
      * 
      * Checks to see if two matrices are equal in value.
      * 
      * @param \mcordingley\LinearAlgebra\Matrix $matrixB
      * @return boolean True if equal. False otherwise.
      */
-    public function eq(\mcordingley\LinearAlgebra\Matrix $matrixB) {
+    public function equals(\mcordingley\LinearAlgebra\Matrix $matrixB) {
         if ($this->rowCount != $matrixB->rowCount || $this->columnCount != $matrixB->columnCount) {
             return false;
         }
