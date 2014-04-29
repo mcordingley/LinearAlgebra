@@ -231,7 +231,7 @@ class Matrix implements \ArrayAccess {
      * Multiplies either another matrix or a scalar with the current matrix,
      * returning a new matrix instance.
      * 
-     * @param mixed $value Matrix or scalar to multiply with tnis matrix
+     * @param mixed $value Matrix or scalar to multiply with this matrix
      * @return \mcordingley\LinearAlgebra\Matrix New multiplied matrix
      * @throws MatrixException
      */
@@ -309,7 +309,7 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        return new self($literal);
+        return new static($literal);
     }
     
     /**
@@ -347,7 +347,7 @@ class Matrix implements \ArrayAccess {
     private function choleskyInverse() {
         // Cholesky Decomposition
         
-        $ztol= 1.0e-5;
+        $ztol = 1.0e-5;
         
         $t = array();
         for ($i = 0; $i < $this->rows; ++$i) {
@@ -545,11 +545,11 @@ class Matrix implements \ArrayAccess {
     
     // Matrix objects are immutable
     public function offsetSet($offset, $value) {
-        return;
+        throw new MatrixException('Attempt to set a value on a matrix. Matrix instances are immutable.');
     }
     
     // Matrix objects are immutable
     public function offsetUnset($offset) {
-        return;
+        throw new MatrixException('Attempt to unset a value on a matrix. Matrix instances are immutable.');
     }
 }
