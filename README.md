@@ -27,11 +27,6 @@ the zero-based indices of the row and column that you want:
 
     $element = $matrix->get($row, $column);
 
-Or change the value of an element in the matrix with `set`. The method returns
-the current matrix for convenience in chaining:
-
-    $matrix->set($row, $column, 21);
-
 It's also possible to find out how large the matrix is with the `rows` and
 `columns` properties:
 
@@ -79,6 +74,8 @@ with the exception that `get` and `set` support short-hand access (e.g. `$vector
 and vectors will automatically be transposed if necessary when multiplied together.
 
 ## Change-log
+
+    - Removed `set` function, so instantiated objects are immutable.
 
 - 0.3.0
     - Added the `identity` factory function
