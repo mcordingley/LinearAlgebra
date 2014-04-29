@@ -84,6 +84,13 @@ class Matrix implements \ArrayAccess {
         return true;
     }
     
+    /**
+     * identity
+     * 
+     * @param int $size How many rows and columns the identity matrix should have
+     * @return \mcordingley\LinearAlgebra\Matrix A new identity matrix of size $size
+     * @static
+     */
     public static function identity($size) {
         $literal = array();
         
