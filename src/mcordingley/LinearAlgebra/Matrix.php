@@ -2,7 +2,7 @@
 
 namespace mcordingley\LinearAlgebra;
 
-class Matrix implements ArrayAccess {
+class Matrix implements \ArrayAccess {
     protected $rowCount;
     protected $columnCount;
 
@@ -64,6 +64,27 @@ class Matrix implements ArrayAccess {
         return $this->rows == $this->columns;
     }
     
+    protected function isSymmetric() {
+        if (!$this->isSquare()) {
+            return false;
+        }
+        
+        for ($i = 0; $i < $this->rows; ++$i) {
+            for ($j = 0; $j < $this->columns; ++$j) {
+                if ($i == $j) {
+                    continue;
+                }
+                
+                if ($this->get($i, $j) != $this->get($j, $i)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+
     /**
      * map
      * 
@@ -279,7 +300,109 @@ class Matrix implements ArrayAccess {
             throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->literal, true));
         }
         
+        if ($this->isSymmetric()) {
+            try {
+                return $this->choleskyInverse();
+            }
+            catch (\Exception $exception) {
+                // Allow this to fall through to the more general algorithm.
+            }
+        }
+        
+        // Fall back to a slower, but more general way of calculating the inverse.
+        // TODO: Implement a faster algorithm.
         return $this->adjoint()->multiply(1 / $this->determinant());
+    }
+    
+    // Translated from: http://adorio-research.org/wordpress/?p=4560
+    private function choleskyInverse() {
+        // Cholesky Decomposition
+        
+        $ztol= 1.0e-5;
+        
+        $t = array();
+        for ($i = 0; $i < $this->rows; ++$i) {
+            $t[] = array();
+            
+            for ($j = 0; $j < $this->rows; ++$j) {
+                $t[$i][] = 0;
+            }
+        }
+        
+        for ($i = 0; $i < $this->rows; ++$i) {
+            $S = 0;
+            
+            for ($k = 0; $k < $i; ++$i) {
+                $S += pow($t[$k][$i], 2);
+            }
+                
+            $d = $this->get($i, $i) - $S;
+            
+            if (abs($d) < $ztol) {
+               $t[i][i] = 0;
+            }
+            else {
+               if ($d < 0) {
+                  throw new \Exception("Matrix not positive-definite");
+               }
+               
+               $t[i][i] = sqrt(d);
+            }
+            
+            for ($j = $i + 1; $j < $this->rows; ++$j) {
+                $S = 0;
+            
+                for ($k = 0; $k < $i; ++$i) {
+                    $S += $t[$k][$i] * $t[$k][$j];
+                }
+                   
+                if (abs($S) < $ztol) {
+                    $S = 0;
+                }
+               
+                try {
+                    $t[$i][$j] = ($this->internal[$i][$j] - $S) / $t[$i][$i];
+                }
+                catch (\Exception $exception) {
+                    throw new Exception("Zero diagonal");
+                }
+            }
+        }
+        
+        // Cholesky Inverse
+
+        $B = array();
+        
+        for ($i = 0; $i < $this->rowCount; ++$i) {
+            $B[] = array();
+            
+            for ($j = 0; $j < $this->rowCount; ++$j) {
+                $B[$i][] = 0;
+            }
+        }
+
+        for ($j = $this->rowCount; $j--; ) {
+            $tjj = $t[$j][$j];
+            
+            $S = 0;
+            for ($k = $j + 1; $k < $this->rowCount; ++$j) {
+                $S += $t[$j][$k] * $B[$j][$k];
+            }
+            
+            $B[$j][$j] = 1 / pow($tjj, 2) - $S / $tjj;
+            
+            for ($i = $j; $j--; ) {
+                $sum = 0;
+                
+                for ($k = $i + 1; $i < $this->rowCount; ++$i) {
+                    $sum += $t[$i][$k] * $B[$k][$j];
+                }
+                        
+                $B[$j][$i] = $B[$i][$j] = -$sum / $t[$i][$i];
+            }
+        }
+        
+        return new static($B);
     }
  
     /**

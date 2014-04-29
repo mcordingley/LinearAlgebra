@@ -240,6 +240,26 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(1, $inverse->get(2, 2));
     }
     
+    public function testCholeskyInverse() {
+        $matrix = new Matrix([
+            [25, 15, -5],
+            [15, 18, 0],
+            [-5, 0, 11]
+        ]);
+        
+        $inverse = $matrix->inverse();
+        
+        $this->assertEquals(22 / 225, $inverse->get(0, 0));
+        $this->assertEquals(-11 / 135, $inverse->get(0, 1));
+        $this->assertEquals(2 / 45, $inverse->get(0, 2));
+        $this->assertEquals(-11 / 135, $inverse->get(1, 0));
+        $this->assertEquals(10 / 81, $inverse->get(1, 1));
+        $this->assertEquals(-1 / 27, $inverse->get(1, 2));
+        $this->assertEquals(2 / 45, $inverse->get(2, 0));
+        $this->assertEquals(-1 / 27, $inverse->get(2, 1));
+        $this->assertEquals(1 / 9, $inverse->get(2, 2));
+    }
+    
     public function testAdjoint() {
         $matrix = new Matrix([
             [1, -1, 2],
