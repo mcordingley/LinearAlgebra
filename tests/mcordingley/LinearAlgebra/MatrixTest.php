@@ -70,6 +70,23 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(20, $matrix->get(1, 3));
     }
     
+    public function testEq() {
+        $matrix1 = new Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]);
+        
+        $matrix2 = new Matrix([
+            [4, 2, 6],
+            [1, 7, 3],
+            [7, 3, 2]
+        ]);
+        
+        $this->assertTrue($matrix1->eq($matrix1));
+        $this->assertFalse($matrix1->eq($matrix2));
+    }
+    
     public function testAddMatrix() {
         $matrix1 = new Matrix([
             [1, 2, 3],

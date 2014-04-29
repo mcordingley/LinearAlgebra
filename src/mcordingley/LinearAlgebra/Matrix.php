@@ -96,7 +96,7 @@ class Matrix implements \ArrayAccess {
      * - The matrix being iterated over
      * 
      * @param callable $callback A function that returns the computed new values.
-     * @return \mcordingley\Matrix\Matrix A new matrix with the mapped values.
+     * @return \mcordingley\LinearAlgebra\Matrix A new matrix with the mapped values.
      */
     public function map(callable $callback) {
         $literal = array();
@@ -134,7 +134,7 @@ class Matrix implements \ArrayAccess {
      * @param int $row Which zero-based row index to set.
      * @param int $column Which zero-based column index to set.
      * @param numeric $value The new value for the position at $row, $column.
-     * @return \mcordingley\Matrix\Matrix
+     * @return \mcordingley\LinearAlgebra\Matrix
      */
     public function set($row, $column, $value) {
         $this->internal[$row][$column] = $value;
@@ -143,13 +143,38 @@ class Matrix implements \ArrayAccess {
     }
     
     /**
+     * eq
+     * 
+     * Checks to see if two matrices are equal in value.
+     * 
+     * @param \mcordingley\LinearAlgebra\Matrix $matrixB
+     * @return boolean True if equal. False otherwise.
+     */
+    public function eq(\mcordingley\LinearAlgebra\Matrix $matrixB) {
+        if ($this->rowCount != $matrixB->rowCount || $this->columnCount != $matrixB->columnCount) {
+            return false;
+        }
+        
+        for ($i = $this->rowCount; $i--; ) {
+            for ($j = $this->columnCount; $j--; ) {
+                if ($this->get($i, $j) != $matrixB->get($i, $j)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+
+    /**
      * add
      * 
      * Adds either another matrix or a scalar to the current matrix, returning
      * a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to add to this matrix
-     * @return \mcordingley\Matrix\Matrix New matrix with the added value
+     * @return \mcordingley\LinearAlgebra\Matrix New matrix with the added value
      * @throws MatrixException
      */
     public function add($value) {
@@ -176,7 +201,7 @@ class Matrix implements \ArrayAccess {
      * returning a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to subtract from this matrix
-     * @return \mcordingley\Matrix\Matrix New matrix with the subtracted value
+     * @return \mcordingley\LinearAlgebra\Matrix New matrix with the subtracted value
      * @throws MatrixException
      */
     public function subtract($value) {
@@ -203,7 +228,7 @@ class Matrix implements \ArrayAccess {
      * returning a new matrix instance.
      * 
      * @param mixed $value Matrix or scalar to multiply with tnis matrix
-     * @return \mcordingley\Matrix\Matrix New multiplied matrix
+     * @return \mcordingley\LinearAlgebra\Matrix New multiplied matrix
      * @throws MatrixException
      */
     public function multiply($value) {
@@ -267,7 +292,7 @@ class Matrix implements \ArrayAccess {
      * 
      * Creates and returns a new matrix that is a transposition of this matrix.
      * 
-     * @return \mcordingley\Matrix\Matrix Transposed matrix.
+     * @return \mcordingley\LinearAlgebra\Matrix Transposed matrix.
      */
     public function transpose() {
         $literal = array();
@@ -288,7 +313,7 @@ class Matrix implements \ArrayAccess {
      * 
      * Creates and returns a new matrix that is the inverse of this matrix.
      * 
-     * @return \mcordingley\Matrix\Matrix The adjoint matrix
+     * @return \mcordingley\LinearAlgebra\Matrix The adjoint matrix
      * @throws MatrixException
      */
     public function inverse() {
@@ -410,7 +435,7 @@ class Matrix implements \ArrayAccess {
      * 
      * Creates and returns a new matrix that is the adjoint of this matrix.
      * 
-     * @return \mcordingley\Matrix\Matrix The adjoint matrix
+     * @return \mcordingley\LinearAlgebra\Matrix The adjoint matrix
      * @throws MatrixException
      */
     public function adjoint() {
@@ -463,7 +488,7 @@ class Matrix implements \ArrayAccess {
      *
      * @param int $row Row to remove, null to remove no row.
      * @param int $column Column to remove, null to remove no column.
-     * @return \mcordingley\Matrix\Matrix Reduced matrix.
+     * @return \mcordingley\LinearAlgebra\Matrix Reduced matrix.
      */
     public function submatrix($row = null, $column = null) {
         $literal = array();
