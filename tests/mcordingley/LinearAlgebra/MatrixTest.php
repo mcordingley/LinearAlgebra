@@ -41,6 +41,20 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(4, $matrix->columns);
     }
     
+    public function testIdentity() {
+        $identity = Matrix::identity(3);
+        
+        $this->assertEquals(1, $identity->get(0, 0));
+        $this->assertEquals(0, $identity->get(0, 1));
+        $this->assertEquals(0, $identity->get(0, 2));
+        $this->assertEquals(0, $identity->get(1, 0));
+        $this->assertEquals(1, $identity->get(1, 1));
+        $this->assertEquals(0, $identity->get(1, 2));
+        $this->assertEquals(0, $identity->get(2, 0));
+        $this->assertEquals(0, $identity->get(2, 1));
+        $this->assertEquals(1, $identity->get(2, 2));
+    }
+    
     public function testMap() {
         $matrix = new Matrix([
             [1, 2],

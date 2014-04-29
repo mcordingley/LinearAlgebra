@@ -83,6 +83,20 @@ class Matrix implements \ArrayAccess {
         
         return true;
     }
+    
+    public static function identity($size) {
+        $literal = array();
+        
+        for ($i = 0; $i < $size; ++$i) {
+            $literal[] = array();
+            
+            for ($j = 0; $j < $size; ++$j) {
+                $literal[$i][] = ($i == $j) ? 1 : 0;
+            }
+        }
+        
+        return new static($literal);
+    }
 
 
     /**
