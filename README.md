@@ -70,6 +70,12 @@ and vectors will automatically be transposed if necessary when multiplied togeth
 
 ## Change-log
 
+- 0.3.0
+    - Added the `identity` factory function
+    - Using Cholesky decomposition for faster matrix inversions for applicable matrices
+    - Added `eq` function to test equality of matrices
+    - Implemented the ArrayAccess interface
+
 - 0.2.0
     - Created the Vector type
     - `\MCordingley` namespace is now `\mcordingley`
