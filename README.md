@@ -6,7 +6,7 @@ Stand-alone Linear Algebra Library for PHP
 
 Include this in your composer.json and then run `composer install`:
 
-    "mcordingley/linearalgebra": "0.2.*"
+    "mcordingley/linearalgebra": "0.3.*"
 
 ## Usage
 
@@ -17,6 +17,10 @@ Instantiate a new instance of the matrix class like so:
         [3, 4, 5],
         [6, 7, 8]
     ]);
+
+You can also generate an identity matrix with the `identity` factory function:
+
+    $threeByThreeIdentityMatrix = \mcordingley\LinearAlgebra\Matrix::identity(3);
 
 With the matrix instance, you can retrieve individual elements with `get` using
 the zero-based indices of the row and column that you want:
@@ -43,6 +47,12 @@ matrices. All operations return a new Matrix and do not modify the underlying ma
     $subtractedMatrix = $matrix->subtract($anotherMatrix);
     $multipliedByScalar = $matrix->multiply(4);
     $multipliedByMatrix = $matrix->multiply($anotherMatrix);
+
+Matrices can be compared with `eq` to see if they're equal:
+
+    if ($matrix1->eq($matrix2)) {
+        // Equality for all!
+    }
 
 In addition to these basic operations, the Matrix class offers other common
 matrix operations:
