@@ -345,62 +345,7 @@ class Matrix implements \ArrayAccess {
     
     // Translated from: http://adorio-research.org/wordpress/?p=4560
     private function choleskyInverse() {
-        // Cholesky Decomposition
-        
-        $ztol = 1.0e-5;
-        
-        $t = array();
-        for ($i = 0; $i < $this->rows; ++$i) {
-            $t[] = array();
-            
-            for ($j = 0; $j < $this->rows; ++$j) {
-                $t[$i][] = 0;
-            }
-        }
-        
-        for ($i = 0; $i < $this->rows; ++$i) {
-            $S = 0;
-            
-            for ($k = 0; $k < $i; ++$i) {
-                $S += pow($t[$k][$i], 2);
-            }
-                
-            $d = $this->get($i, $i) - $S;
-            
-            if (abs($d) < $ztol) {
-               $t[i][i] = 0;
-            }
-            else {
-               if ($d < 0) {
-                  throw new \Exception("Matrix not positive-definite");
-               }
-               
-               $t[i][i] = sqrt(d);
-            }
-            
-            for ($j = $i + 1; $j < $this->rows; ++$j) {
-                $S = 0;
-            
-                for ($k = 0; $k < $i; ++$i) {
-                    $S += $t[$k][$i] * $t[$k][$j];
-                }
-                   
-                if (abs($S) < $ztol) {
-                    $S = 0;
-                }
-               
-                try {
-                    $t[$i][$j] = ($this->internal[$i][$j] - $S) / $t[$i][$i];
-                }
-                catch (\Exception $exception) {
-                    throw new Exception("Zero diagonal");
-                }
-            }
-        }
-        
-        //return $t;
-        
-        // Cholesky Inverse
+        $t = self::choleskyDecomposition($this->literal);
 
         $B = array();
         
@@ -433,7 +378,7 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        return new static($B);
+        return new self($B);
     }
  
     /**
@@ -551,5 +496,75 @@ class Matrix implements \ArrayAccess {
     // Matrix objects are immutable
     public function offsetUnset($offset) {
         throw new MatrixException('Attempt to unset a value on a matrix. Matrix instances are immutable.');
+    }
+    
+    //
+    // Decompositions
+    //
+    // Moved down here because they can be quite long and are rarely useful to
+    // understand how this class works.
+    // 
+    
+    // Returns the Cholesky decomposition of a matrix.
+    // Matrix must be square and symmetrical for this to work.
+    // Argument and return are both literal representations of a matrix.
+    // Returns just the lower triangular matrix, as the upper is a mirror image
+    // if that.
+    private static function choleskyDecomposition($literal) {
+        $rows = count($literal);
+        
+        $ztol = 1.0e-5;
+        
+        // Zero-fill an array-representation of a matrix
+        $t = array();
+        for ($i = 0; $i < $rows; ++$i) {
+            $t[] = array();
+            
+            for ($j = 0; $j < $rows; ++$j) {
+                $t[$i][] = 0;
+            }
+        }
+        
+        for ($i = 0; $i < $rows; ++$i) {
+            $S = 0;
+            
+            for ($k = 0; $k < $i; ++$i) {
+                $S += pow($t[$k][$i], 2);
+            }
+                
+            $d = $this->get($i, $i) - $S;
+            
+            if (abs($d) < $ztol) {
+               $t[$i][$i] = 0;
+            }
+            else {
+               if ($d < 0) {
+                  throw new MatrixException("Matrix not positive-definite");
+               }
+               
+               $t[$i][$i] = sqrt($d);
+            }
+            
+            for ($j = $i + 1; $j < $rows; ++$j) {
+                $S = 0;
+            
+                for ($k = 0; $k < $i; ++$i) {
+                    $S += $t[$k][$i] * $t[$k][$j];
+                }
+                   
+                if (abs($S) < $ztol) {
+                    $S = 0;
+                }
+               
+                try {
+                    $t[$i][$j] = ($literal[$i][$j] - $S) / $t[$i][$i];
+                }
+                catch (\Exception $exception) {
+                    throw new MatrixException("Zero diagonal");
+                }
+            }
+        }
+        
+        return $t;
     }
 }
