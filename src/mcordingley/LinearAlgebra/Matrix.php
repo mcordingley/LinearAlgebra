@@ -59,8 +59,12 @@ class Matrix implements \ArrayAccess {
         return true;
     }
     
-    // Potentially a good thing to take public. We'll see if that's a good idea.
-    protected function isSquare() {
+    /**
+     * isSquare
+     * 
+     * @return boolean True if the matrix is square, false otherwise.
+     */
+    public function isSquare() {
         return $this->rows == $this->columns;
     }
     
