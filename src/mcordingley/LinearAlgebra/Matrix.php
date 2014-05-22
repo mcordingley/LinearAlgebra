@@ -476,6 +476,10 @@ class Matrix implements \ArrayAccess {
         }
     }
     
+    public function toArray() {
+        return $this->literal;
+    }
+    
     //
     // Array Access Interface
     //
