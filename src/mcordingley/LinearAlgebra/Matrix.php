@@ -411,9 +411,7 @@ class Matrix implements \ArrayAccess {
     }
     
     /**
-      * Determinant function
-      *
-      * Returns the determinant of the matrix
+      * determinant
       *
       * @return float The matrix's determinant
       */
