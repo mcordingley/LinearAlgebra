@@ -387,6 +387,8 @@ class Matrix implements \ArrayAccess {
     }
     
     private function luInverse() {
+        list($L, $U, $P) = self::luDecomposition($this);
+        
         
     }
  
@@ -485,6 +487,11 @@ class Matrix implements \ArrayAccess {
         }
     }
     
+    /**
+     * toArray
+     * 
+     * @return array Literal representation of this matrix
+     */
     public function toArray() {
         return $this->literal;
     }
