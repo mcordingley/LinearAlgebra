@@ -35,17 +35,11 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(7, $mapped->get(3));
     }
     
-    public function testGetSet() {
+    public function testGet() {
         $matrix = $this->buildVector();
         
         // Check constructed value
         $this->assertEquals(2, $matrix->get(1));
-        
-        // Check chainable return value
-        $this->assertInstanceOf('\mcordingley\LinearAlgebra\Vector', $matrix->set(1, 20));
-        
-        // Check that the expected element was set to the expected value
-        $this->assertEquals(20, $matrix->get(1));
     }
     
     public function testAddVector() {
