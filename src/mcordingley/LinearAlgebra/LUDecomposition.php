@@ -105,20 +105,20 @@ class LUDecomposition extends Matrix {
         }
     }
     
-	/**
-	 * Returns the specified value after applying the permutation vector.
-	 * @see \mcordingley\LinearAlgebra\Matrix::get()
-	 */
-	public function get($row, $column) {
+    /**
+     * Returns the specified value after applying the permutation vector.
+     * @see \mcordingley\LinearAlgebra\Matrix::get()
+     */
+    public function get($row, $column) {
         return $this->internal[$this->permutations[$row]][$column];
-	}
+    }
     
-	/**
-	 * Returns the determinant of the LU decomposition
-	 * 
-	 * @see \mcordingley\LinearAlgebra\Matrix::determinant()
-	 * @return double
-	 */
+    /**
+     * Returns the determinant of the LU decomposition
+     * 
+     * @see \mcordingley\LinearAlgebra\Matrix::determinant()
+     * @return double
+     */
     public function determinant() {
         $n = $this->rowCount;
         
