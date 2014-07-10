@@ -416,8 +416,18 @@ class Matrix implements \ArrayAccess {
       * @return float The matrix's determinant
       */
     public function determinant() {
-       $LUDecomp = new LUDecomposition($this);
-       return $LUDecomp->determinant();
+
+        if (!$this->isSquare($this)) {
+            throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->literal, true));
+        }
+        
+        // Base case for a 1 by 1 matrix
+        if ($this->rows == 1) {
+            return $this->get(0, 0);
+        }
+        
+        $LUDecomp = new LUDecomposition($this);
+        return $LUDecomp->determinant();
     }
     
     /**
