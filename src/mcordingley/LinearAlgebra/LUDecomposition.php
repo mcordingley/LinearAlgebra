@@ -9,7 +9,7 @@ namespace mcordingley\LinearAlgebra;
  * @reference: Numerical Recipes, 3rd edition (section 2.3) http://nrbook.com
  * @reference: http://www.cs.rpi.edu/~flaherje/pdf/lin6.pdf
  * 
- * Crout's Algorithm reference:
+ * Crout's Method reference:
  * @reference: http://www.physics.utah.edu/~detar/phys6720/handouts/crout.txt
  * 
  * Code reference:
@@ -44,7 +44,7 @@ class LUDecomposition extends Matrix {
     /**
      *  Performs the LU Decomposition.
      *  
-     *  This method uses Crout's algorithm on an in-place matrix with partial row 
+     *  This method uses Crout's method on an in-place matrix with partial row 
      *  pivoting and implicit scaling. The pivots are not actually performed on the matrix.
      *  Instead, they are stored in a permutation vector and applied as needed.
      */
@@ -121,13 +121,14 @@ class LUDecomposition extends Matrix {
      */
     public function determinant() {
         $n = $this->rowCount;
+        $determinant = $this->parity;   // Start with +1 for an even # of row swaps, -1 for an odd #
         
         // The determinant is simply the product of the diagonal elements, with sign given
         // by the number of row permutations (-1 for odd, +1 for even)
         for($i = 0; $i < $n; ++$i) {
             $determinant *= $this->internal[$this->permutations[$i]][$i];
         }
-        return $this->parity * $determinant;
+        return $determinant;
     }
     
     /**
