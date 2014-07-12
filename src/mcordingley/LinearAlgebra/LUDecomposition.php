@@ -18,10 +18,10 @@ namespace mcordingley\LinearAlgebra;
 
 
 class LUDecomposition extends Matrix {
-    
+
     protected $parity = 1;  // 1 if the number of row interchanges is even, -1 if it is odd. (used for determinants)
     protected $permutations; // Stores a vector representation of the row permutations performed on this matrix.
-    
+
     /**
      * Constructor
      * 
@@ -30,23 +30,23 @@ class LUDecomposition extends Matrix {
      * @param \mcordingley\LinearAlgebra\Matrix  The matrix to decompose.
      */
     public function __construct(\mcordingley\LinearAlgebra\Matrix $matrix) {        
+        // Copy the matrix
         $matrix->map(function($element, $i, $j, $matrix){ 
             $this->internal[$i][$j] = $element;
         });
         $this->rowCount = $matrix->rows;
         $this->columnCount = $matrix->columns;
-        
+
         if( ! $this->isSquare()) throw new MatrixException("Matrix is not square.");
-        
+
         $this->LUDecomp();
     }
-    
+
     /**
      *  Performs the LU Decomposition.
      *  
-     *  This method uses Crout's method partial row pivoting and implicit scaling. 
-     *  The pivots are not actually performed on the matrix.
-     *  Instead, they are stored in a permutation vector and applied as needed.
+     *  This uses Crout's method with partial (row) pivoting and implicit scaling
+     *  to perform the decomposition in-place on a copy of the original matrix. 
      */
     private function LUDecomp() {
         $scaling = array();
@@ -80,9 +80,8 @@ class LUDecomposition extends Matrix {
                 }      
             }
             
-            // Store the pivot in the permuations vector
-            if($k != $max_row_index)
-            {
+            // Perform the row pivot and store in the permuations vector
+            if($k != $max_row_index) {
                 $this->rowPivot($k, $max_row_index);
             	$temp = $p[$k];
             	$p[$k] = $p[$max_row_index];
@@ -91,7 +90,7 @@ class LUDecomposition extends Matrix {
             }
 
             if ($this->internal[$k][$k] == 0) throw new MatrixException("Matrix is singular.");           
-            
+
             // Crout's algorithm
             for ($i = $k + 1; $i < $n; ++$i) {
                 
@@ -104,14 +103,6 @@ class LUDecomposition extends Matrix {
                 }
             }
         }
-    }
-    
-    /**
-     * Returns the specified value after applying the permutation vector.
-     * @see \mcordingley\LinearAlgebra\Matrix::get()
-     */
-    public function get($row, $column) {
-        return $this->internal[$row][$column];
     }
     
     /**
@@ -149,42 +140,35 @@ class LUDecomposition extends Matrix {
      * is the decomposed matrix of coefficients (now P*L*U), $x is the vector
      * of unknowns, and $b is the vector of knowns.
      *  
-     * @param Vector $b - vector of knowns
-     * @return Vector $x - the solution vector
+     * @param \mcordingley\LinearAlgebra\Vector $b - vector of knowns
+     * @return \mcordingley\LinearAlgebra\Vector $x - the solution vector
      */
     public function solve(\mcordingley\LinearAlgebra\Vector $b) {        
         $n = $this->rowCount;
-        
         if( ! ($b->rows !== $n || $b->columns !== $n)) {
             throw new MatrixException ('The knowns vector must be the same size as the coefficient matrix.');
         }
-        
+
         $y = array();   // L*y = b
         $x = array();   // U*x = y
 
         // Solve L * y = b for y (forward substitution)
-        $y[0] = $b->get($this->permutations[0]);
-        for($i = 1; $i < $n; ++$i) {
+        for($i = 0; $i < $n; ++$i) {
             $y[$i] = $b->get($this->permutations[$i]);
-            for($j = 0; $j < $i; ++$j)
-            {
+            for($j = 0; $j < $i; ++$j) {
                 $y[$i] = $y[$i] - $this->get($i, $j) * $y[$j];
             }
         }
-        
+
         // Solve U * x = y for x (backward substitution)
-        $x[$n-1] = $y[$n-1] / $this->get($n-1, $n-1);
-        for($i = $n - 2; $i >= 0; --$i)
-        {
+        for($i = $n - 1; $i >= 0; --$i) {
             $x[$i] = $y[$i];
             for($j = $i + 1; $j < $n; ++$j) {                
                 $x[$i] = $x[$i] - $this->get($i, $j) * $x[$j];       
             }
             $x[$i] = $x[$i] / $this->get($i, $i);   // Keep division out of the inner loop
         }
-        
-        $solution_vector = new Vector($x);
-        
-        return $solution_vector;
+
+        return new Vector($x);
     }
 }

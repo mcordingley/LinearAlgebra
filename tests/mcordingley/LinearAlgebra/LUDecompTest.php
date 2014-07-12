@@ -3,7 +3,7 @@
 namespace mcordingley\LinearAlgebra;
 
 class LUDecompTest extends \PHPUnit_Framework_TestCase {
-    
+
     /**
      * Builds a nonsingular matrix
      * 
@@ -16,7 +16,7 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
             [2, 3, -1]
         ]);
     }
-    
+
     public function testLUDecompConstructor() {
         $matrix = $this->buildMatrix();
         
@@ -32,16 +32,16 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(0, $LUDecomp->get(2,1));
         $this->assertEquals(1, $LUDecomp->get(2,2));
     }
-    
+
     public function testDeterminant()
     {
         $matrix = $this->buildMatrix();
-        
+
         $LUDecomp = new LUDecomposition($matrix);
-        
+
         $this->assertEquals(5, $LUDecomp->determinant());
     }
-    
+
     public function testSolve()
     {
         $matrix = new Matrix([
@@ -49,17 +49,17 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
            [3, 1, 1],
            [1, -1, 4]
         ]);
-        
+
         $LUDecomp = new LUDecomposition($matrix);
-        
+
         $b = new Vector([1,9,8]);
-                
+
         $x = $LUDecomp->solve($b);
 
         $this->assertEquals(3, $x->get(0));
         $this->assertEquals(-1, $x->get(1));
         $this->assertEquals(1, $x->get(2));
-        
+
         // Try another one
         $matrix = new Matrix([ 
             [1, 2, 0, -4],
@@ -67,13 +67,13 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
             [3, -2, -25, 0],
             [-2, -3, 4, 4]
         ]);
-        
+
         $LUDecomp = new LUDecomposition($matrix);
-        
+
         $b = new Vector([-1, 7, -24, 3]);
-        
+
         $x = $LUDecomp->solve($b);
-        
+
         $message = 'Not within tolerance';
         $delta = 0.00000001;
         $this->assertEquals(1, $x->get(0), $message, $delta);
