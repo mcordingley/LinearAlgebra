@@ -18,7 +18,7 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testLUDecompConstructor() {
-        $matrix = $this->buildMatrix(3,3);
+        $matrix = $this->buildMatrix();
         
         $LUDecomp = new LUDecomposition($matrix);
         
@@ -42,8 +42,43 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(5, $LUDecomp->determinant());
     }
     
-    public function testBackSubstitute()
+    public function testSolve()
     {
+        $matrix = new Matrix([
+	       [1, 1, -1],
+           [3, 1, 1],
+           [1, -1, 4]
+        ]);
         
+        $LUDecomp = new LUDecomposition($matrix);
+        
+        $b = new Vector([1,9,8]);
+                
+        $x = $LUDecomp->solve($b);
+
+        $this->assertEquals(3, $x->get(0));
+        $this->assertEquals(-1, $x->get(1));
+        $this->assertEquals(1, $x->get(2));
+        
+        // Try another one
+        $matrix = new Matrix([ 
+            [1, 2, 0, -4],
+            [-1, 0, 6, 2],
+            [3, -2, -25, 0],
+            [-2, -3, 4, 4]
+        ]);
+        
+        $LUDecomp = new LUDecomposition($matrix);
+        
+        $b = new Vector([-1, 7, -24, 3]);
+        
+        $x = $LUDecomp->solve($b);
+        
+        $message = 'Not within tolerance';
+        $delta = 0.00000001;
+        $this->assertEquals(1, $x->get(0), $message, $delta);
+        $this->assertEquals(1, $x->get(1), $message, $delta);
+        $this->assertEquals(1, $x->get(2), $message, $delta);
+        $this->assertEquals(1, $x->get(3), $message, $delta);
     }
 }
