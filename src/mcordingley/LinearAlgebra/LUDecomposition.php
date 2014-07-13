@@ -51,7 +51,7 @@ class LUDecomposition extends Matrix {
     private function LUDecomp() {
         $scaling = array();
         $this->parity = 1;   // start parity at +1 (parity is "even" for zero row interchanges)
-        $n = $this->rowCount;
+        $n = $this->rows;
         $p =& $this->permutations;
 
         // We want to find the largest element in each row for scaling.
@@ -112,7 +112,7 @@ class LUDecomposition extends Matrix {
      * @return double
      */
     public function determinant() {
-        $n = $this->rowCount;
+        $n = $this->rows;
         $determinant = $this->parity;   // Start with +1 for an even # of row swaps, -1 for an odd #
         
         // The determinant is simply the product of the diagonal elements, with sign given
@@ -140,12 +140,12 @@ class LUDecomposition extends Matrix {
      * is the decomposed matrix of coefficients (now P*L*U), $x is the vector
      * of unknowns, and $b is the vector of knowns.
      *  
-     * @param \mcordingley\LinearAlgebra\Vector $b - vector of knowns
-     * @return \mcordingley\LinearAlgebra\Vector $x - the solution vector
+     * @param array $b - vector of knowns
+     * @return array $x - the solution vector
      */
-    public function solve(\mcordingley\LinearAlgebra\Vector $b) {        
-        $n = $this->rowCount;
-        if( ! ($b->rows !== $n || $b->columns !== $n)) {
+    public function solve(array $b) {        
+        $n = $this->rows;
+        if(count($b) !== $n) {
             throw new MatrixException ('The knowns vector must be the same size as the coefficient matrix.');
         }
 
@@ -153,8 +153,9 @@ class LUDecomposition extends Matrix {
         $x = array();   // U*x = y
 
         // Solve L * y = b for y (forward substitution)
+        // TODO: skip all leading zeroes in b since y_i = 0 for all leading b_i = 0
         for($i = 0; $i < $n; ++$i) {
-            $y[$i] = $b->get($this->permutations[$i]);
+            $y[$i] = $b[$this->permutations[$i]];   // Unscramble the permutations
             for($j = 0; $j < $i; ++$j) {
                 $y[$i] = $y[$i] - $this->get($i, $j) * $y[$j];
             }
@@ -169,6 +170,50 @@ class LUDecomposition extends Matrix {
             $x[$i] = $x[$i] / $this->get($i, $i);   // Keep division out of the inner loop
         }
 
-        return new Vector($x);
+        return $x;
+    }
+    
+    /**
+     * Finds the inverse matrix using the LU decomposition.
+     * 
+     * Workes by solving LUX = B for X where X is the inverse matrix of same rank and order as LU,
+     * and B is an identity matrix, also of the same rank and order.
+     * @see \mcordingley\LinearAlgebra\Matrix::inverse()
+     */
+    public function inverse() {
+        $inverse = array();
+        
+        // Get size of matrix
+        $n = $this->rows;
+        $b = array_fill(0, $n, 0);  // initialize empty vector
+        
+        // For each j from 0 to n-1
+        for($j = 0; $j < $n; ++$j) {
+            // this is the jth column of the identity matrix
+            $b[$j] = 1;
+            
+            // get the solution vector and copy to the jth column of the inverse matrix
+            $x = $this->solve($b);
+            for($i = 0; $i < $n; ++$i) {
+                $inverse[$i][$j] = $x[$i];
+            }
+            $b[$j] = 0; // Get the vector ready for the next column.
+        }
+        return new Matrix($inverse);
+    }
+    
+    /**
+     * Utility method for debugging - echos the
+     * matrix in easy-to-read format. 
+     */
+    private function printMatrix(array $matrix)
+    {
+        $n = count($matrix);
+        foreach($matrix as $row) {
+            foreach($row as $column){
+                echo $column.', ';
+            }
+            echo "\n";
+        }
     }
 }

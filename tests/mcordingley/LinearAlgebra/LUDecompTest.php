@@ -20,26 +20,26 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
     public function testLUDecompConstructor() {
         $matrix = $this->buildMatrix();
         
-        $LUDecomp = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix);
         
-        $this->assertEquals(1, $LUDecomp->get(0,0));
-        $this->assertEquals(-1, $LUDecomp->get(0,1));
-        $this->assertEquals(1, $LUDecomp->get(0,2));
-        $this->assertEquals(2, $LUDecomp->get(1,0));
-        $this->assertEquals(5, $LUDecomp->get(1,1));
-        $this->assertEquals(-3, $LUDecomp->get(1,2));
-        $this->assertEquals(1, $LUDecomp->get(2,0));
-        $this->assertEquals(0, $LUDecomp->get(2,1));
-        $this->assertEquals(1, $LUDecomp->get(2,2));
+        $this->assertEquals(1, $LU->get(0,0));
+        $this->assertEquals(-1, $LU->get(0,1));
+        $this->assertEquals(1, $LU->get(0,2));
+        $this->assertEquals(2, $LU->get(1,0));
+        $this->assertEquals(5, $LU->get(1,1));
+        $this->assertEquals(-3, $LU->get(1,2));
+        $this->assertEquals(1, $LU->get(2,0));
+        $this->assertEquals(0, $LU->get(2,1));
+        $this->assertEquals(1, $LU->get(2,2));
     }
 
     public function testDeterminant()
     {
         $matrix = $this->buildMatrix();
 
-        $LUDecomp = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix);
 
-        $this->assertEquals(5, $LUDecomp->determinant());
+        $this->assertEquals(5, $LU->determinant());
     }
 
     public function testSolve()
@@ -50,15 +50,14 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
            [1, -1, 4]
         ]);
 
-        $LUDecomp = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix);
 
-        $b = new Vector([1,9,8]);
+        $b =[1,9,8];
 
-        $x = $LUDecomp->solve($b);
+        $x = $LU->solve($b);
 
-        $this->assertEquals(3, $x->get(0));
-        $this->assertEquals(-1, $x->get(1));
-        $this->assertEquals(1, $x->get(2));
+        $expected_x = [3, -1, 1];
+        $this->assertEquals($expected_x, $x);
 
         // Try another one
         $matrix = new Matrix([ 
@@ -68,17 +67,38 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
             [-2, -3, 4, 4]
         ]);
 
-        $LUDecomp = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix);
 
-        $b = new Vector([-1, 7, -24, 3]);
+        $b = [-1, 7, -24, 3];
 
-        $x = $LUDecomp->solve($b);
+        $x = $LU->solve($b);
 
         $message = 'Not within tolerance';
         $delta = 0.00000001;
-        $this->assertEquals(1, $x->get(0), $message, $delta);
-        $this->assertEquals(1, $x->get(1), $message, $delta);
-        $this->assertEquals(1, $x->get(2), $message, $delta);
-        $this->assertEquals(1, $x->get(3), $message, $delta);
+        $this->assertEquals(1, $x[0], $message, $delta);
+        $this->assertEquals(1, $x[1], $message, $delta);
+        $this->assertEquals(1, $x[2], $message, $delta);
+        $this->assertEquals(1, $x[3], $message, $delta);
+    }
+
+    public function testInverse()
+    {
+        $matrix = $this->buildMatrix();
+        
+        $LU = new LUDecomposition($matrix);
+        
+        $inverse = $LU->inverse();
+        
+        $message = 'Not within tolerance';
+        $delta = 0.00000001;
+        $this->assertEquals(-0.4, $inverse->get(0, 0), $message, $delta);
+        $this->assertEquals(0.6, $inverse->get(1, 0), $message, $delta);
+        $this->assertEquals(1, $inverse->get(2, 0), $message, $delta);
+        $this->assertEquals(1, $inverse->get(0, 1), $message, $delta);
+        $this->assertEquals(-1, $inverse->get(1, 1), $message, $delta);
+        $this->assertEquals(-1, $inverse->get(2, 1), $message, $delta);
+        $this->assertEquals(0.2, $inverse->get(0, 2), $message, $delta);
+        $this->assertEquals(0.2, $inverse->get(1, 2), $message, $delta);
+        $this->assertEquals(0, $inverse->get(2, 2), $message, $delta);
     }
 }
