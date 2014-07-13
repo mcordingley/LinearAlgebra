@@ -9,6 +9,7 @@ class Matrix implements \ArrayAccess {
     // Internal array representation of the matrix
     protected $internal;
     
+    protected $LU = null; //LU decomposition, stored so we only need to build it once.
     /**
      * Constructor
      * 
@@ -342,10 +343,9 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        // Fall back to a slower, but more general way of calculating the inverse.
-        // TODO: Implement a faster algorithm.
-        //return $this->luInverse();
-        return $this->adjoint()->multiply(1 / $this->determinant());
+        // Use LU decomposition for the general case.
+        $LU = $this->getLUDecomp();
+        return $LU->inverse();
     }
     
     // Translated from: http://adorio-research.org/wordpress/?p=4560
@@ -426,8 +426,8 @@ class Matrix implements \ArrayAccess {
             return $this->get(0, 0);
         }
         
-        $LUDecomp = new LUDecomposition($this);
-        return $LUDecomp->determinant();
+        $LU = $this->getLUDecomp();
+        return $LU->determinant();
     }
     
     /**
@@ -656,5 +656,18 @@ class Matrix implements \ArrayAccess {
         }
         
         return new self($t);
+    }
+
+    /**
+     * Lazy-loads the LU decomposition. If it has already been built for this
+     * matrix, it returns the existing one. Otherwise, it creates a new one.
+     * 
+     * @return \mcordingley\LinearAlgebra\LUDecomposition
+     */
+    private function getLUDecomp() {
+        if( $this->LU === null) {
+            $this->LU = new LUDecomposition($this);
+        }
+        return $this->LU;
     }
 }
