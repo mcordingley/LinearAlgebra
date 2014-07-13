@@ -185,7 +185,10 @@ class LUDecomposition extends Matrix {
      * 
      * Workes by solving LUX = B for X where X is the inverse matrix of same rank and order as LU,
      * and B is an identity matrix, also of the same rank and order.
-     * @see \mcordingley\LinearAlgebra\Matrix::inverse()
+     * 
+     * overrides \mcordingley\LinearAlgebra\Matrix::inverse()
+     * 
+     * @return \mcordingley\LinearAlgebra\Matrix - The inverse matrix
      */
     public function inverse() {
         $inverse = array();
