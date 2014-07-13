@@ -151,13 +151,20 @@ class LUDecomposition extends Matrix {
 
         $y = array();   // L*y = b
         $x = array();   // U*x = y
+        $skip = TRUE;
 
         // Solve L * y = b for y (forward substitution)
-        // TODO: skip all leading zeroes in b since y_i = 0 for all leading b_i = 0
         for($i = 0; $i < $n; ++$i) {
-            $y[$i] = $b[$this->permutations[$i]];   // Unscramble the permutations
-            for($j = 0; $j < $i; ++$j) {
-                $y[$i] = $y[$i] - $this->get($i, $j) * $y[$j];
+            $this_b = $b[$this->permutations[$i]]; // Unscramble the permutations
+            if($skip && $this_b == 0) { // Leading zeroes in b give zeroes in y.
+                $y[$i] = 0;
+            } else {
+                if($skip) $skip = FALSE; // We found a non-zero element, so don't skip any more.
+                $y[$i] = $this_b;   
+                for($j = 0; $j < $i; ++$j) {
+                	$y[$i] = $y[$i] - $this->get($i, $j) * $y[$j];
+                }
+                
             }
         }
 
