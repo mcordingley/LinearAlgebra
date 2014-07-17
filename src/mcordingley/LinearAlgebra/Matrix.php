@@ -9,6 +9,7 @@ class Matrix implements \ArrayAccess {
     // Internal array representation of the matrix
     protected $internal;
     
+    protected $LU = null; //LU decomposition, stored so we only need to build it once.
     /**
      * Constructor
      * 
@@ -59,8 +60,12 @@ class Matrix implements \ArrayAccess {
         return true;
     }
     
-    // Potentially a good thing to take public. We'll see if that's a good idea.
-    protected function isSquare() {
+    /**
+     * isSquare
+     * 
+     * @return boolean True if the matrix is square, false otherwise.
+     */
+    public function isSquare() {
         return $this->rows == $this->columns;
     }
     
@@ -147,31 +152,14 @@ class Matrix implements \ArrayAccess {
     }
     
     /**
-     * set
-     * 
-     * Alters the current matrix to have a new value and then returns $this for
-     * method chaining.
-     * 
-     * @param int $row Which zero-based row index to set.
-     * @param int $column Which zero-based column index to set.
-     * @param numeric $value The new value for the position at $row, $column.
-     * @return \mcordingley\LinearAlgebra\Matrix
-     */
-    public function set($row, $column, $value) {
-        $this->internal[$row][$column] = $value;
-        
-        return $this;
-    }
-    
-    /**
-     * eq
+     * equals
      * 
      * Checks to see if two matrices are equal in value.
      * 
      * @param \mcordingley\LinearAlgebra\Matrix $matrixB
      * @return boolean True if equal. False otherwise.
      */
-    public function eq(\mcordingley\LinearAlgebra\Matrix $matrixB) {
+    public function equals(\mcordingley\LinearAlgebra\Matrix $matrixB) {
         if ($this->rowCount != $matrixB->rowCount || $this->columnCount != $matrixB->columnCount) {
             return false;
         }
@@ -248,7 +236,7 @@ class Matrix implements \ArrayAccess {
      * Multiplies either another matrix or a scalar with the current matrix,
      * returning a new matrix instance.
      * 
-     * @param mixed $value Matrix or scalar to multiply with tnis matrix
+     * @param mixed $value Matrix or scalar to multiply with this matrix
      * @return \mcordingley\LinearAlgebra\Matrix New multiplied matrix
      * @throws MatrixException
      */
@@ -326,7 +314,7 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        return new self($literal);
+        return new static($literal);
     }
     
     /**
@@ -355,67 +343,14 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        // Fall back to a slower, but more general way of calculating the inverse.
-        // TODO: Implement a faster algorithm.
-        return $this->adjoint()->multiply(1 / $this->determinant());
+        // Use LU decomposition for the general case.
+        $LU = $this->getLUDecomp();
+        return $LU->inverse();
     }
     
     // Translated from: http://adorio-research.org/wordpress/?p=4560
     private function choleskyInverse() {
-        // Cholesky Decomposition
-        
-        $ztol= 1.0e-5;
-        
-        $t = array();
-        for ($i = 0; $i < $this->rows; ++$i) {
-            $t[] = array();
-            
-            for ($j = 0; $j < $this->rows; ++$j) {
-                $t[$i][] = 0;
-            }
-        }
-        
-        for ($i = 0; $i < $this->rows; ++$i) {
-            $S = 0;
-            
-            for ($k = 0; $k < $i; ++$i) {
-                $S += pow($t[$k][$i], 2);
-            }
-                
-            $d = $this->get($i, $i) - $S;
-            
-            if (abs($d) < $ztol) {
-               $t[i][i] = 0;
-            }
-            else {
-               if ($d < 0) {
-                  throw new \Exception("Matrix not positive-definite");
-               }
-               
-               $t[i][i] = sqrt(d);
-            }
-            
-            for ($j = $i + 1; $j < $this->rows; ++$j) {
-                $S = 0;
-            
-                for ($k = 0; $k < $i; ++$i) {
-                    $S += $t[$k][$i] * $t[$k][$j];
-                }
-                   
-                if (abs($S) < $ztol) {
-                    $S = 0;
-                }
-               
-                try {
-                    $t[$i][$j] = ($this->internal[$i][$j] - $S) / $t[$i][$i];
-                }
-                catch (\Exception $exception) {
-                    throw new Exception("Zero diagonal");
-                }
-            }
-        }
-        
-        // Cholesky Inverse
+        $t = self::choleskyDecomposition($this)->toArray();
 
         $B = array();
         
@@ -448,7 +383,13 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        return new static($B);
+        return new self($B);
+    }
+    
+    private function luInverse() {
+        list($L, $U, $P) = self::luDecomposition($this);
+        
+        
     }
  
     /**
@@ -464,41 +405,30 @@ class Matrix implements \ArrayAccess {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
         }
         
-        return $this->map(function($element, $i, $j, $matrix) {
-            return pow(-1, $i + $j) * $matrix->submatrix($i, $j)->determinant();
-        })->transpose();
+        $inverse = $this->inverse();
+        $determinant = $this->determinant();
+        $adjoint = $inverse->multiply($determinant);
+        return $adjoint;
     }
     
     /**
-      * Determinant function
-      *
-      * Returns the determinant of the matrix
+      * determinant
       *
       * @return float The matrix's determinant
       */
     public function determinant() {
-        /* TODO: This function is a good candidate for optimization by the
-                 mathematically-inclined. Suggest doing the operation without
-                 generating new matrices during the calculation. */
-        
+
         if (!$this->isSquare($this)) {
             throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->literal, true));
         }
-
+        
         // Base case for a 1 by 1 matrix
         if ($this->rows == 1) {
             return $this->get(0, 0);
         }
-
-        $sum = 0;
         
-        // Statically choose the first row for cofactor expansion, because it
-        // doesn't matter which row we choose for it.
-        for ($j = 0; $j < $this->columns; $j++) {
-            $sum += pow(-1, $j) * $this->get(0, $j) * $this->submatrix(0, $j)->determinant();
-        }
-        
-        return $sum;
+        $LU = $this->getLUDecomp();
+        return $LU->determinant();
     }
     
     /**
@@ -546,6 +476,15 @@ class Matrix implements \ArrayAccess {
         }
     }
     
+    /**
+     * toArray
+     * 
+     * @return array Literal representation of this matrix
+     */
+    public function toArray() {
+        return $this->literal;
+    }
+    
     //
     // Array Access Interface
     //
@@ -560,11 +499,176 @@ class Matrix implements \ArrayAccess {
     
     // Matrix objects are immutable
     public function offsetSet($offset, $value) {
-        return;
+        throw new MatrixException('Attempt to set a value on a matrix. Matrix instances are immutable.');
     }
     
     // Matrix objects are immutable
     public function offsetUnset($offset) {
-        return;
+        throw new MatrixException('Attempt to unset a value on a matrix. Matrix instances are immutable.');
+    }
+    
+    //
+    // Decompositions
+    //
+    // Moved down here because they can be quite long and are rarely useful to
+    // understand how this class works.
+    // 
+    
+    private static function luDecomposition($matrix) {
+        // Translated from rosettacode.org/wiki/LU_decomposition#Python
+        $literal = $matrix->toArray();
+        $rows = count($literal);
+        
+        // Zero-fill array literals of $L and $U
+        $L = array();
+        $U = array();
+        
+        for ($i = 0; $i < $rows; ++$i) {
+            $L[] = array();
+            $U[] = array();
+            
+            for ($j = 0; $j < $rows; ++$j) {
+                $L[$i][] = 0;
+                $U[$i][] = 0;
+            }
+        }
+
+        $P = $this->pivotize($matrix);
+        $A2 = $P->multiply($matrix)->toArray();
+
+        for ($j = 0; $j < $rows; $j++) {
+            $L[$j][$j] = 1;
+            
+            for ($i = 0; $i < $j+1; $i++) {
+                $s1 = 0;
+                
+                for ($k = 0; $k < $i; $k++) {
+                    $s1 += $U[$k][$j] * $L[$i][$k];
+                }
+                
+                $U[$i][$j] = $A2[$i][$j] - $s1;
+            }
+                    
+            for ($i = $j; $i < $rows; $i++) {
+                $s2 = 0;
+                
+                for ($k = 0; $k < $j; $k++) {
+                    $s2 += $U[$k][$j] * $L[$i][$k];
+                }
+                
+                $L[$i][$j] = ($A2[$i][$j] - $s2) / $U[$j][$j];
+            }
+        }
+
+        return array(new static($L), new static($U), new static($P));
+    }
+    
+    private static function pivotize($matrix) {
+        $rows = $matrix->rows;
+        
+        $P = array();
+        for ($i = 0; $i < $rows; $i++) {
+            $P[] = array();
+            
+            for ($j = 0; $j < $rows; $j++) {
+                $P[$i][] = $i == $j ? 1 : 0;
+            }
+        }
+            
+        for ($j = 0; $j < $rows; $j++) {
+            $candidates = array();
+            
+            for ($i = $j; $i < $rows; $i++) {
+                $candidates[] = $i;
+            }
+            
+            $row = array_reduce($candidates, function($max, $i) use ($matrix, $j) {
+                $candidate = abs($matrix[$i][$j]);
+                
+                return $candidate > $max ? $candidate : $max;
+            }, 0);
+                
+            if ($j != $row) {
+                list($P[$j], $P[$row]) = array($P[$row], $P[$j]);
+            }
+        }
+
+        return $P;
+    }
+    
+    // Returns the Cholesky decomposition of a matrix.
+    // Matrix must be square and symmetrical for this to work.
+    // Returns just the lower triangular matrix, as the upper is a mirror image
+    // if that.
+    private static function choleskyDecomposition($matrix) {
+        $literal = $matrix->toArray();
+        $rows = count($literal);
+        
+        $ztol = 1.0e-5;
+        
+        // Zero-fill an array-representation of a matrix
+        $t = array();
+        for ($i = 0; $i < $rows; ++$i) {
+            $t[] = array();
+            
+            for ($j = 0; $j < $rows; ++$j) {
+                $t[$i][] = 0;
+            }
+        }
+        
+        for ($i = 0; $i < $rows; ++$i) {
+            $S = 0;
+            
+            for ($k = 0; $k < $i; ++$i) {
+                $S += pow($t[$k][$i], 2);
+            }
+                
+            $d = $this->get($i, $i) - $S;
+            
+            if (abs($d) < $ztol) {
+               $t[$i][$i] = 0;
+            }
+            else {
+               if ($d < 0) {
+                  throw new MatrixException("Matrix not positive-definite");
+               }
+               
+               $t[$i][$i] = sqrt($d);
+            }
+            
+            for ($j = $i + 1; $j < $rows; ++$j) {
+                $S = 0;
+            
+                for ($k = 0; $k < $i; ++$i) {
+                    $S += $t[$k][$i] * $t[$k][$j];
+                }
+                   
+                if (abs($S) < $ztol) {
+                    $S = 0;
+                }
+               
+                try {
+                    $t[$i][$j] = ($literal[$i][$j] - $S) / $t[$i][$i];
+                }
+                catch (\Exception $exception) {
+                    throw new MatrixException("Zero diagonal");
+                }
+            }
+        }
+        
+        return new self($t);
+    }
+
+    /**
+     * Lazy-loads the LU decomposition. If it has already been built for this
+     * matrix, it returns the existing one. Otherwise, it creates a new one.
+     * 
+     * @return \mcordingley\LinearAlgebra\LUDecomposition
+     */
+    private function getLUDecomp() {
+        if( $this->LU === null) {
+            $this->LU = new LUDecomposition($this);
+        }
+        return $this->LU;
     }
 }

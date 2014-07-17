@@ -43,38 +43,6 @@ class Vector extends Matrix {
     }
     
     /**
-     * set
-     * 
-     * Vector-specific implementation of `set`. Call with $value = NULL to set
-     * values along the vector's major axis. e.g. `$vector->set(1, 2)` will set
-     * the second value in the vector to be `2` whether the vector is horizontal
-     * or not.
-     * 
-     * @param int $row
-     * @param numeric $column
-     * @param numeric|null $value
-     * @return \mcordingley\Matrix\Vector
-     */
-    public function set($row, $column, $value = NULL) {
-        // If called with 2 arguments, second one is the value and first is the row/column
-        if (is_null($value)) {
-            $value = $column;
-            
-            // For a horizontal vector, argument 1 specifies the column.
-            if ($this->isHorizontal()) {
-                $column = $row;
-                $row = 0;
-            }
-            // For vertical vectors, argument 1 specifies the row.
-            else {
-                $column = 0;
-            }
-        }
-        
-        return parent::set($row, $column, $value);
-    }
-    
-    /**
      * multiply
      * 
      * Vector-specific implementation of `multiply`. If multiplying two vectors,

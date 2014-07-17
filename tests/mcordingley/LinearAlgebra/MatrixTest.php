@@ -71,20 +71,14 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(6, $mapped->get(1, 1));
     }
     
-    public function testGetSet() {
+    public function testGet() {
         $matrix = $this->buildMatrix();
         
         // Check constructed value
         $this->assertEquals(8, $matrix->get(1, 3));
-        
-        // Check chainable return value
-        $this->assertInstanceOf('\mcordingley\LinearAlgebra\Matrix', $matrix->set(1, 3, 20));
-        
-        // Check that the expected element was set to the expected value
-        $this->assertEquals(20, $matrix->get(1, 3));
     }
     
-    public function testEq() {
+    public function testEquals() {
         $matrix1 = new Matrix([
             [1, 2, 3],
             [4, 5, 6],
@@ -97,8 +91,8 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
             [7, 3, 2]
         ]);
         
-        $this->assertTrue($matrix1->eq($matrix1));
-        $this->assertFalse($matrix1->eq($matrix2));
+        $this->assertTrue($matrix1->equals($matrix1));
+        $this->assertFalse($matrix1->equals($matrix2));
     }
     
     public function testAddMatrix() {
