@@ -405,9 +405,10 @@ class Matrix implements \ArrayAccess {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
         }
         
-        return $this->map(function($element, $i, $j, $matrix) {
-            return pow(-1, $i + $j) * $matrix->submatrix($i, $j)->determinant();
-        })->transpose();
+        $inverse = $this->inverse();
+        $determinant = $this->determinant();
+        $adjoint = $inverse->multiply($determinant);
+        return $adjoint;
     }
     
     /**
