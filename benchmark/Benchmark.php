@@ -7,7 +7,9 @@ class Benchmark {
     public function start($key) {
         $this->benchmark_times[$key]['start'] = microtime(TRUE);
         $this->benchmark_times[$key]['end'] = 0;
-        $this->benchmark_times[$key]['total'] = 0;
+        if(! isset($this->benchmark_times[$key]['total'])) {
+           $this->benchmark_times[$key]['total'] = 0;
+        }
     }
     
     public function end($key) {
@@ -17,17 +19,15 @@ class Benchmark {
         $this->benchmark_times[$key]['total'] += $total;
     }
     
-    public function printReport() {
-        echo "Benchmark Report:\n";
-        echo "-----------------\n";
-        echo "\n";
-        foreach($this->benchmark_times as $key => $time)
-        {
-            echo $key.': '.$time['total'].' s'."\n";
+    public function clear($key = FALSE) {
+        if( ! $key) {
+            $this->benchmark_times = array();
+        } else {
+            unset($this->benchmark_times[$key]);
         }
     }
     
-    public function clear() {
-        $this->benchmark_times = array();
+    public function getTime($key) {
+        return $this->benchmark_times[$key]['total'];
     }
 }

@@ -4,167 +4,160 @@ namespace mcordingley\LinearAlgebra;
 require_once './Benchmark.php';
 require_once '../vendor/autoload.php';
 
-// Set up the benchmark class
-$benchmark = new Benchmark();
+class BenchmarkTest {
+    
+    protected $benchmark;
+    protected $results;
+    
+    private $m1, $m2, $random_numbers1, $random_numbers2;
+    
+    public function __construct() {
+        // Set up the benchmark class
+        $this->benchmark = new Benchmark();
+    }
+    
+    /**
+     * Calls $callback($m1, $m2) a number of times equal to $repeat, where m1 and m2 are 
+     * matrices populated with random numbers. Saves the total average time in results 
+     * array under $name. Resets matrices if $reset == TRUE (defaults to true).
+     * 
+     * @param string $name
+     * @param int $repeat
+     * @param callable $callback
+     */
+    public function test($name, $repeat, callable $callback, $reset = TRUE) {
+        for($i = 1; $i <= $repeat; ++$i) {
+            if($reset) $this->resetMatrices();
+        	$this->benchmark->start($name);
+        	$callback($this->m1, $this->m2);
+        	$this->benchmark->end($name);
+        }
+        $this->results[$name] = $this->benchmark->getTime($name) / $repeat;
+    }
+    
+    /**
+     * Unsets and re-initialzies matrices to eliminate caching optimizations
+     * from the tests
+     */
+    public function resetMatrices() {
+        unset($this->m1);
+        unset($this->m2);
+        $this->m1 = new Matrix($this->random_numbers1);
+        $this->m2 = new Matrix($this->random_numbers2);
+    }
+    
+    /**
+     * Generates two square matrices of size $size filled with random numbers
+     * @param int $size
+     */
+    public function initializeMatrices($size) {
+        $this->random_numbers1 = array();
+        $this->random_numbers2 = array();
+        $seed = 0;
+        $min = 0;
+        $max = 1;
+        mt_srand($seed);
+        for($i = 0; $i < $size; ++$i) {
+        	for($j = 0; $j < $size; ++$j) {
+        		$this->random_numbers1[$i][$j] = mt_rand();
+        		$this->random_numbers2[$i][$j] = mt_rand();
+        	}
+        }
+        $this->m1 = new Matrix($this->random_numbers1);
+        $this->m2 = new Matrix($this->random_numbers2);
+    }
+    
+    /**
+     * Returns results array
+     * 
+     * @return array
+     */
+    public function getResults() {
+        return $this->results;
+    }
+}
+
+$test = new BenchmarkTest();
 
 $config = array(
-	5 => 10,
-    10 => 5,
-    100 => 1,
-    200 => 1
+		5 => 10,
+		10 => 5,
 );
-
-
 // Loop over matrix sizes
 foreach($config as $size => $repeat) {
-    $random_numbers1 = array();
-    $random_numbers2 = array();
-    $seed = 0;
-    $min = 0;
-    $max = 10;
-    mt_srand($seed);
-    for($i = 0; $i < $size; ++$i) {
-        for($j = 0; $j < $size; ++$j) {
-            $random_numbers1[$i][$j] = mt_rand();
-            $random_numbers2[$i][$j] = mt_rand();
-        }
-    }
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
 
+    $test->initializeMatrices($size);
+    
     // add a scalar
-    $key = "Add a scalar, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->add(25);
-    $benchmark->end($key);
-    
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
-    // add a matrix
-    $key = "Add a matrix, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->add($m2);
-    $benchmark->end($key);
+    $key = "$size, Add a scalar";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->add(25);
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
+    // add a matrix
+    $key = "$size, Add a matrix";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->add($m2);
+    });
 
     // subtract a scalar
-    $key = "Subtract a scalar, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->subtract(25);
-    $benchmark->end($key);
+    $key = "$size, Subtract a scalar";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->subtract(25);
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
     // subtract a matrix
-    $key = "Subtract a matrix, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->subtract($m2);
-    $benchmark->end($key);
+    $key = "$size, Subtract a matrix";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->subtract($m2);
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
     // multiply by scalar
-    $key = "Multiply a scalar, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->multiply(25);
-    $benchmark->end($key);
-
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
-/**    
+    $key = "$size, Multiply a scalar";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->multiply(25);
+    });
+        
     // multiply by matrix
-    $key = "Multiply a matrix, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->multiply($m2);
-    $benchmark->end($key);
-**/
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
-    
+    $key = "$size, Multiply a matrix";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->multiply($m2);
+    });
+
     // trace
-    $key = "Trace, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->trace();
-    $benchmark->end($key);
+    $key = "$size, Trace";
+    $test->test($key, $repeat, function($m1, $m2){
+    	$m1->trace(25);
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
-    
     // transpose
-    $key = "Transpose, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->transpose();
-    $benchmark->end($key);
+    $key = "$size, Transpose";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->transpose();
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
-    
     // adjoint
-    $key = "Adjoint, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->adjoint();
-    $benchmark->end($key);
+    $key = "$size, Adjoint";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->adjoint();
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
     // determinant
-    $key = "Determinant, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->determinant();
-    $benchmark->end($key);
+    $key = "$size, Determinant";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->determinant();
+    });
 
-    unset($m1);
-    unset($m2);
-    $m1 = new Matrix($random_numbers1);
-    $m2 = new Matrix($random_numbers2);
-    
     // inverse
-    $key = "Inverse, size = $size";
-    echo $key."\n";
-    $benchmark->start($key);
-    $x = $m1->inverse();
-    $benchmark->end($key);
-    
-    echo "\n\n";
-    $benchmark->printReport();
-    $benchmark->clear();
-    echo "\n\n";
+    $key = "$size, Inverse";
+    $test->test($key, $repeat, function($m1, $m2){
+        $m1->inverse();
+    });
+}
+$results = $test->getResults();
+
+// Write report
+foreach($results as $key => $time)
+{
+    echo $key.', '.$time."\n";
 }
