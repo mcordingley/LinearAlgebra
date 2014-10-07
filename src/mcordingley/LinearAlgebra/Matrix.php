@@ -479,6 +479,19 @@ class Matrix implements \ArrayAccess {
         return $this->internal;
     }
     
+    /**
+     * __toString
+     * 
+     * @return string A string representation of this matrix, suitable to echo.
+     */
+    public function __toString() {
+        $rowStrings = array_map(function($row) {
+            return '[' . implode(', ', $row) . ']';
+        }, $this->internal);
+        
+        return '[' . implode(', ', $rowStrings) . ']';
+    }
+    
     //
     // Array Access Interface
     //
