@@ -6,7 +6,7 @@ Stand-alone Linear Algebra Library for PHP
 
 Include this in your composer.json and then run `composer install`:
 
-    "mcordingley/linearalgebra": "0.3.*"
+    "mcordingley/linearalgebra": "0.9.*"
 
 ## Usage
 
@@ -71,6 +71,8 @@ It's also possible to run a map over the matrix:
 
 ## Change-log
 
+- 0.9.0
+    - Bump version up to represent that this is close to it's final form.
     - Merged PR for faster `inverse` calculations
     - KISS `Vector` class good-bye.
     - Renamed `eq` to `equals`.
