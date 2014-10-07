@@ -8,8 +8,8 @@ class Matrix implements \ArrayAccess {
 
     // Internal array representation of the matrix
     protected $internal;
-    
     protected $LU = null; //LU decomposition, stored so we only need to build it once.
+    
     /**
      * Constructor
      * 
@@ -385,12 +385,6 @@ class Matrix implements \ArrayAccess {
         
         return new self($B);
     }
-    
-    private function luInverse() {
-        list($L, $U, $P) = self::luDecomposition($this);
-        
-        
-    }
  
     /**
      * adjoint
@@ -505,95 +499,6 @@ class Matrix implements \ArrayAccess {
     // Matrix objects are immutable
     public function offsetUnset($offset) {
         throw new MatrixException('Attempt to unset a value on a matrix. Matrix instances are immutable.');
-    }
-    
-    //
-    // Decompositions
-    //
-    // Moved down here because they can be quite long and are rarely useful to
-    // understand how this class works.
-    // 
-    
-    private static function luDecomposition($matrix) {
-        // Translated from rosettacode.org/wiki/LU_decomposition#Python
-        $literal = $matrix->toArray();
-        $rows = count($literal);
-        
-        // Zero-fill array literals of $L and $U
-        $L = array();
-        $U = array();
-        
-        for ($i = 0; $i < $rows; ++$i) {
-            $L[] = array();
-            $U[] = array();
-            
-            for ($j = 0; $j < $rows; ++$j) {
-                $L[$i][] = 0;
-                $U[$i][] = 0;
-            }
-        }
-
-        $P = $this->pivotize($matrix);
-        $A2 = $P->multiply($matrix)->toArray();
-
-        for ($j = 0; $j < $rows; $j++) {
-            $L[$j][$j] = 1;
-            
-            for ($i = 0; $i < $j+1; $i++) {
-                $s1 = 0;
-                
-                for ($k = 0; $k < $i; $k++) {
-                    $s1 += $U[$k][$j] * $L[$i][$k];
-                }
-                
-                $U[$i][$j] = $A2[$i][$j] - $s1;
-            }
-                    
-            for ($i = $j; $i < $rows; $i++) {
-                $s2 = 0;
-                
-                for ($k = 0; $k < $j; $k++) {
-                    $s2 += $U[$k][$j] * $L[$i][$k];
-                }
-                
-                $L[$i][$j] = ($A2[$i][$j] - $s2) / $U[$j][$j];
-            }
-        }
-
-        return array(new static($L), new static($U), new static($P));
-    }
-    
-    private static function pivotize($matrix) {
-        $rows = $matrix->rows;
-        
-        $P = array();
-        for ($i = 0; $i < $rows; $i++) {
-            $P[] = array();
-            
-            for ($j = 0; $j < $rows; $j++) {
-                $P[$i][] = $i == $j ? 1 : 0;
-            }
-        }
-            
-        for ($j = 0; $j < $rows; $j++) {
-            $candidates = array();
-            
-            for ($i = $j; $i < $rows; $i++) {
-                $candidates[] = $i;
-            }
-            
-            $row = array_reduce($candidates, function($max, $i) use ($matrix, $j) {
-                $candidate = abs($matrix[$i][$j]);
-                
-                return $candidate > $max ? $candidate : $max;
-            }, 0);
-                
-            if ($j != $row) {
-                list($P[$j], $P[$row]) = array($P[$row], $P[$j]);
-            }
-        }
-
-        return $P;
     }
     
     // Returns the Cholesky decomposition of a matrix.
