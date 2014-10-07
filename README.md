@@ -12,7 +12,7 @@ Include this in your composer.json and then run `composer install`:
 
 Start with a `use` statement for the class:
 
-use \mcordingley\LinearAlgebra\Matrix;
+    use \mcordingley\LinearAlgebra\Matrix;
 
 Then, instantiate a new instance of the matrix class like so:
 
