@@ -284,7 +284,7 @@ class Matrix implements \ArrayAccess {
      */
     public function trace() {
         if (!$this->isSquare($this)) {
-            throw new MatrixException('Trace can only be called on square matrices: ' . print_r($this->literal, true));
+            throw new MatrixException('Trace can only be called on square matrices: ' . print_r($this->internal, true));
         }
 
         $trace = 0;
@@ -327,11 +327,11 @@ class Matrix implements \ArrayAccess {
      */
     public function inverse() {
         if (!$this->isSquare($this)) {
-            throw new MatrixException('Inverse can only be called on square matrices: ' . print_r($this->literal, true));
+            throw new MatrixException('Inverse can only be called on square matrices: ' . print_r($this->internal, true));
         }
         
         if ($this->determinant() == 0) {
-            throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->literal, true));
+            throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->internal, true));
         }
         
         if ($this->isSymmetric()) {
@@ -349,8 +349,8 @@ class Matrix implements \ArrayAccess {
     }
     
     // Translated from: http://adorio-research.org/wordpress/?p=4560
-    private function choleskyInverse() {
-        $t = self::choleskyDecomposition($this)->toArray();
+    protected function choleskyInverse() {
+        $t = static::choleskyDecomposition($this)->toArray();
 
         $B = array();
         
@@ -396,7 +396,7 @@ class Matrix implements \ArrayAccess {
      */
     public function adjoint() {
         if (!$this->isSquare($this)) {
-            throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
+            throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->internal, true));
         }
         
         $inverse = $this->inverse();
@@ -413,7 +413,7 @@ class Matrix implements \ArrayAccess {
     public function determinant() {
 
         if (!$this->isSquare($this)) {
-            throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->literal, true));
+            throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->internal, true));
         }
         
         // Base case for a 1 by 1 matrix
@@ -476,7 +476,7 @@ class Matrix implements \ArrayAccess {
      * @return array Literal representation of this matrix
      */
     public function toArray() {
-        return $this->literal;
+        return $this->internal;
     }
     
     //
@@ -505,7 +505,7 @@ class Matrix implements \ArrayAccess {
     // Matrix must be square and symmetrical for this to work.
     // Returns just the lower triangular matrix, as the upper is a mirror image
     // if that.
-    private static function choleskyDecomposition($matrix) {
+    protected static function choleskyDecomposition($matrix) {
         $literal = $matrix->toArray();
         $rows = count($literal);
         
@@ -528,7 +528,7 @@ class Matrix implements \ArrayAccess {
                 $S += pow($t[$k][$i], 2);
             }
                 
-            $d = $this->get($i, $i) - $S;
+            $d = $matrix->get($i, $i) - $S;
             
             if (abs($d) < $ztol) {
                $t[$i][$i] = 0;
@@ -570,7 +570,7 @@ class Matrix implements \ArrayAccess {
      * 
      * @return \mcordingley\LinearAlgebra\LUDecomposition
      */
-    private function getLUDecomp() {
+    protected function getLUDecomp() {
         if( $this->LU === null) {
             $this->LU = new LUDecomposition($this);
         }
