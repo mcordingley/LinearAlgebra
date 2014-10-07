@@ -10,9 +10,13 @@ Include this in your composer.json and then run `composer install`:
 
 ## Usage
 
-Instantiate a new instance of the matrix class like so:
+Start with a `use` statement for the class:
 
-    $matrix = new \mcordingley\LinearAlgebra\Matrix([
+use \mcordingley\LinearAlgebra\Matrix;
+
+Then, instantiate a new instance of the matrix class like so:
+
+    $matrix = new Matrix([
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8]
@@ -20,7 +24,7 @@ Instantiate a new instance of the matrix class like so:
 
 You can also generate an identity matrix with the `identity` factory function:
 
-    $threeByThreeIdentityMatrix = \mcordingley\LinearAlgebra\Matrix::identity(3);
+    $threeByThreeIdentityMatrix = Matrix::identity(3);
 
 With the matrix instance, you can retrieve individual elements with `get` using
 the zero-based indices of the row and column that you want:
@@ -65,17 +69,10 @@ It's also possible to run a map over the matrix:
         return $element * $element
     });
 
-The LinearAlgebra library also supports Vectors that can be constructed like so:
-
-    $vector = new \mcordingley\LinearAlgebra\Vector([0, 1, 2]);
-
-As a child class of `Matrix`, Vectors behave the same way as their parent class,
-with the exception that `get` and `set` support short-hand access (e.g. `$vector->get(1)`)
-and vectors will automatically be transposed if necessary when multiplied together.
-
 ## Change-log
 
-
+    - Merged PR for faster `inverse` calculations
+    - KISS `Vector` class good-bye.
     - Renamed `eq` to `equals`.
     - Removed `set` function, so instantiated objects are immutable.
 
