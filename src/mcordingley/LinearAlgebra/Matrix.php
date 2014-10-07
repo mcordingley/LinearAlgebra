@@ -9,6 +9,7 @@ class Matrix implements \ArrayAccess {
     // Internal array representation of the matrix
     protected $internal;
     
+    protected $LU = null; //LU decomposition, stored so we only need to build it once.
     /**
      * Constructor
      * 
@@ -342,10 +343,9 @@ class Matrix implements \ArrayAccess {
             }
         }
         
-        // Fall back to a slower, but more general way of calculating the inverse.
-        // TODO: Implement a faster algorithm.
-        //return $this->luInverse();
-        return $this->adjoint()->multiply(1 / $this->determinant());
+        // Use LU decomposition for the general case.
+        $LU = $this->getLUDecomp();
+        return $LU->inverse();
     }
     
     // Translated from: http://adorio-research.org/wordpress/?p=4560
@@ -405,9 +405,10 @@ class Matrix implements \ArrayAccess {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->literal, true));
         }
         
-        return $this->map(function($element, $i, $j, $matrix) {
-            return pow(-1, $i + $j) * $matrix->submatrix($i, $j)->determinant();
-        })->transpose();
+        $inverse = $this->inverse();
+        $determinant = $this->determinant();
+        $adjoint = $inverse->multiply($determinant);
+        return $adjoint;
     }
     
     /**
@@ -416,28 +417,18 @@ class Matrix implements \ArrayAccess {
       * @return float The matrix's determinant
       */
     public function determinant() {
-        /* TODO: This function is a good candidate for optimization by the
-                 mathematically-inclined. Suggest doing the operation without
-                 generating new matrices during the calculation. */
-        
+
         if (!$this->isSquare($this)) {
             throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->literal, true));
         }
-
+        
         // Base case for a 1 by 1 matrix
         if ($this->rows == 1) {
             return $this->get(0, 0);
         }
-
-        $sum = 0;
         
-        // Statically choose the first row for cofactor expansion, because it
-        // doesn't matter which row we choose for it.
-        for ($j = 0; $j < $this->columns; $j++) {
-            $sum += pow(-1, $j) * $this->get(0, $j) * $this->submatrix(0, $j)->determinant();
-        }
-        
-        return $sum;
+        $LU = $this->getLUDecomp();
+        return $LU->determinant();
     }
     
     /**
@@ -666,5 +657,18 @@ class Matrix implements \ArrayAccess {
         }
         
         return new self($t);
+    }
+
+    /**
+     * Lazy-loads the LU decomposition. If it has already been built for this
+     * matrix, it returns the existing one. Otherwise, it creates a new one.
+     * 
+     * @return \mcordingley\LinearAlgebra\LUDecomposition
+     */
+    private function getLUDecomp() {
+        if( $this->LU === null) {
+            $this->LU = new LUDecomposition($this);
+        }
+        return $this->LU;
     }
 }
