@@ -1,5 +1,7 @@
 # Matrix
 
+[![Build Status](https://api.travis-ci.org/repositories/mcordingley/LinearAlgebra.svg)](https://travis-ci.org/mcordingley/LinearAlgebra)
+
 Stand-alone Linear Algebra Library for PHP
 
 ## Installation
