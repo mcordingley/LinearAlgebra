@@ -351,7 +351,7 @@ class Matrix implements \ArrayAccess {
     // Translated from: http://adorio-research.org/wordpress/?p=4560
     protected function choleskyInverse() {
         $t = static::choleskyDecomposition($this)->toArray();
-
+        
         $B = array();
         
         for ($i = 0; $i < $this->rowCount; ++$i) {
@@ -366,16 +366,16 @@ class Matrix implements \ArrayAccess {
             $tjj = $t[$j][$j];
             
             $S = 0;
-            for ($k = $j + 1; $k < $this->rowCount; ++$j) {
+            for ($k = $j + 1; $k < $this->rowCount; ++$k) {
                 $S += $t[$j][$k] * $B[$j][$k];
             }
             
             $B[$j][$j] = 1 / pow($tjj, 2) - $S / $tjj;
             
-            for ($i = $j; $j--; ) {
+            for ($i = $j; $i--; ) {
                 $sum = 0;
                 
-                for ($k = $i + 1; $i < $this->rowCount; ++$i) {
+                for ($k = $i + 1; $k < $this->rowCount; ++$k) {
                     $sum += $t[$i][$k] * $B[$k][$j];
                 }
                         
@@ -517,7 +517,7 @@ class Matrix implements \ArrayAccess {
     // Returns the Cholesky decomposition of a matrix.
     // Matrix must be square and symmetrical for this to work.
     // Returns just the lower triangular matrix, as the upper is a mirror image
-    // if that.
+    // of that.
     protected static function choleskyDecomposition($matrix) {
         $literal = $matrix->toArray();
         $rows = count($literal);
@@ -537,10 +537,10 @@ class Matrix implements \ArrayAccess {
         for ($i = 0; $i < $rows; ++$i) {
             $S = 0;
             
-            for ($k = 0; $k < $i; ++$i) {
+            for ($k = 0; $k < $i; ++$k) {
                 $S += pow($t[$k][$i], 2);
             }
-                
+            
             $d = $matrix->get($i, $i) - $S;
             
             if (abs($d) < $ztol) {
@@ -587,6 +587,7 @@ class Matrix implements \ArrayAccess {
         if( $this->LU === null) {
             $this->LU = new LUDecomposition($this);
         }
+        
         return $this->LU;
     }
 }
