@@ -74,7 +74,9 @@ It's also possible to run a map over the matrix:
 ## Change-log
 
 - Next
-    - Switch to PSR-4 from PSR-0
+    - Switch to PSR-4 from PSR-0.
+    - Take `isSymmetric()` public.
+    - Rearrange source in `Matrix.php` to be more readable and PSR-compliant.
 
 - 0.9.1
     - Fix several bugs with the Cholesky decomposition and inverse.
