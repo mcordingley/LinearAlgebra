@@ -228,6 +228,32 @@ class Matrix implements ArrayAccess
     }
     
     /**
+     * isSymmetric
+     * 
+     * @return boolean
+     */
+    public function isSymmetric()
+    {
+        if (!$this->isSquare()) {
+            return false;
+        }
+        
+        for ($i = 0; $i < $this->rows; ++$i) {
+            for ($j = 0; $j < $this->columns; ++$j) {
+                if ($i == $j) {
+                    continue;
+                }
+                
+                if ($this->get($i, $j) != $this->get($j, $i)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
      * identity
      * 
      * @param int $size How many rows and columns the identity matrix should have
@@ -627,32 +653,6 @@ class Matrix implements ArrayAccess
             }
             
             $lastRow = $thisRow;
-        }
-        
-        return true;
-    }
-    
-    /**
-     * isSymmetric
-     * 
-     * @return boolean
-     */
-    protected function isSymmetric()
-    {
-        if (!$this->isSquare()) {
-            return false;
-        }
-        
-        for ($i = 0; $i < $this->rows; ++$i) {
-            for ($j = 0; $j < $this->columns; ++$j) {
-                if ($i == $j) {
-                    continue;
-                }
-                
-                if ($this->get($i, $j) != $this->get($j, $i)) {
-                    return false;
-                }
-            }
         }
         
         return true;
