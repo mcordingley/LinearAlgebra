@@ -188,6 +188,29 @@ class Matrix implements ArrayAccess
     }
     
     /**
+     * identity
+     * 
+     * Creates a new identity matrix of the specified size.
+     * 
+     * @param int $size How many rows and columns the identity matrix should have
+     * @return self
+     */
+    public static function identity($size)
+    {
+        $literal = array();
+        
+        for ($i = 0; $i < $size; ++$i) {
+            $literal[] = array();
+            
+            for ($j = 0; $j < $size; ++$j) {
+                $literal[$i][] = ($i == $j) ? 1 : 0;
+            }
+        }
+        
+        return new static($literal);
+    }
+    
+    /**
      * inverse
      * 
      * Creates and returns a new matrix that is the inverse of this matrix.
@@ -251,28 +274,6 @@ class Matrix implements ArrayAccess
         }
         
         return true;
-    }
-    
-    /**
-     * identity
-     * 
-     * @param int $size How many rows and columns the identity matrix should have
-     * @return self
-     * @static
-     */
-    public static function identity($size)
-    {
-        $literal = array();
-        
-        for ($i = 0; $i < $size; ++$i) {
-            $literal[] = array();
-            
-            for ($j = 0; $j < $size; ++$j) {
-                $literal[$i][] = ($i == $j) ? 1 : 0;
-            }
-        }
-        
-        return new static($literal);
     }
 
     /**
