@@ -2,6 +2,9 @@
 
 namespace mcordingley\LinearAlgebra;
 
-class MatrixException extends \Exception {
+use Exception;
+
+class MatrixException extends Exception
+{
     
 }
