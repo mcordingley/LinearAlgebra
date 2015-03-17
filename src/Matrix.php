@@ -527,7 +527,7 @@ class Matrix implements ArrayAccess
                 $S += pow($t[$k][$i], 2);
             }
             
-            $d = $matrix->get($i, $i) - $S;
+            $d = $this->get($i, $i) - $S;
             
             if (abs($d) < $ztol) {
                $t[$i][$i] = 0;
