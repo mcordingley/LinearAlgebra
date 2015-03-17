@@ -73,6 +73,12 @@ It's also possible to run a map over the matrix:
 
 ## Change-log
 
+- Next
+    - Switch to PSR-4 from PSR-0
+
+- 0.9.1
+    - Fix several bugs with the Cholesky decomposition and inverse.
+
 - 0.9.0
     - Bump version up to represent that this is close to it's final form.
     - Merged PR for faster `inverse` calculations
