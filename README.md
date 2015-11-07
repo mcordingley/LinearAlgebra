@@ -10,11 +10,16 @@ Include this in your composer.json and then run `composer install`:
 
     "mcordingley/linearalgebra": "~0.9.1"
 
+If Composer isn't an option for you,
+[download](https://github.com/mcordingley/LinearAlgebra/blob/master/linear-algebra.phar)
+`linear-algebra.phar` and include it in your project. PHP will autoload classes
+from inside the archive as needed.
+
 ## Usage
 
 Start with a `use` statement for the class:
 
-    use \mcordingley\LinearAlgebra\Matrix;
+    use mcordingley\LinearAlgebra\Matrix;
 
 Then, instantiate a new instance of the matrix class like so:
 
