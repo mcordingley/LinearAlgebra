@@ -6,9 +6,11 @@ Stand-alone Linear Algebra Library for PHP
 
 ## Installation
 
-Include this in your composer.json and then run `composer install`:
+    composer require mcordingley/LinearAlgebra
 
-    "mcordingley/linearalgebra": "~0.9.1"
+Alternately, include this in your composer.json and then update:
+
+    "mcordingley/linearalgebra": "^1.0.0"
 
 If Composer isn't an option for you,
 [download](https://github.com/mcordingley/LinearAlgebra/blob/master/linear-algebra.phar)
