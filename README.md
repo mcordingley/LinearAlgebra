@@ -80,7 +80,7 @@ It's also possible to run a map over the matrix:
 
 ## Change-log
 
-- Next
+- 1.0.0
     - Switch to PSR-4 from PSR-0.
     - Take `isSymmetric()` public.
     - Rearrange source in `Matrix.php` to be more readable and PSR-compliant.
