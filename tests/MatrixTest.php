@@ -227,6 +227,22 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(4, $multiplied->get(2, 2));
     }
     
+    public function testDiagonal() {
+        $matrix = new Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]
+        ]);
+        
+        $diagonal = $matrix->diagonal();
+        
+        $this->assertEquals(1, $matrix->rows);
+        $this->assertEquals(3, $matrix->columns);
+        $this->assertEquals(1, $matix->get(0, 1));
+        $this->assertEquals(5, $matix->get(0, 1));
+        $this->assertEquals(9, $matix->get(0, 1));
+    }
+    
     public function testTrace() {
         $matrix = new Matrix([
             [1, 2, 3],
