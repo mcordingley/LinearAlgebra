@@ -151,6 +151,25 @@ class Matrix implements ArrayAccess
     }
     
     /**
+     * diagonal
+     * 
+     * Returns the diagonal of this matrix as a vector.
+     * 
+     * @return self
+     */
+    public function diagonal()
+    {
+        $diagonal = [];
+        $max = min([$this->rows, $this->columns]);
+        
+        for ($i = 0; $i < $max; $i++) {
+            $diagonal[] = $this->get($i, $i);
+        }
+        
+        return new static([$diagonal]);
+    }
+    
+    /**
      * equals
      * 
      * Checks to see if two matrices are equal in value.
