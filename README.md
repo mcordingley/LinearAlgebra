@@ -80,6 +80,9 @@ It's also possible to run a map over the matrix:
 
 ## Change-log
 
+- 1.1.0
+    - Added `diagonal()`.
+
 - 1.0.0
     - Switch to PSR-4 from PSR-0.
     - Take `isSymmetric()` public.
