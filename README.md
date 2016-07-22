@@ -78,7 +78,38 @@ It's also possible to run a map over the matrix:
         return $element * $element
     });
 
+If you need to combine together matrices, you can do so by calling the concatenation methods:
+
+    $m1 = new Matrix([
+      [1,2,3],
+      [4,5,6],
+    ]);
+
+    $m2 = new Matrix([
+      [7],
+      [8],
+    ]);
+
+    $m3 = new Matrix([[3,2,1]]);
+
+    $m4 = $m1->concatenateRight($m2);
+    //  [
+    //      [1,2,3,7],
+    //      [4,5,6,8],
+    //  ]
+
+    $m5 = $m1->concatenateBottom($m3);
+    // [
+    //     [1,2,3],
+    //     [4,5,6],
+    //     [3,2,1],
+    // ]
+
 ## Change-log
+
+- 1.2.0
+    - Added `concatenateBottom($other)`
+    - Added `concatencateRight($other)`
 
 - 1.1.0
     - Added `diagonal()`.
