@@ -19,8 +19,8 @@ namespace mcordingley\LinearAlgebra;
  */
 final class LUDecomposition extends Matrix
 {
-    protected $parity = 1;  // 1 if the number of row interchanges is even, -1 if it is odd. (used for determinants)
-    protected $permutations = []; // Stores a vector representation of the row permutations performed on this matrix.
+    private $parity = 1;  // 1 if the number of row interchanges is even, -1 if it is odd. (used for determinants)
+    private $permutations = []; // Stores a vector representation of the row permutations performed on this matrix.
 
     /**
      * @param array $literal The matrix to decompose.
