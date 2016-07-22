@@ -131,6 +131,50 @@ class Matrix implements ArrayAccess
     }
 
     /**
+     * @param Matrix $other
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function contatenateBottom(Matrix $other)
+    {
+        if ($this->columnCount !== $other->columnCount) {
+            throw new MatrixException(
+                'Cannot concatenate matrices of incompatible size: '
+                . print_r($this->internal, true)
+                . ' and '
+                . print_r($other->internal, true)
+            );
+        }
+
+        return new Matrix(array_merge($this->internal, $other->internal));
+    }
+
+    /**
+     * @param Matrix $other
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function contatenateRight(Matrix $other)
+    {
+        if ($this->rowCount !== $other->rowCount) {
+            throw new MatrixException(
+                'Cannot concatenate matrices of incompatible size: '
+                . print_r($this->internal, true)
+                . ' and '
+                . print_r($other->internal, true)
+            );
+        }
+
+        $concatenated = [];
+
+        for ($i = 0; $i < $this->rowCount; $i++) {
+            $concatenated[] = array_merge($this->internal[$i], $other->internal[$i]);
+        }
+
+        return new Matrix($concatenated);
+    }
+
+    /**
      * @return float The matrix's determinant
      * @throws MatrixException
      */

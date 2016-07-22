@@ -332,6 +332,31 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $adjoint->get(2, 2));
     }
 
+    public function testConcatenateBottom()
+    {
+        $matrixA = new Matrix([[1, 2, 3]]);
+        $matrixB = new Matrix([[4, 5, 6]]);
+        $concatenated = $matrixA->contatenateBottom($matrixB);
+
+        $this->assertEquals([
+            [1, 2, 3],
+            [4, 5, 6],
+        ], $concatenated->toArray());
+    }
+
+    public function testConcatenateRight()
+    {
+        $matrixA = new Matrix([[1], [2], [3]]);
+        $matrixB = new Matrix([[4], [5], [6]]);
+        $concatenated = $matrixA->contatenateRight($matrixB);
+
+        $this->assertEquals([
+            [1, 4],
+            [2, 5],
+            [3, 6],
+        ], $concatenated->toArray());
+    }
+
     public function testDeterminant()
     {
         $matrix = new Matrix([
