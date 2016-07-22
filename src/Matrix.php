@@ -16,6 +16,7 @@ class Matrix implements ArrayAccess
 
     /**
      * Number of rows in the matrix.
+     *
      * @var int
      */
     protected $rowCount;
@@ -32,7 +33,7 @@ class Matrix implements ArrayAccess
      *
      * @var LUDecomposition
      */
-    protected $LU = null; //LU decomposition, stored so we only need to build it once.
+    protected $LU = null;
 
     /**
      * __construct
@@ -45,6 +46,7 @@ class Matrix implements ArrayAccess
      *      ]);
      *
      * @param array $literal Array representation of the matrix.
+     * @throws MatrixException
      */
     public function __construct(array $literal)
     {
@@ -59,12 +61,10 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * __get
-     *
      * Magic method to make the public "properties" read-only.
      *
      * @param string $property
-     * @return mixed
+     * @return int|null
      */
     public function __get($property)
     {
@@ -78,6 +78,9 @@ class Matrix implements ArrayAccess
         }
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         $rowStrings = array_map(function ($row) {
@@ -88,13 +91,11 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * add
-     *
      * Adds either another matrix or a scalar to the current matrix, returning
      * a new matrix instance.
      *
-     * @param mixed $value Matrix or scalar to add to this matrix
-     * @return self New matrix with the added value
+     * @param Matrix|int|float $value Matrix or scalar to add to this matrix
+     * @return Matrix
      * @throws MatrixException
      */
     public function add($value)
@@ -104,27 +105,25 @@ class Matrix implements ArrayAccess
                 throw new MatrixException('Cannot add two matrices of different size.');
             }
 
-            return $this->map(function($element, $i, $j) use ($value) {
+            return $this->map(function ($element, $i, $j) use ($value) {
                 return $element + $value->get($i, $j);
             });
-        } else {
-            return $this->map(function($element) use ($value) {
-                return $element + $value;
-            });
         }
+
+        return $this->map(function ($element) use ($value) {
+            return $element + $value;
+        });
     }
 
     /**
-     * adjoint
-     *
      * Creates and returns a new matrix that is the adjoint of this matrix.
      *
-     * @return self
+     * @return Matrix
      * @throws MatrixException
      */
     public function adjoint()
     {
-        if (!$this->isSquare($this)) {
+        if (!$this->isSquare()) {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->internal, true));
         }
 
@@ -132,13 +131,12 @@ class Matrix implements ArrayAccess
     }
 
     /**
-      * determinant
-      *
-      * @return float The matrix's determinant
-      */
+     * @return float The matrix's determinant
+     * @throws MatrixException
+     */
     public function determinant()
     {
-        if (!$this->isSquare($this)) {
+        if (!$this->isSquare()) {
             throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->internal, true));
         }
 
@@ -151,11 +149,7 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * diagonal
-     *
-     * Returns the diagonal of this matrix as a vector.
-     *
-     * @return self
+     * @return Matrix
      */
     public function diagonal()
     {
@@ -170,10 +164,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * equals
-     *
-     * Checks to see if two matrices are equal in value.
-     *
      * @param Matrix $matrixB
      * @return boolean True if equal. False otherwise.
      */
@@ -183,8 +173,8 @@ class Matrix implements ArrayAccess
             return false;
         }
 
-        for ($i = $this->rowCount; $i--; ) {
-            for ($j = $this->columnCount; $j--; ) {
+        for ($i = $this->rowCount; $i--;) {
+            for ($j = $this->columnCount; $j--;) {
                 if ($this->get($i, $j) != $matrixB->get($i, $j)) {
                     return false;
                 }
@@ -195,8 +185,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * get
-     *
      * @param int $row Which zero-based row index to access.
      * @param int $column Which zero-based column index to access.
      * @return float
@@ -207,19 +195,15 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * identity
-     *
-     * Creates a new identity matrix of the specified size.
-     *
      * @param int $size How many rows and columns the identity matrix should have
-     * @return self
+     * @return Matrix
      */
     public static function identity($size)
     {
-        $literal = array();
+        $literal = [];
 
         for ($i = 0; $i < $size; ++$i) {
-            $literal[] = array();
+            $literal[] = [];
 
             for ($j = 0; $j < $size; ++$j) {
                 $literal[$i][] = ($i == $j) ? 1 : 0;
@@ -230,16 +214,12 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * inverse
-     *
-     * Creates and returns a new matrix that is the inverse of this matrix.
-     *
-     * @return self
+     * @return Matrix
      * @throws MatrixException
      */
     public function inverse()
     {
-        if (!$this->isSquare($this)) {
+        if (!$this->isSquare()) {
             throw new MatrixException('Inverse can only be called on square matrices: ' . print_r($this->internal, true));
         }
 
@@ -260,8 +240,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * isSquare
-     *
      * @return boolean True if the matrix is square, false otherwise.
      */
     public function isSquare()
@@ -270,8 +248,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * isSymmetric
-     *
      * @return boolean
      */
     public function isSymmetric()
@@ -296,8 +272,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * map
-     *
      * Iterates over the current matrix with a callback function to return a new
      * matrix with the mapped values. $callback takes four arguments:
      * - The current matrix element
@@ -306,14 +280,14 @@ class Matrix implements ArrayAccess
      * - The matrix being iterated over
      *
      * @param callable $callback A function that returns the computed new values.
-     * @return self
+     * @return Matrix
      */
     public function map(callable $callback)
     {
-        $literal = array();
+        $literal = [];
 
         for ($i = 0; $i < $this->rows; $i++) {
-            $row = array();
+            $row = [];
 
             for ($j = 0; $j < $this->columns; $j++) {
                 $row[] = $callback($this->get($i, $j), $i, $j, $this);
@@ -326,28 +300,24 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * multiply
-     *
      * Multiplies either another matrix or a scalar with the current matrix,
      * returning a new matrix instance.
      *
-     * @param mixed $value Matrix or scalar to multiply with this matrix
-     * @return self
+     * @param Matrix|int|float $value Matrix or scalar to multiply with this matrix
+     * @return Matrix
      * @throws MatrixException
      */
     public function multiply($value)
     {
         if ($value instanceof Matrix) {
-            // TODO: This is another good candidate for optimization. Too many loops!
-
             if ($this->columns != $value->rows) {
                 throw new MatrixException('Cannot multiply matrices of these sizes.');
             }
 
-            $literal = array();
+            $literal = [];
 
             for ($i = 0; $i < $this->rows; $i++) {
-                $row = array();
+                $row = [];
 
                 for ($j = 0; $j < $value->columns; $j++) {
                     $sum = 0;
@@ -364,32 +334,30 @@ class Matrix implements ArrayAccess
 
             return new static($literal);
         } else {
-            return $this->map(function($element) use ($value) {
+            return $this->map(function ($element) use ($value) {
                 return $element * $value;
             });
         }
     }
 
     /**
-     * submatrix
-     *
      * Returns a new matrix with the selected row and column removed, useful for
      * calculating determinants or other recursive operations on matrices.
      *
      * @param int $row Row to remove, null to remove no row.
      * @param int $column Column to remove, null to remove no column.
-     * @return self
+     * @return Matrix
      */
     public function submatrix($row = null, $column = null)
     {
-        $literal = array();
+        $literal = [];
 
         for ($i = 0; $i < $this->rows; $i++) {
             if ($i === $row) {
                 continue;
             }
 
-            $rowLiteral = array();
+            $rowLiteral = [];
 
             for ($j = 0; $j < $this->columns; $j++) {
                 if ($j === $column) {
@@ -406,13 +374,11 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * subtract
-     *
      * Subtracts either another matrix or a scalar from the current matrix,
      * returning a new matrix instance.
      *
-     * @param mixed $value Matrix or scalar to subtract from this matrix
-     * @return self
+     * @param Matrix|int|float $value Matrix or scalar to subtract from this matrix
+     * @return Matrix
      * @throws MatrixException
      */
     public function subtract($value)
@@ -422,19 +388,17 @@ class Matrix implements ArrayAccess
                 throw new MatrixException('Cannot subtract two matrices of different size.');
             }
 
-            return $this->map(function($element, $i, $j) use ($value) {
+            return $this->map(function ($element, $i, $j) use ($value) {
                 return $element - $value->get($i, $j);
             });
         } else {
-            return $this->map(function($element) use ($value) {
+            return $this->map(function ($element) use ($value) {
                 return $element - $value;
             });
         }
     }
 
     /**
-     * toArray
-     *
      * @return array
      */
     public function toArray()
@@ -443,15 +407,13 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * trace
-     *
      * Sums the main diagonal values of a square matrix.
-     *
      * @return float
+     * @throws MatrixException
      */
     public function trace()
     {
-        if (!$this->isSquare($this)) {
+        if (!$this->isSquare()) {
             throw new MatrixException('Trace can only be called on square matrices: ' . print_r($this->internal, true));
         }
 
@@ -465,18 +427,14 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * transpose
-     *
-     * Creates and returns a new matrix that is a transposition of this matrix.
-     *
-     * @return self
+     * @return Matrix
      */
     public function transpose()
     {
-        $literal = array();
+        $literal = [];
 
         for ($i = 0; $i < $this->columns; $i++) {
-            $literal[] = array();
+            $literal[] = [];
 
             for ($j = 0; $j < $this->rows; $j++) {
                 $literal[$i][] = $this->get($j, $i);
@@ -486,39 +444,50 @@ class Matrix implements ArrayAccess
         return new static($literal);
     }
 
-    //
-    // Array Access Interface
-    //
-
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return isset($this->internal[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     * @return mixed
+     */
     public function offsetGet($offset)
     {
         return $this->internal[$offset];
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @throws MatrixException
+     */
     public function offsetSet($offset, $value)
     {
         throw new MatrixException('Attempt to set a value on a matrix. Matrix instances are immutable.');
     }
 
+    /**
+     * @param mixed $offset
+     * @throws MatrixException
+     */
     public function offsetUnset($offset)
     {
         throw new MatrixException('Attempt to unset a value on a matrix. Matrix instances are immutable.');
     }
 
     /**
-     * choleskyDecomposition
-     *
      * Returns the Cholesky decomposition of a matrix.
      * Matrix must be square and symmetrical for this to work.
      * Returns just the lower triangular matrix, as the upper is a mirror image
      * of that.
      *
-     * @return self
+     * @return Matrix
      * @throws MatrixException
      */
     protected function choleskyDecomposition()
@@ -529,10 +498,10 @@ class Matrix implements ArrayAccess
         $ztol = 1.0e-5;
 
         // Zero-fill an array-representation of a matrix
-        $t = array();
+        $t = [];
 
         for ($i = 0; $i < $rows; ++$i) {
-            $t[] = array();
+            $t[] = [];
 
             for ($j = 0; $j < $rows; ++$j) {
                 $t[$i][] = 0;
@@ -549,13 +518,13 @@ class Matrix implements ArrayAccess
             $d = $this->get($i, $i) - $S;
 
             if (abs($d) < $ztol) {
-               $t[$i][$i] = 0;
+                $t[$i][$i] = 0;
             } else {
-               if ($d < 0) {
-                  throw new MatrixException("Matrix not positive-definite");
-               }
+                if ($d < 0) {
+                    throw new MatrixException("Matrix not positive-definite");
+                }
 
-               $t[$i][$i] = sqrt($d);
+                $t[$i][$i] = sqrt($d);
             }
 
             for ($j = $i + 1; $j < $rows; ++$j) {
@@ -584,13 +553,11 @@ class Matrix implements ArrayAccess
             }
         }
 
-        return new self($t);
+        return new Matrix($t);
     }
 
     /**
-     * choleskyInverse
-     *
-     * @return self
+     * @return Matrix
      */
     protected function choleskyInverse()
     {
@@ -598,17 +565,17 @@ class Matrix implements ArrayAccess
 
         $t = $this->choleskyDecomposition()->toArray();
 
-        $B = array();
+        $B = [];
 
         for ($i = 0; $i < $this->rowCount; ++$i) {
-            $B[] = array();
+            $B[] = [];
 
             for ($j = 0; $j < $this->rowCount; ++$j) {
                 $B[$i][] = 0;
             }
         }
 
-        for ($j = $this->rowCount; $j--; ) {
+        for ($j = $this->rowCount; $j--;) {
             $tjj = $t[$j][$j];
 
             $S = 0;
@@ -618,7 +585,7 @@ class Matrix implements ArrayAccess
 
             $B[$j][$j] = 1 / pow($tjj, 2) - $S / $tjj;
 
-            for ($i = $j; $i--; ) {
+            for ($i = $j; $i--;) {
                 $sum = 0;
 
                 for ($k = $i + 1; $k < $this->rowCount; ++$k) {
@@ -629,12 +596,10 @@ class Matrix implements ArrayAccess
             }
         }
 
-        return new self($B);
+        return new Matrix($B);
     }
 
     /**
-     * getLUDecomp
-     *
      * Lazy-loads the LU decomposition. If it has already been built for this
      * matrix, it returns the existing one. Otherwise, it creates a new one.
      *
@@ -650,8 +615,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * isLiteralValid
-     *
      * Tests an array representation of a matrix to see if it would make a valid matrix
      *
      * @param array $literal
