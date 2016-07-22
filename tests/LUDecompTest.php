@@ -18,6 +18,44 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testNonSquare()
+    {
+        static::setExpectedException(MatrixException::class);
+
+        new LUDecomposition(new Matrix([[1, 2, 3]]));
+    }
+
+    public function testSingularByZeroes()
+    {
+        static::setExpectedException(MatrixException::class);
+
+        new LUDecomposition(new Matrix([
+            [0, 0],
+            [0, 0],
+        ]));
+    }
+
+    public function testWrongSizeKnowns()
+    {
+        $matrix = $this->buildMatrix();
+        $decomp = new LUDecomposition($matrix);
+
+        static::setExpectedException(MatrixException::class);
+
+        $decomp->solve([1]);
+    }
+
+    public function testSingularByDiagonal()
+    {
+        static::setExpectedException(MatrixException::class);
+
+        new LUDecomposition(new Matrix([
+            [1, -1, 2],
+            [1, 0, 1],
+            [2, 3, -1],
+        ]));
+    }
+
     public function testLUDecompConstructor()
     {
         $matrix = $this->buildMatrix();
