@@ -2,35 +2,37 @@
 
 namespace mcordingley\LinearAlgebra;
 
-class LUDecompTest extends \PHPUnit_Framework_TestCase {
-
+class LUDecompTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * Builds a nonsingular matrix
-     * 
-     * @return \mcordingley\LinearAlgebra\Matrix
+     *
+     * @return Matrix
      */
-    private function buildMatrix() {  
+    private function buildMatrix()
+    {
         return new Matrix([
             [1, -1, 2],
             [1, -1, 1],
-            [2, 3, -1]
+            [2, 3, -1],
         ]);
     }
 
-    public function testLUDecompConstructor() {
+    public function testLUDecompConstructor()
+    {
         $matrix = $this->buildMatrix();
-        
+
         $LU = new LUDecomposition($matrix);
-        
-        $this->assertEquals(1, $LU->get(0,0));
-        $this->assertEquals(-1, $LU->get(0,1));
-        $this->assertEquals(1, $LU->get(0,2));
-        $this->assertEquals(2, $LU->get(1,0));
-        $this->assertEquals(5, $LU->get(1,1));
-        $this->assertEquals(-3, $LU->get(1,2));
-        $this->assertEquals(1, $LU->get(2,0));
-        $this->assertEquals(0, $LU->get(2,1));
-        $this->assertEquals(1, $LU->get(2,2));
+
+        $this->assertEquals(1, $LU->get(0, 0));
+        $this->assertEquals(-1, $LU->get(0, 1));
+        $this->assertEquals(1, $LU->get(0, 2));
+        $this->assertEquals(2, $LU->get(1, 0));
+        $this->assertEquals(5, $LU->get(1, 1));
+        $this->assertEquals(-3, $LU->get(1, 2));
+        $this->assertEquals(1, $LU->get(2, 0));
+        $this->assertEquals(0, $LU->get(2, 1));
+        $this->assertEquals(1, $LU->get(2, 2));
     }
 
     public function testDeterminant()
@@ -45,14 +47,14 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
     public function testSolve()
     {
         $matrix = new Matrix([
-	       [1, 1, -1],
-           [3, 1, 1],
-           [1, -1, 4]
+            [1, 1, -1],
+            [3, 1, 1],
+            [1, -1, 4],
         ]);
 
         $LU = new LUDecomposition($matrix);
 
-        $b =[1,9,8];
+        $b = [1, 9, 8];
 
         $x = $LU->solve($b);
 
@@ -60,11 +62,11 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected_x, $x);
 
         // Try another one
-        $matrix = new Matrix([ 
+        $matrix = new Matrix([
             [1, 2, 0, -4],
             [-1, 0, 6, 2],
             [3, -2, -25, 0],
-            [-2, -3, 4, 4]
+            [-2, -3, 4, 4],
         ]);
 
         $LU = new LUDecomposition($matrix);
@@ -84,11 +86,11 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase {
     public function testInverse()
     {
         $matrix = $this->buildMatrix();
-        
+
         $LU = new LUDecomposition($matrix);
-        
+
         $inverse = $LU->inverse();
-        
+
         $message = 'Not within tolerance';
         $delta = 0.00000001;
         $this->assertEquals(-0.4, $inverse->get(0, 0), $message, $delta);
