@@ -652,7 +652,7 @@ class Matrix implements ArrayAccess
     protected function getLUDecomp()
     {
         if (!$this->LU) {
-            $this->LU = new LUDecomposition($this);
+            $this->LU = new LUDecomposition($this->internal);
         }
 
         return $this->LU;

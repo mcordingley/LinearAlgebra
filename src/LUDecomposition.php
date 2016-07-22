@@ -21,18 +21,12 @@ final class LUDecomposition extends Matrix
     protected $permutations = []; // Stores a vector representation of the row permutations performed on this matrix.
 
     /**
-     * @param Matrix $matrix The matrix to decompose.
+     * @param array $literal The matrix to decompose.
      * @throws MatrixException
      */
-    public function __construct(Matrix $matrix)
+    public function __construct(array $literal)
     {
-        // Copy the matrix
-        $matrix->map(function ($element, $i, $j) {
-            $this->internal[$i][$j] = $element;
-        });
-
-        $this->rowCount = $matrix->rows;
-        $this->columnCount = $matrix->columns;
+        parent::__construct($literal);
 
         if (!$this->isSquare()) {
             throw new MatrixException("Matrix is not square.");

@@ -22,23 +22,23 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
     {
         static::setExpectedException(MatrixException::class);
 
-        new LUDecomposition(new Matrix([[1, 2, 3]]));
+        new LUDecomposition([[1, 2, 3]]);
     }
 
     public function testSingularByZeroes()
     {
         static::setExpectedException(MatrixException::class);
 
-        new LUDecomposition(new Matrix([
+        new LUDecomposition([
             [0, 0],
             [0, 0],
-        ]));
+        ]);
     }
 
     public function testWrongSizeKnowns()
     {
         $matrix = $this->buildMatrix();
-        $decomp = new LUDecomposition($matrix);
+        $decomp = new LUDecomposition($matrix->toArray());
 
         static::setExpectedException(MatrixException::class);
 
@@ -49,18 +49,18 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
     {
         static::setExpectedException(MatrixException::class);
 
-        new LUDecomposition(new Matrix([
+        new LUDecomposition([
             [1, -1, 2],
             [1, 0, 1],
             [2, 3, -1],
-        ]));
+        ]);
     }
 
     public function testLUDecompConstructor()
     {
         $matrix = $this->buildMatrix();
 
-        $LU = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix->toArray());
 
         $this->assertEquals(1, $LU->get(0, 0));
         $this->assertEquals(-1, $LU->get(0, 1));
@@ -77,7 +77,7 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
     {
         $matrix = $this->buildMatrix();
 
-        $LU = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix->toArray());
 
         $this->assertEquals(5, $LU->determinant());
     }
@@ -90,7 +90,7 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
             [1, -1, 4],
         ]);
 
-        $LU = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix->toArray());
 
         $b = [1, 9, 8];
 
@@ -107,7 +107,7 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
             [-2, -3, 4, 4],
         ]);
 
-        $LU = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix->toArray());
 
         $b = [-1, 7, -24, 3];
 
@@ -125,7 +125,7 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
     {
         $matrix = $this->buildMatrix();
 
-        $LU = new LUDecomposition($matrix);
+        $LU = new LUDecomposition($matrix->toArray());
 
         $inverse = $LU->inverse();
 
