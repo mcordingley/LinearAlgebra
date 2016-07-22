@@ -14,6 +14,8 @@ namespace mcordingley\LinearAlgebra;
  *
  * Code reference:
  * @reference: http://rosettacode.org/wiki/LU_decomposition
+ *
+ * @internal
  */
 final class LUDecomposition extends Matrix
 {
