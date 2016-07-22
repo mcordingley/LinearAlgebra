@@ -13,19 +13,41 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testProperties()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::assertEquals(4, $matrix->columns);
+        static::assertEquals(3, $matrix->rows);
+        static::assertNull($matrix->fubar);
+    }
+
     public function testBadConstruction()
     {
-        try {
-            new Matrix([
-                [1, 2, 3, 4],
-                [5, 6, 7],
-                [9, 10],
-            ]);
-        } catch (MatrixException $exception) {
-            return;
-        }
+        $this->setExpectedException(MatrixException::class);
 
-        $this->fail('MatrixException not raised.');
+        new Matrix([
+            [1, 2, 3, 4],
+            [5, 6, 7],
+            [9, 10],
+        ]);
+    }
+
+    public function testEmptyRows()
+    {
+        $this->setExpectedException(MatrixException::class);
+
+        new Matrix([]);
+    }
+
+    public function testEmptyColumns()
+    {
+        $this->setExpectedException(MatrixException::class);
+
+        new Matrix([
+            [],
+            [],
+        ]);
     }
 
     public function testSize()
