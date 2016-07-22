@@ -13,12 +13,6 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    public function testConstruction()
-    {
-        $this->buildMatrix();
-        $this->assertTrue(true);
-    }
-
     public function testBadConstruction()
     {
         try {
