@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/repositories/mcordingley/LinearAlgebra.svg)](https://travis-ci.org/mcordingley/LinearAlgebra)
 [![Code Climate](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/gpa.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra)
-[![Code Coverage](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/coverage.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra/coverage)
+[![Code Coverage](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/coverage.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra)
 
 Stand-alone Linear Algebra Library for PHP
 
