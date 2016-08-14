@@ -108,6 +108,7 @@ If you need to combine together matrices, you can do so by calling the concatena
     - Drop support for PHP 5.x
     - Introduce strict scalar type hints
     - Drop deprecated functions and properties.
+    - Tighten up interface with the `final` and `private` keywords.
 
 - 1.3.0
     - Fix typo in names of `concatenateRight()` and `concatenateBottom()`
