@@ -10,12 +10,10 @@ Stand-alone Linear Algebra Library for PHP
 
 Alternately, include this in your composer.json and then update:
 
-    "mcordingley/linearalgebra": "^1.0.0"
+    "mcordingley/linearalgebra": "^1.4.0"
 
-If Composer isn't an option for you,
-[download](https://github.com/mcordingley/LinearAlgebra/blob/master/linear-algebra.phar)
-`linear-algebra.phar` and include it in your project. PHP will autoload classes
-from inside the archive as needed.
+If Composer isn't an option for you, clone this repository and run `build-phar.php` to generate a phar
+archive that you can include into your project. PHP will autoload classes from inside the archive as needed.
 
 ## Usage
 
@@ -40,21 +38,20 @@ the zero-based indices of the row and column that you want:
 
     $element = $matrix->get($row, $column);
 
-It's also possible to find out how large the matrix is with the `rows` and
-`columns` properties:
+It's also possible to find out how large the matrix is with `getRowCount()` and `getColumnCount()`:
 
-    $rows = $matrix->rows;
-    $columns = $matrix->columns;
+    $rows = $matrix->getRowCount();
+    $columns = $matrix->getColumnCount();
 
 You can also add, subtract, and multiply the matrix with scalar values and other
 matrices. All operations return a new Matrix and do not modify the underlying matrix:
 
-    $addedScalar = $matrix->add(3);
-    $addedMatrix = $matrix->add($anotherMatrix);
-    $subtractedScalar = $matrix->subtract(2);
-    $subtractedMatrix = $matrix->subtract($anotherMatrix);
-    $multipliedByScalar = $matrix->multiply(4);
-    $multipliedByMatrix = $matrix->multiply($anotherMatrix);
+    $addedScalar = $matrix->addScalar(3);
+    $addedMatrix = $matrix->addMatrix($anotherMatrix);
+    $subtractedScalar = $matrix->subtractScalar(2);
+    $subtractedMatrix = $matrix->subtractMatrix($anotherMatrix);
+    $multipliedByScalar = $matrix->multiplyScalar(4);
+    $multipliedByMatrix = $matrix->multiplyMatrix($anotherMatrix);
 
 Matrices can be compared with `equals` to see if they're equal:
 
@@ -106,6 +103,20 @@ If you need to combine together matrices, you can do so by calling the concatena
     // ]
 
 ## Change-log
+
+- 2.0.0 (future)
+    - Drop support for PHP 5.x
+    - Introduce strict scalar type hints
+    - Drop deprecated functions and properties.
+
+- 1.3.0
+    - Remove generated Phar file. Users who need it should use the `build-phar.php` script to generate one.
+    - Refactor LUDecomposition to have a less awkward constructor.
+    - Split `add()` into `addMatrix()` and `addScalar()`. Deprecate `add()`.
+    - Split `subtract()` into `subtractMatrix()` and `subtractScalar()`. Deprecate `subtract()`.
+    - Split `multiply()` into `multiplyMatrix()` and `multiplyScalar()`. Deprecate `multiply()`.
+    - Add `getRowCount()` and `getColumnCount()` accessors.
+    - Deprecate `rows` and `columns` properties.
 
 - 1.2.0
     - Added `concatenateBottom($other)`
