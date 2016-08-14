@@ -351,7 +351,7 @@ class Matrix implements ArrayAccess
      * @return Matrix
      * @throws MatrixException
      */
-    public function contatenateBottom(Matrix $other)
+    public function concatenateBottom(Matrix $other)
     {
         if ($this->getColumnCount() !== $other->getColumnCount()) {
             throw new MatrixException(
@@ -370,7 +370,7 @@ class Matrix implements ArrayAccess
      * @return Matrix
      * @throws MatrixException
      */
-    public function contatenateRight(Matrix $other)
+    public function concatenateRight(Matrix $other)
     {
         if ($this->getRowCount() !== $other->getRowCount()) {
             throw new MatrixException(

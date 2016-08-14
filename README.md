@@ -110,6 +110,7 @@ If you need to combine together matrices, you can do so by calling the concatena
     - Drop deprecated functions and properties.
 
 - 1.3.0
+    - Fix typo in names of `concatenateRight()` and `concatenateBottom()`
     - Remove generated Phar file. Users who need it should use the `build-phar.php` script to generate one.
     - Refactor LUDecomposition to have a less awkward constructor.
     - Split `add()` into `addMatrix()` and `addScalar()`. Deprecate `add()`.
