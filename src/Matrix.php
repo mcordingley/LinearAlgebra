@@ -727,17 +727,34 @@ class Matrix implements ArrayAccess
      *
      * @param string $property
      * @return int|null
+     * @deprecated Use `getColumns` or `getRows` instead
      */
     public function __get($property)
     {
         switch ($property) {
             case 'columns':
-                return $this->columnCount;
+                return $this->getColumnCount();
             case 'rows':
-                return $this->rowCount;
+                return $this->getRowCount();
             default:
                 return null;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getColumnCount()
+    {
+        return $this->columnCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRowCount()
+    {
+        return $this->rowCount;
     }
 
     /**
