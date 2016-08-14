@@ -602,7 +602,7 @@ class Matrix implements ArrayAccess
      */
     public function getColumnCount()
     {
-        return $this->getColumnCount();
+        return $this->columnCount;
     }
 
     /**
@@ -610,7 +610,7 @@ class Matrix implements ArrayAccess
      */
     public function getRowCount()
     {
-        return $this->getRowCount();
+        return $this->rowCount;
     }
 
     /**
