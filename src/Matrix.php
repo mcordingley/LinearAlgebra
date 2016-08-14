@@ -3,7 +3,6 @@
 namespace mcordingley\LinearAlgebra;
 
 use ArrayAccess;
-use Exception;
 
 class Matrix implements ArrayAccess
 {
@@ -294,14 +293,6 @@ class Matrix implements ArrayAccess
             throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->internal, true));
         }
 
-        if ($this->isSymmetric()) {
-            try {
-                return $this->choleskyInverse();
-            } catch (Exception $exception) {
-                // Allow this to fall through to the more general algorithm.
-            }
-        }
-
         // Use LU decomposition for the general case.
         return $this->getLUDecomp()->inverse();
     }
@@ -364,129 +355,11 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * @return Matrix
-     */
-    protected function choleskyInverse()
-    {
-        //Translated from: http://adorio-research.org/wordpress/?p=4560
-
-        $t = $this->choleskyDecomposition()->toArray();
-
-        $B = [];
-
-        for ($i = 0; $i < $this->rowCount; ++$i) {
-            $B[] = [];
-
-            for ($j = 0; $j < $this->rowCount; ++$j) {
-                $B[$i][] = 0;
-            }
-        }
-
-        for ($j = $this->rowCount; $j--;) {
-            $tjj = $t[$j][$j];
-
-            $S = 0;
-            for ($k = $j + 1; $k < $this->rowCount; ++$k) {
-                $S += $t[$j][$k] * $B[$j][$k];
-            }
-
-            $B[$j][$j] = 1 / pow($tjj, 2) - $S / $tjj;
-
-            for ($i = $j; $i--;) {
-                $sum = 0;
-
-                for ($k = $i + 1; $k < $this->rowCount; ++$k) {
-                    $sum += $t[$i][$k] * $B[$k][$j];
-                }
-
-                $B[$j][$i] = $B[$i][$j] = -$sum / $t[$i][$i];
-            }
-        }
-
-        return new Matrix($B);
-    }
-
-    /**
      * @return array
      */
     public function toArray()
     {
         return $this->internal;
-    }
-
-    /**
-     * Returns the Cholesky decomposition of a matrix.
-     * Matrix must be square and symmetrical for this to work.
-     * Returns just the lower triangular matrix, as the upper is a mirror image
-     * of that.
-     *
-     * @return Matrix
-     * @throws MatrixException
-     */
-    protected function choleskyDecomposition()
-    {
-        $literal = $this->toArray();
-        $rows = count($literal);
-
-        $ztol = 1.0e-5;
-
-        // Zero-fill an array-representation of a matrix
-        $t = [];
-
-        for ($i = 0; $i < $rows; ++$i) {
-            $t[] = [];
-
-            for ($j = 0; $j < $rows; ++$j) {
-                $t[$i][] = 0;
-            }
-        }
-
-        for ($i = 0; $i < $rows; ++$i) {
-            $S = 0;
-
-            for ($k = 0; $k < $i; ++$k) {
-                $S += pow($t[$k][$i], 2);
-            }
-
-            $d = $this->get($i, $i) - $S;
-
-            if (abs($d) < $ztol) {
-                $t[$i][$i] = 0;
-            } else {
-                if ($d < 0) {
-                    throw new MatrixException("Matrix not positive-definite");
-                }
-
-                $t[$i][$i] = sqrt($d);
-            }
-
-            for ($j = $i + 1; $j < $rows; ++$j) {
-                $S = 0;
-
-                for ($k = 0; $k < $i; ++$i) {
-                    if (!isset($t[$k]) || !isset($t[$k][$i]) || !isset($t[$k][$j])) {
-                        break;
-                    }
-                    $S += $t[$k][$i] * $t[$k][$j];
-                }
-
-                if (abs($S) < $ztol) {
-                    $S = 0;
-                }
-
-                try {
-                    if (isset($t[$i]) && isset($t[$i][$i]) && isset($literal[$i]) && isset($literal[$i][$j])) {
-                        $t[$i][$j] = ($literal[$i][$j] - $S) / $t[$i][$i];
-                    } else {
-                        $t[$i][$j] = $S;
-                    }
-                } catch (Exception $exception) {
-                    throw new MatrixException("Zero diagonal");
-                }
-            }
-        }
-
-        return new Matrix($t);
     }
 
     /**
