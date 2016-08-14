@@ -97,19 +97,39 @@ class Matrix implements ArrayAccess
      * @param Matrix|int|float $value Matrix or scalar to add to this matrix
      * @return Matrix
      * @throws MatrixException
+     * @deprecated
      */
     public function add($value)
     {
         if ($value instanceof Matrix) {
-            if ($this->rows != $value->rows || $this->columns != $value->columns) {
-                throw new MatrixException('Cannot add two matrices of different size.');
-            }
-
-            return $this->map(function ($element, $i, $j) use ($value) {
-                return $element + $value->get($i, $j);
-            });
+            return $this->addMatrix($value);
         }
 
+        return $this->addScalar($value);
+    }
+
+    /**
+     * @param Matrix $value
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function addMatrix(Matrix $value)
+    {
+        if ($this->rows != $value->rows || $this->columns != $value->columns) {
+            throw new MatrixException('Cannot add two matrices of different size.');
+        }
+
+        return $this->map(function ($element, $i, $j) use ($value) {
+            return $element + $value->get($i, $j);
+        });
+    }
+
+    /**
+     * @param float $value
+     * @return Matrix
+     */
+    public function addScalar($value)
+    {
         return $this->map(function ($element) use ($value) {
             return $element + $value;
         });
