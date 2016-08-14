@@ -7,32 +7,24 @@ use ArrayAccess;
 class Matrix implements ArrayAccess
 {
     /**
-     * Number of columns in the matrix.
-     *
      * @var int
      */
     protected $columnCount;
 
     /**
-     * Number of rows in the matrix.
-     *
      * @var int
      */
     protected $rowCount;
 
     /**
-     * Internal array for the matrix data that this class wraps.
-     *
      * @var array
      */
     protected $internal;
 
     /**
-     * LU Decomposition of this matrix, lazily created as needed.
-     *
      * @var LUDecomposition
      */
-    protected $LU = null;
+    protected $LU;
 
     /**
      * __construct
@@ -60,8 +52,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * Tests an array representation of a matrix to see if it would make a valid matrix
-     *
      * @param array $literal
      * @return boolean
      */
@@ -154,7 +144,7 @@ class Matrix implements ArrayAccess
      * - The current column
      * - The matrix being iterated over
      *
-     * @param callable $callback A function that returns the computed new values.
+     * @param callable $callback
      * @return Matrix
      */
     public function map(callable $callback)
@@ -175,8 +165,8 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * @param int $row Which zero-based row index to access.
-     * @param int $column Which zero-based column index to access.
+     * @param int $row
+     * @param int $column
      * @return float
      */
     public function get($row, $column)
@@ -196,8 +186,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * Creates and returns a new matrix that is the adjoint of this matrix.
-     *
      * @return Matrix
      * @throws MatrixException
      */
@@ -211,7 +199,7 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * @return boolean True if the matrix is square, false otherwise.
+     * @return boolean
      */
     public function isSquare()
     {
@@ -293,7 +281,6 @@ class Matrix implements ArrayAccess
             throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->internal, true));
         }
 
-        // Use LU decomposition for the general case.
         return $this->getLUDecomp()->inverse();
     }
 
@@ -316,9 +303,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * Lazy-loads the LU decomposition. If it has already been built for this
-     * matrix, it returns the existing one. Otherwise, it creates a new one.
-     *
      * @return LUDecomposition
      */
     protected function getLUDecomp()
@@ -423,7 +407,7 @@ class Matrix implements ArrayAccess
 
     /**
      * @param Matrix $matrixB
-     * @return boolean True if equal. False otherwise.
+     * @return boolean
      */
     public function equals(Matrix $matrixB)
     {
@@ -446,8 +430,8 @@ class Matrix implements ArrayAccess
      * Returns a new matrix with the selected row and column removed, useful for
      * calculating determinants or other recursive operations on matrices.
      *
-     * @param int $row Row to remove, null to remove no row.
-     * @param int $column Column to remove, null to remove no column.
+     * @param int|null $row Row to remove, null to remove no row.
+     * @param int|null $column Column to remove, null to remove no column.
      * @return Matrix
      */
     public function submatrix($row = null, $column = null)
@@ -521,7 +505,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * Sums the main diagonal values of a square matrix.
      * @return float
      * @throws MatrixException
      */
