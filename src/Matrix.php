@@ -370,38 +370,58 @@ class Matrix implements ArrayAccess
      * @param Matrix|int|float $value Matrix or scalar to multiply with this matrix
      * @return Matrix
      * @throws MatrixException
+     * @deprecated
      */
     public function multiply($value)
     {
         if ($value instanceof Matrix) {
-            if ($this->columns != $value->rows) {
-                throw new MatrixException('Cannot multiply matrices of these sizes.');
-            }
+            return $this->multiplyMatrix($value);
+        }
 
-            $literal = [];
+        return $this->multiplyScalar($value);
+    }
 
-            for ($i = 0; $i < $this->rows; $i++) {
-                $row = [];
+    /**
+     * @param Matrix $value
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function multiplyMatrix(Matrix $value)
+    {
+        if ($this->columnCount != $value->rowCount) {
+            throw new MatrixException('Cannot multiply matrices of these sizes.');
+        }
 
-                for ($j = 0; $j < $value->columns; $j++) {
-                    $sum = 0;
+        $literal = [];
 
-                    for ($k = 0; $k < $this->columns; $k++) {
-                        $sum += $this->get($i, $k) * $value->get($k, $j);
-                    }
+        for ($i = 0; $i < $this->rowCount; $i++) {
+            $row = [];
 
-                    $row[] = $sum;
+            for ($j = 0; $j < $value->columnCount; $j++) {
+                $sum = 0;
+
+                for ($k = 0; $k < $this->columnCount; $k++) {
+                    $sum += $this->get($i, $k) * $value->get($k, $j);
                 }
 
-                $literal[] = $row;
+                $row[] = $sum;
             }
 
-            return new static($literal);
-        } else {
-            return $this->map(function ($element) use ($value) {
-                return $element * $value;
-            });
+            $literal[] = $row;
         }
+
+        return new static($literal);
+    }
+
+    /**
+     * @param float $value
+     * @return Matrix
+     */
+    public function multiplyScalar($value)
+    {
+        return $this->map(function ($element) use ($value) {
+            return $element * $value;
+        });
     }
 
     /**
