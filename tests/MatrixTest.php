@@ -358,7 +358,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrixA = new Matrix([[1, 2, 3]]);
         $matrixB = new Matrix([[4, 5, 6]]);
-        $concatenated = $matrixA->contatenateBottom($matrixB);
+        $concatenated = $matrixA->concatenateBottom($matrixB);
 
         $this->assertEquals([
             [1, 2, 3],
@@ -370,7 +370,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrixA = new Matrix([[1], [2], [3]]);
         $matrixB = new Matrix([[4], [5], [6]]);
-        $concatenated = $matrixA->contatenateRight($matrixB);
+        $concatenated = $matrixA->concatenateRight($matrixB);
 
         $this->assertEquals([
             [1, 4],
