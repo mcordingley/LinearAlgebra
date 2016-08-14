@@ -47,7 +47,7 @@ final class LUDecomposition extends Matrix
     {
         $scaling = [];
         $this->parity = 1;   // start parity at +1 (parity is "even" for zero row interchanges)
-        $n = $this->rows;
+        $n = $this->getRowCount();
         $p =& $this->permutations;
 
         // We want to find the largest element in each row for scaling.
@@ -111,7 +111,7 @@ final class LUDecomposition extends Matrix
      */
     public function determinant()
     {
-        $n = $this->rows;
+        $n = $this->getRowCount();
         $determinant = $this->parity;   // Start with +1 for an even # of row swaps, -1 for an odd #
 
         // The determinant is simply the product of the diagonal elements, with sign given
@@ -147,7 +147,7 @@ final class LUDecomposition extends Matrix
      */
     public function solve(array $b)
     {
-        $n = $this->rows;
+        $n = $this->getRowCount();
 
         if (count($b) !== $n) {
             throw new MatrixException('The knowns vector must be the same size as the coefficient matrix.');
@@ -204,7 +204,7 @@ final class LUDecomposition extends Matrix
         $inverse = [];
 
         // Get size of matrix
-        $n = $this->rows;
+        $n = $this->getRowCount();
         $b = array_fill(0, $n, 0);  // initialize empty vector
 
         // For each j from 0 to n-1
