@@ -120,7 +120,7 @@ class Matrix implements ArrayAccess
      * @param Matrix|int|float $value Matrix or scalar to add to this matrix
      * @return Matrix
      * @throws MatrixException
-     * @deprecated
+     * @deprecated Use `addMatrix` or `addScalar` instead.
      */
     public function add($value)
     {
@@ -226,7 +226,7 @@ class Matrix implements ArrayAccess
      * @param Matrix|int|float $value Matrix or scalar to multiply with this matrix
      * @return Matrix
      * @throws MatrixException
-     * @deprecated
+     * @deprecated Use `multiplyMatrix` or `multiplyScalar` instead.
      */
     public function multiply($value)
     {
@@ -609,7 +609,7 @@ class Matrix implements ArrayAccess
      * @param Matrix|int|float $value Matrix or scalar to subtract from this matrix
      * @return Matrix
      * @throws MatrixException
-     * @deprecated
+     * @deprecated Use `subtractMatrix` or `subtractScalar` instead.
      */
     public function subtract($value)
     {
