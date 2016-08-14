@@ -138,7 +138,7 @@ class Matrix implements ArrayAccess
      */
     public function addMatrix(Matrix $value)
     {
-        if ($this->rows != $value->rows || $this->columns != $value->columns) {
+        if ($this->getRowCount() != $value->getRowCount() || $this->getColumnCount() != $value->getColumnCount()) {
             throw new MatrixException('Cannot add two matrices of different size.');
         }
 
@@ -162,10 +162,10 @@ class Matrix implements ArrayAccess
     {
         $literal = [];
 
-        for ($i = 0; $i < $this->rows; $i++) {
+        for ($i = 0; $i < $this->getRowCount(); $i++) {
             $row = [];
 
-            for ($j = 0; $j < $this->columns; $j++) {
+            for ($j = 0; $j < $this->getColumnCount(); $j++) {
                 $row[] = $callback($this->get($i, $j), $i, $j, $this);
             }
 
@@ -216,7 +216,7 @@ class Matrix implements ArrayAccess
      */
     public function isSquare()
     {
-        return $this->rows == $this->columns;
+        return $this->getRowCount() == $this->getColumnCount();
     }
 
     /**
@@ -244,7 +244,7 @@ class Matrix implements ArrayAccess
      */
     public function multiplyMatrix(Matrix $value)
     {
-        if ($this->columnCount != $value->rowCount) {
+        if ($this->getColumnCount() != $value->rowCount) {
             throw new MatrixException('Cannot multiply matrices of these sizes.');
         }
 
@@ -256,7 +256,7 @@ class Matrix implements ArrayAccess
             for ($j = 0; $j < $value->columnCount; $j++) {
                 $sum = 0;
 
-                for ($k = 0; $k < $this->columnCount; $k++) {
+                for ($k = 0; $k < $this->getColumnCount(); $k++) {
                     $sum += $this->get($i, $k) * $value->get($k, $j);
                 }
 
@@ -317,7 +317,7 @@ class Matrix implements ArrayAccess
         }
 
         // Base case for a 1 by 1 matrix
-        if ($this->rows == 1) {
+        if ($this->getRowCount() == 1) {
             return $this->get(0, 0);
         }
 
@@ -348,8 +348,8 @@ class Matrix implements ArrayAccess
             return false;
         }
 
-        for ($i = 0; $i < $this->rows; ++$i) {
-            for ($j = 0; $j < $this->columns; ++$j) {
+        for ($i = 0; $i < $this->getRowCount(); ++$i) {
+            for ($j = 0; $j < $this->getColumnCount(); ++$j) {
                 if ($i == $j) {
                     continue;
                 }
@@ -496,7 +496,7 @@ class Matrix implements ArrayAccess
      */
     public function contatenateBottom(Matrix $other)
     {
-        if ($this->columnCount !== $other->columnCount) {
+        if ($this->getColumnCount() !== $other->getColumnCount()) {
             throw new MatrixException(
                 'Cannot concatenate matrices of incompatible size: '
                 . print_r($this->internal, true)
@@ -515,7 +515,7 @@ class Matrix implements ArrayAccess
      */
     public function contatenateRight(Matrix $other)
     {
-        if ($this->rowCount !== $other->rowCount) {
+        if ($this->rowCount !== $other->getRowCount()) {
             throw new MatrixException(
                 'Cannot concatenate matrices of incompatible size: '
                 . print_r($this->internal, true)
@@ -539,7 +539,7 @@ class Matrix implements ArrayAccess
     public function diagonal()
     {
         $diagonal = [];
-        $max = min([$this->rows, $this->columns]);
+        $max = min([$this->getRowCount(), $this->getColumnCount()]);
 
         for ($i = 0; $i < $max; $i++) {
             $diagonal[] = $this->get($i, $i);
@@ -554,12 +554,12 @@ class Matrix implements ArrayAccess
      */
     public function equals(Matrix $matrixB)
     {
-        if ($this->rowCount != $matrixB->rowCount || $this->columnCount != $matrixB->columnCount) {
+        if ($this->rowCount != $matrixB->rowCount || $this->getColumnCount() != $matrixB->columnCount) {
             return false;
         }
 
         for ($i = $this->rowCount; $i--;) {
-            for ($j = $this->columnCount; $j--;) {
+            for ($j = $this->getColumnCount(); $j--;) {
                 if ($this->get($i, $j) != $matrixB->get($i, $j)) {
                     return false;
                 }
@@ -581,14 +581,14 @@ class Matrix implements ArrayAccess
     {
         $literal = [];
 
-        for ($i = 0; $i < $this->rows; $i++) {
+        for ($i = 0; $i < $this->getRowCount(); $i++) {
             if ($i === $row) {
                 continue;
             }
 
             $rowLiteral = [];
 
-            for ($j = 0; $j < $this->columns; $j++) {
+            for ($j = 0; $j < $this->getColumnCount(); $j++) {
                 if ($j === $column) {
                     continue;
                 }
@@ -627,7 +627,7 @@ class Matrix implements ArrayAccess
      */
     public function subtractMatrix(Matrix $value)
     {
-        if ($this->rowCount != $value->rowCount || $this->columnCount != $value->columnCount) {
+        if ($this->rowCount != $value->rowCount || $this->getColumnCount() != $value->columnCount) {
             throw new MatrixException('Cannot subtract two matrices of different size.');
         }
 
@@ -660,7 +660,7 @@ class Matrix implements ArrayAccess
 
         $trace = 0;
 
-        for ($i = 0; $i < $this->rows; $i++) {
+        for ($i = 0; $i < $this->getRowCount(); $i++) {
             $trace += $this->get($i, $i);
         }
 
@@ -674,10 +674,10 @@ class Matrix implements ArrayAccess
     {
         $literal = [];
 
-        for ($i = 0; $i < $this->columns; $i++) {
+        for ($i = 0; $i < $this->getColumnCount(); $i++) {
             $literal[] = [];
 
-            for ($j = 0; $j < $this->rows; $j++) {
+            for ($j = 0; $j < $this->getRowCount(); $j++) {
                 $literal[$i][] = $this->get($j, $i);
             }
         }
@@ -746,7 +746,7 @@ class Matrix implements ArrayAccess
      */
     public function getColumnCount()
     {
-        return $this->columnCount;
+        return $this->getColumnCount();
     }
 
     /**
