@@ -609,22 +609,42 @@ class Matrix implements ArrayAccess
      * @param Matrix|int|float $value Matrix or scalar to subtract from this matrix
      * @return Matrix
      * @throws MatrixException
+     * @deprecated
      */
     public function subtract($value)
     {
         if ($value instanceof Matrix) {
-            if ($this->rows != $value->rows || $this->columns != $value->columns) {
-                throw new MatrixException('Cannot subtract two matrices of different size.');
-            }
-
-            return $this->map(function ($element, $i, $j) use ($value) {
-                return $element - $value->get($i, $j);
-            });
-        } else {
-            return $this->map(function ($element) use ($value) {
-                return $element - $value;
-            });
+            return $this->subtractMatrix($value);
         }
+
+        return $this->subtractScalar($value);
+    }
+
+    /**
+     * @param Matrix $value
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function subtractMatrix(Matrix $value)
+    {
+        if ($this->rowCount != $value->rowCount || $this->columnCount != $value->columnCount) {
+            throw new MatrixException('Cannot subtract two matrices of different size.');
+        }
+
+        return $this->map(function ($element, $i, $j) use ($value) {
+            return $element - $value->get($i, $j);
+        });
+    }
+
+    /**
+     * @param float $value
+     * @return Matrix
+     */
+    public function subtractScalar($value)
+    {
+        return $this->map(function ($element) use ($value) {
+            return $element - $value;
+        });
     }
 
     /**
