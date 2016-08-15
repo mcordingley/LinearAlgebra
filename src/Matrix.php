@@ -362,7 +362,7 @@ class Matrix implements ArrayAccess
             );
         }
 
-        return new Matrix(array_merge($this->internal, $other->internal));
+        return new static(array_merge($this->internal, $other->internal));
     }
 
     /**
@@ -387,7 +387,7 @@ class Matrix implements ArrayAccess
             $concatenated[] = array_merge($this->internal[$i], $other->internal[$i]);
         }
 
-        return new Matrix($concatenated);
+        return new static($concatenated);
     }
 
     /**
