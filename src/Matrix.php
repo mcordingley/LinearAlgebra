@@ -24,7 +24,7 @@ class Matrix implements ArrayAccess
     /**
      * @var LUDecomposition
      */
-    protected $LU;
+    protected $decomposition;
 
     /**
      * __construct
@@ -307,11 +307,11 @@ class Matrix implements ArrayAccess
      */
     protected function getLUDecomp()
     {
-        if (!$this->LU) {
-            $this->LU = new LUDecomposition($this->internal);
+        if (!$this->decomposition) {
+            $this->decomposition = new LUDecomposition($this->internal);
         }
 
-        return $this->LU;
+        return $this->decomposition;
     }
 
     /**
