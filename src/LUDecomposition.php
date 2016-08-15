@@ -159,8 +159,8 @@ final class LUDecomposition extends Matrix
 
         // Solve L * y = b for y (forward substitution)
         for ($i = 0; $i < $rowCount; ++$i) {
-            $this_b = $known[$this->permutations[$i]]; // Unscramble the permutations
-            if ($skip && $this_b == 0) { // Leading zeroes in b give zeroes in y.
+            $thisB = $known[$this->permutations[$i]]; // Unscramble the permutations
+            if ($skip && $thisB == 0) { // Leading zeroes in b give zeroes in y.
                 $y[$i] = 0;
             } else {
                 if ($skip) {
@@ -168,7 +168,7 @@ final class LUDecomposition extends Matrix
                     $skip = false;
                 }
 
-                $y[$i] = $this_b;
+                $y[$i] = $thisB;
 
                 for ($j = 0; $j < $i; ++$j) {
                     $y[$i] = $y[$i] - $this->get($i, $j) * $y[$j];
