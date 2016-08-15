@@ -137,30 +137,29 @@ final class LUDecomposition extends Matrix
     }
 
     /**
-     * Solves a linear set of equations in the form A * x = b for x, where A
-     * is the decomposed matrix of coefficients (now P*L*U), $x is the vector
-     * of unknowns, and $b is the vector of knowns.
+     * Solves a linear set of equations in the form A * unknown = known for unknown, where A
+     * is the decomposed matrix of coefficients (now P*L*U)
      *
-     * @param array $b vector of knowns
-     * @return array $x The solution vector
+     * @param array $known
+     * @return array
      * @throws MatrixException
      */
-    public function solve(array $b)
+    public function solve(array $known)
     {
         $rowCount = $this->getRowCount();
 
-        if (count($b) !== $rowCount) {
-            throw new MatrixException('The knowns vector must be the same size as the coefficient matrix.');
+        if (count($known) !== $rowCount) {
+            throw new MatrixException('The known vector must be the same size as the coefficient matrix.');
         }
 
-        $y = []; // L*y = b
-        $x = []; // U*x = y
+        $y = []; // L * y = b
+        $unknown = []; // U * unknown = y
 
         $skip = true;
 
         // Solve L * y = b for y (forward substitution)
         for ($i = 0; $i < $rowCount; ++$i) {
-            $this_b = $b[$this->permutations[$i]]; // Unscramble the permutations
+            $this_b = $known[$this->permutations[$i]]; // Unscramble the permutations
             if ($skip && $this_b == 0) { // Leading zeroes in b give zeroes in y.
                 $y[$i] = 0;
             } else {
@@ -177,18 +176,18 @@ final class LUDecomposition extends Matrix
             }
         }
 
-        // Solve U * x = y for x (backward substitution)
+        // Solve U * unknown = y for unknown (backward substitution)
         for ($i = $rowCount - 1; $i >= 0; --$i) {
-            $x[$i] = $y[$i];
+            $unknown[$i] = $y[$i];
 
             for ($j = $i + 1; $j < $rowCount; ++$j) {
-                $x[$i] = $x[$i] - $this->get($i, $j) * $x[$j];
+                $unknown[$i] = $unknown[$i] - $this->get($i, $j) * $unknown[$j];
             }
 
-            $x[$i] = $x[$i] / $this->get($i, $i);   // Keep division out of the inner loop
+            $unknown[$i] = $unknown[$i] / $this->get($i, $i);   // Keep division out of the inner loop
         }
 
-        return $x;
+        return $unknown;
     }
 
     /**
