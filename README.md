@@ -112,6 +112,10 @@ If you need to combine together matrices, you can do so by calling the concatena
     - Drop deprecated functions and properties.
     - Tighten up interface with the `final` and `private` keywords.
 
+- Upcoming Next Release
+    - Deprecate use of the `ArrayAccess` interface.
+    - More internal code style fixes.
+
 - 1.3.0
     - Fix typo in names of `concatenateRight()` and `concatenateBottom()`
     - Remove generated Phar file. Users who need it should use the `build-phar.php` script to generate one.
