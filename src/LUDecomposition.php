@@ -34,7 +34,7 @@ final class LUDecomposition extends Matrix
             throw new MatrixException("Matrix is not square.");
         }
 
-        $this->LUDecomp();
+        $this->decompose();
     }
 
     /**
@@ -43,7 +43,7 @@ final class LUDecomposition extends Matrix
      *  This uses Crout's method with partial (row) pivoting and implicit scaling
      *  to perform the decomposition in-place on a copy of the original matrix.
      */
-    private function LUDecomp()
+    private function decompose()
     {
         $scaling = [];
         $this->parity = 1;   // start parity at +1 (parity is "even" for zero row interchanges)
@@ -77,7 +77,7 @@ final class LUDecomposition extends Matrix
                 }
             }
 
-            // Perform the row pivot and store in the permuations vector
+            // Perform the row pivot and store in the permutations vector
             if ($k != $max_row_index) {
                 $this->rowPivot($k, $max_row_index);
                 $temp = $p[$k];
@@ -111,12 +111,12 @@ final class LUDecomposition extends Matrix
      */
     public function determinant()
     {
-        $n = $this->getRowCount();
+        $rowCount = $this->getRowCount();
         $determinant = $this->parity;   // Start with +1 for an even # of row swaps, -1 for an odd #
 
         // The determinant is simply the product of the diagonal elements, with sign given
         // by the number of row permutations (-1 for odd, +1 for even)
-        for ($i = 0; $i < $n; ++$i) {
+        for ($i = 0; $i < $rowCount; $i++) {
             $determinant *= $this->get($i, $i);
         }
 
@@ -147,9 +147,9 @@ final class LUDecomposition extends Matrix
      */
     public function solve(array $b)
     {
-        $n = $this->getRowCount();
+        $rowCount = $this->getRowCount();
 
-        if (count($b) !== $n) {
+        if (count($b) !== $rowCount) {
             throw new MatrixException('The knowns vector must be the same size as the coefficient matrix.');
         }
 
@@ -159,7 +159,7 @@ final class LUDecomposition extends Matrix
         $skip = true;
 
         // Solve L * y = b for y (forward substitution)
-        for ($i = 0; $i < $n; ++$i) {
+        for ($i = 0; $i < $rowCount; ++$i) {
             $this_b = $b[$this->permutations[$i]]; // Unscramble the permutations
             if ($skip && $this_b == 0) { // Leading zeroes in b give zeroes in y.
                 $y[$i] = 0;
@@ -178,10 +178,10 @@ final class LUDecomposition extends Matrix
         }
 
         // Solve U * x = y for x (backward substitution)
-        for ($i = $n - 1; $i >= 0; --$i) {
+        for ($i = $rowCount - 1; $i >= 0; --$i) {
             $x[$i] = $y[$i];
 
-            for ($j = $i + 1; $j < $n; ++$j) {
+            for ($j = $i + 1; $j < $rowCount; ++$j) {
                 $x[$i] = $x[$i] - $this->get($i, $j) * $x[$j];
             }
 
