@@ -47,29 +47,31 @@ final class LUDecomposition extends Matrix
     {
         $scaling = [];
         $this->parity = 1;   // start parity at +1 (parity is "even" for zero row interchanges)
-        $n = $this->getRowCount();
-        $p =& $this->permutations;
+        $rowCount = $this->getRowCount();
 
         // We want to find the largest element in each row for scaling.
-        for ($i = 0; $i < $n; ++$i) {
+        for ($i = 0; $i < $rowCount; ++$i) {
             $biggest = 0;
-            for ($j = 0; $j < $n; ++$j) {
+
+            for ($j = 0; $j < $rowCount; ++$j) {
                 $temp = abs($this->internal[$i][$j]);
                 $biggest = max($temp, $biggest);
             }
+
             if ($biggest == 0) {
                 throw new MatrixException("Matrix is singular.");
             }
+
             $scaling[$i] = 1 / $biggest;
-            $p[$i] = $i; // Initialize permutations vector
+            $this->permutations[$i] = $i; // Initialize permutations vector
         }
 
         // Now we find the LU decomposition. This is the outer loop over diagonal elements.
-        for ($k = 0; $k < $n; ++$k) {
+        for ($k = 0; $k < $rowCount; ++$k) {
             // Search for the best (biggest) pivot element
             $biggest = 0;
             $maxRowIndex = $k;
-            for ($i = $k; $i < $n; ++$i) {
+            for ($i = $k; $i < $rowCount; ++$i) {
                 $temp = $scaling[$i] * abs($this->internal[$i][$k]);
                 if ($temp > $biggest) {
                     $biggest = $temp;
@@ -80,9 +82,9 @@ final class LUDecomposition extends Matrix
             // Perform the row pivot and store in the permutations vector
             if ($k != $maxRowIndex) {
                 $this->rowPivot($k, $maxRowIndex);
-                $temp = $p[$k];
-                $p[$k] = $p[$maxRowIndex];
-                $p[$maxRowIndex] = $temp;
+                $temp = $this->permutations[$k];
+                $this->permutations[$k] = $this->permutations[$maxRowIndex];
+                $this->permutations[$maxRowIndex] = $temp;
                 $this->parity = -$this->parity;   // flip parity
             }
 
@@ -91,13 +93,13 @@ final class LUDecomposition extends Matrix
             }
 
             // Crout's algorithm
-            for ($i = $k + 1; $i < $n; ++$i) {
+            for ($i = $k + 1; $i < $rowCount; ++$i) {
 
                 // Divide by the pivot element
                 $this->internal[$i][$k] = $this->internal[$i][$k] / $this->internal[$k][$k];
 
                 // Subtract from each element in the sub-matrix
-                for ($j = $k + 1; $j < $n; ++$j) {
+                for ($j = $k + 1; $j < $rowCount; ++$j) {
                     $this->internal[$i][$j] = $this->internal[$i][$j] - $this->internal[$i][$k] * $this->internal[$k][$j];
                 }
             }
@@ -158,29 +160,28 @@ final class LUDecomposition extends Matrix
         $skip = true;
 
         // Solve L * y = b for y (forward substitution)
-        for ($i = 0; $i < $rowCount; ++$i) {
+        for ($i = 0; $i < $rowCount; $i++) {
             $thisB = $known[$this->permutations[$i]]; // Unscramble the permutations
-            if ($skip && $thisB == 0) { // Leading zeroes in b give zeroes in y.
+
+            if ($skip && $thisB == 0) {
+                // Leading zeroes in b give zeroes in y.
                 $y[$i] = 0;
             } else {
-                if ($skip) {
-                    // We found a non-zero element, so don't skip any more.
-                    $skip = false;
-                }
-
+                // We found a non-zero element, so don't skip any more.
+                $skip = false;
                 $y[$i] = $thisB;
 
-                for ($j = 0; $j < $i; ++$j) {
+                for ($j = 0; $j < $i; $j++) {
                     $y[$i] = $y[$i] - $this->get($i, $j) * $y[$j];
                 }
             }
         }
 
         // Solve U * unknown = y for unknown (backward substitution)
-        for ($i = $rowCount - 1; $i >= 0; --$i) {
+        for ($i = $rowCount - 1; $i >= 0; $i--) {
             $unknown[$i] = $y[$i];
 
-            for ($j = $i + 1; $j < $rowCount; ++$j) {
+            for ($j = $i + 1; $j < $rowCount; $j++) {
                 $unknown[$i] = $unknown[$i] - $this->get($i, $j) * $unknown[$j];
             }
 
@@ -201,22 +202,21 @@ final class LUDecomposition extends Matrix
     public function inverse()
     {
         $inverse = [];
-
-        // Get size of matrix
-        $n = $this->getRowCount();
-        $b = array_fill(0, $n, 0);  // initialize empty vector
+        $rowCount = $this->getRowCount();
+        $currentRow = array_fill(0, $rowCount, 0);
 
         // For each j from 0 to n-1
-        for ($j = 0; $j < $n; ++$j) {
+        for ($j = 0; $j < $rowCount; $j++) {
             // this is the jth column of the identity matrix
-            $b[$j] = 1;
+            $currentRow[$j] = 1;
 
-            // get the solution vector and copy to the jth column of the inverse matrix
-            $x = $this->solve($b);
-            for ($i = 0; $i < $n; ++$i) {
-                $inverse[$i][$j] = $x[$i];
+            $solution = $this->solve($currentRow);
+
+            for ($i = 0; $i < $rowCount; ++$i) {
+                $inverse[$i][$j] = $solution[$i];
             }
-            $b[$j] = 0; // Get the vector ready for the next column.
+
+            $currentRow[$j] = 0; // Get the vector ready for the next column.
         }
 
         return new Matrix($inverse);
