@@ -68,21 +68,21 @@ final class LUDecomposition extends Matrix
         for ($k = 0; $k < $n; ++$k) {
             // Search for the best (biggest) pivot element
             $biggest = 0;
-            $max_row_index = $k;
+            $maxRowIndex = $k;
             for ($i = $k; $i < $n; ++$i) {
                 $temp = $scaling[$i] * abs($this->internal[$i][$k]);
                 if ($temp > $biggest) {
                     $biggest = $temp;
-                    $max_row_index = $i;
+                    $maxRowIndex = $i;
                 }
             }
 
             // Perform the row pivot and store in the permutations vector
-            if ($k != $max_row_index) {
-                $this->rowPivot($k, $max_row_index);
+            if ($k != $maxRowIndex) {
+                $this->rowPivot($k, $maxRowIndex);
                 $temp = $p[$k];
-                $p[$k] = $p[$max_row_index];
-                $p[$max_row_index] = $temp;
+                $p[$k] = $p[$maxRowIndex];
+                $p[$maxRowIndex] = $temp;
                 $this->parity = -$this->parity;   // flip parity
             }
 
