@@ -544,6 +544,7 @@ class Matrix implements ArrayAccess
     /**
      * @param mixed $offset
      * @return bool
+     * @deprecated Use `get()` instead of ArrayAccess methods.
      */
     public function offsetExists($offset)
     {
@@ -553,6 +554,7 @@ class Matrix implements ArrayAccess
     /**
      * @param mixed $offset
      * @return mixed
+     * @deprecated Use `get()` instead of ArrayAccess methods.
      */
     public function offsetGet($offset)
     {
@@ -563,6 +565,7 @@ class Matrix implements ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      * @throws MatrixException
+     * @deprecated Use `get()` instead of ArrayAccess methods.
      */
     public function offsetSet($offset, $value)
     {
@@ -572,6 +575,7 @@ class Matrix implements ArrayAccess
     /**
      * @param mixed $offset
      * @throws MatrixException
+     * @deprecated Use `get()` instead of ArrayAccess methods.
      */
     public function offsetUnset($offset)
     {
