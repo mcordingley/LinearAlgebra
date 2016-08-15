@@ -13,7 +13,7 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="Regression Test Suite">
+        <testsuite name="LinearAlgebra Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
