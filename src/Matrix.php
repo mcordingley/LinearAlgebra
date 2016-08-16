@@ -57,27 +57,20 @@ class Matrix implements ArrayAccess
      */
     protected function isLiteralValid(array $literal)
     {
-        // Matrix must have at least one row
-        if (!count($literal)) {
+        if (!$literal) {
             return false;
         }
 
-        // Matrix must have at least one column
-        if (!count($literal[0])) {
+        $firstRowSize = count($literal[0]);
+
+        if (!$firstRowSize) {
             return false;
         }
-
-        // Matrix must have the same number of columns in each row
-        $lastRow = false;
 
         foreach ($literal as $row) {
-            $thisRow = count($row);
-
-            if ($lastRow !== false && $lastRow !== $thisRow) {
+            if (count($row) !== $firstRowSize) {
                 return false;
             }
-
-            $lastRow = $thisRow;
         }
 
         return true;
