@@ -404,19 +404,7 @@ class Matrix implements ArrayAccess
      */
     public function equals(Matrix $matrixB)
     {
-        if ($this->getRowCount() !== $matrixB->getRowCount() || $this->getColumnCount() !== $matrixB->getColumnCount()) {
-            return false;
-        }
-
-        for ($i = $this->getRowCount(); $i--;) {
-            for ($j = $this->getColumnCount(); $j--;) {
-                if ($this->get($i, $j) !== $matrixB->get($i, $j)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return $this->internal === $matrixB->internal;
     }
 
     /**
