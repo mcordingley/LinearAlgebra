@@ -414,6 +414,7 @@ class Matrix implements ArrayAccess
      * @param int|null $row Row to remove, null to remove no row.
      * @param int|null $column Column to remove, null to remove no column.
      * @return Matrix
+     * @deprecated
      */
     public function submatrix($row = null, $column = null)
     {
