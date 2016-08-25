@@ -134,6 +134,21 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(11, $added->get(2, 2));
     }
 
+    public function testAddMatrixWrongSizes()
+    {
+        $matrix1 = $this->buildMatrix();
+
+        $matrix2 = new Matrix([
+            [4, 2, 6],
+            [1, 7, 3],
+            [7, 3, 2],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix1->addMatrix($matrix2);
+    }
+
     public function testAddScalar()
     {
         $matrix = new Matrix([
