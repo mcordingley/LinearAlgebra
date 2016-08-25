@@ -287,11 +287,6 @@ class Matrix implements ArrayAccess
             throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->internal, true));
         }
 
-        // Base case for a 1 by 1 matrix
-        if ($this->getRowCount() === 1) {
-            return $this->get(0, 0);
-        }
-
         return $this->getLUDecomp()->determinant();
     }
 
