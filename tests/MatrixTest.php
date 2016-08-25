@@ -336,6 +336,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(1, $inverse->get(2, 2));
     }
 
+    public function testNonSquareInverse()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::expectException(MatrixException::class);
+
+        $matrix->inverse();
+    }
+
     public function testAdjoint()
     {
         $matrix = new Matrix([
