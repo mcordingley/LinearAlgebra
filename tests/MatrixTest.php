@@ -361,6 +361,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrixA = new Matrix([[1, 2, 3]]);
         $matrixB = new Matrix([[4, 5, 6]]);
+
         $concatenated = $matrixA->concatenateBottom($matrixB);
 
         $this->assertEquals([
@@ -369,10 +370,21 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         ], $concatenated->toArray());
     }
 
+    public function testConcatenateBottomWrongSizes()
+    {
+        $matrixA = new Matrix([[1, 2, 3]]);
+        $matrixB = new Matrix([[4], [5], [6]]);
+
+        static::expectException(MatrixException::class);
+
+        $matrixA->concatenateBottom($matrixB);
+    }
+
     public function testConcatenateRight()
     {
         $matrixA = new Matrix([[1], [2], [3]]);
         $matrixB = new Matrix([[4], [5], [6]]);
+
         $concatenated = $matrixA->concatenateRight($matrixB);
 
         $this->assertEquals([
@@ -380,6 +392,16 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [2, 5],
             [3, 6],
         ], $concatenated->toArray());
+    }
+
+    public function testConcatenateRightWrongSizes()
+    {
+        $matrixA = new Matrix([[1, 2, 3]]);
+        $matrixB = new Matrix([[4], [5], [6]]);
+
+        static::expectException(MatrixException::class);
+
+        $matrixA->concatenateRight($matrixB);
     }
 
     public function testDeterminant()
