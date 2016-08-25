@@ -282,6 +282,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $matrix->trace());
     }
 
+    public function testRectangularTrace()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::expectException(MatrixException::class);
+
+        $matrix->trace();
+    }
+
     public function testTranspose()
     {
         $matrix = $this->buildMatrix()->transpose();
