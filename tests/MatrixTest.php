@@ -54,23 +54,23 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrix = $this->buildMatrix();
 
-        $this->assertEquals(3, $matrix->rows);
-        $this->assertEquals(4, $matrix->columns);
+        static::assertEquals(3, $matrix->rows);
+        static::assertEquals(4, $matrix->columns);
     }
 
     public function testIdentity()
     {
         $identity = Matrix::identity(3);
 
-        $this->assertEquals(1, $identity->get(0, 0));
-        $this->assertEquals(0, $identity->get(0, 1));
-        $this->assertEquals(0, $identity->get(0, 2));
-        $this->assertEquals(0, $identity->get(1, 0));
-        $this->assertEquals(1, $identity->get(1, 1));
-        $this->assertEquals(0, $identity->get(1, 2));
-        $this->assertEquals(0, $identity->get(2, 0));
-        $this->assertEquals(0, $identity->get(2, 1));
-        $this->assertEquals(1, $identity->get(2, 2));
+        static::assertEquals(1, $identity->get(0, 0));
+        static::assertEquals(0, $identity->get(0, 1));
+        static::assertEquals(0, $identity->get(0, 2));
+        static::assertEquals(0, $identity->get(1, 0));
+        static::assertEquals(1, $identity->get(1, 1));
+        static::assertEquals(0, $identity->get(1, 2));
+        static::assertEquals(0, $identity->get(2, 0));
+        static::assertEquals(0, $identity->get(2, 1));
+        static::assertEquals(1, $identity->get(2, 2));
     }
 
     public function testMap()
@@ -84,10 +84,10 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             return $value + $row + $column;
         });
 
-        $this->assertEquals(1, $mapped->get(0, 0));
-        $this->assertEquals(3, $mapped->get(0, 1));
-        $this->assertEquals(4, $mapped->get(1, 0));
-        $this->assertEquals(6, $mapped->get(1, 1));
+        static::assertEquals(1, $mapped->get(0, 0));
+        static::assertEquals(3, $mapped->get(0, 1));
+        static::assertEquals(4, $mapped->get(1, 0));
+        static::assertEquals(6, $mapped->get(1, 1));
     }
 
     public function testGet()
@@ -95,7 +95,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         $matrix = $this->buildMatrix();
 
         // Check constructed value
-        $this->assertEquals(8, $matrix->get(1, 3));
+        static::assertEquals(8, $matrix->get(1, 3));
     }
 
     public function testEquals()
@@ -112,8 +112,8 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [7, 3, 2],
         ]);
 
-        $this->assertTrue($matrix1->equals($matrix1));
-        $this->assertFalse($matrix1->equals($matrix2));
+        static::assertTrue($matrix1->equals($matrix1));
+        static::assertFalse($matrix1->equals($matrix2));
     }
 
     public function testAddMatrix()
@@ -132,15 +132,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $added = $matrix1->addMatrix($matrix2);
 
-        $this->assertEquals(5, $added->get(0, 0));
-        $this->assertEquals(4, $added->get(0, 1));
-        $this->assertEquals(9, $added->get(0, 2));
-        $this->assertEquals(5, $added->get(1, 0));
-        $this->assertEquals(12, $added->get(1, 1));
-        $this->assertEquals(9, $added->get(1, 2));
-        $this->assertEquals(14, $added->get(2, 0));
-        $this->assertEquals(11, $added->get(2, 1));
-        $this->assertEquals(11, $added->get(2, 2));
+        static::assertEquals(5, $added->get(0, 0));
+        static::assertEquals(4, $added->get(0, 1));
+        static::assertEquals(9, $added->get(0, 2));
+        static::assertEquals(5, $added->get(1, 0));
+        static::assertEquals(12, $added->get(1, 1));
+        static::assertEquals(9, $added->get(1, 2));
+        static::assertEquals(14, $added->get(2, 0));
+        static::assertEquals(11, $added->get(2, 1));
+        static::assertEquals(11, $added->get(2, 2));
     }
 
     public function testAddScalar()
@@ -153,15 +153,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $added = $matrix->addScalar(4);
 
-        $this->assertEquals(8, $added->get(0, 0));
-        $this->assertEquals(6, $added->get(0, 1));
-        $this->assertEquals(10, $added->get(0, 2));
-        $this->assertEquals(5, $added->get(1, 0));
-        $this->assertEquals(11, $added->get(1, 1));
-        $this->assertEquals(7, $added->get(1, 2));
-        $this->assertEquals(11, $added->get(2, 0));
-        $this->assertEquals(7, $added->get(2, 1));
-        $this->assertEquals(6, $added->get(2, 2));
+        static::assertEquals(8, $added->get(0, 0));
+        static::assertEquals(6, $added->get(0, 1));
+        static::assertEquals(10, $added->get(0, 2));
+        static::assertEquals(5, $added->get(1, 0));
+        static::assertEquals(11, $added->get(1, 1));
+        static::assertEquals(7, $added->get(1, 2));
+        static::assertEquals(11, $added->get(2, 0));
+        static::assertEquals(7, $added->get(2, 1));
+        static::assertEquals(6, $added->get(2, 2));
     }
 
     public function testSubtractMatrix()
@@ -180,15 +180,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $subtracted = $matrix1->subtractMatrix($matrix2);
 
-        $this->assertEquals(-3, $subtracted->get(0, 0));
-        $this->assertEquals(0, $subtracted->get(0, 1));
-        $this->assertEquals(-3, $subtracted->get(0, 2));
-        $this->assertEquals(3, $subtracted->get(1, 0));
-        $this->assertEquals(-2, $subtracted->get(1, 1));
-        $this->assertEquals(3, $subtracted->get(1, 2));
-        $this->assertEquals(0, $subtracted->get(2, 0));
-        $this->assertEquals(5, $subtracted->get(2, 1));
-        $this->assertEquals(7, $subtracted->get(2, 2));
+        static::assertEquals(-3, $subtracted->get(0, 0));
+        static::assertEquals(0, $subtracted->get(0, 1));
+        static::assertEquals(-3, $subtracted->get(0, 2));
+        static::assertEquals(3, $subtracted->get(1, 0));
+        static::assertEquals(-2, $subtracted->get(1, 1));
+        static::assertEquals(3, $subtracted->get(1, 2));
+        static::assertEquals(0, $subtracted->get(2, 0));
+        static::assertEquals(5, $subtracted->get(2, 1));
+        static::assertEquals(7, $subtracted->get(2, 2));
     }
 
     public function testSubtractMatrixWrongSizes()
@@ -216,15 +216,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $subtracted = $matrix->subtractScalar(4);
 
-        $this->assertEquals(0, $subtracted->get(0, 0));
-        $this->assertEquals(-2, $subtracted->get(0, 1));
-        $this->assertEquals(2, $subtracted->get(0, 2));
-        $this->assertEquals(-3, $subtracted->get(1, 0));
-        $this->assertEquals(3, $subtracted->get(1, 1));
-        $this->assertEquals(-1, $subtracted->get(1, 2));
-        $this->assertEquals(3, $subtracted->get(2, 0));
-        $this->assertEquals(-1, $subtracted->get(2, 1));
-        $this->assertEquals(-2, $subtracted->get(2, 2));
+        static::assertEquals(0, $subtracted->get(0, 0));
+        static::assertEquals(-2, $subtracted->get(0, 1));
+        static::assertEquals(2, $subtracted->get(0, 2));
+        static::assertEquals(-3, $subtracted->get(1, 0));
+        static::assertEquals(3, $subtracted->get(1, 1));
+        static::assertEquals(-1, $subtracted->get(1, 2));
+        static::assertEquals(3, $subtracted->get(2, 0));
+        static::assertEquals(-1, $subtracted->get(2, 1));
+        static::assertEquals(-2, $subtracted->get(2, 2));
     }
 
     public function testMultiplyMatrix()
@@ -242,10 +242,10 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $multiplied = $matrix1->multiplyMatrix($matrix2);
 
-        $this->assertEquals(58, $multiplied->get(0, 0));
-        $this->assertEquals(64, $multiplied->get(0, 1));
-        $this->assertEquals(139, $multiplied->get(1, 0));
-        $this->assertEquals(154, $multiplied->get(1, 1));
+        static::assertEquals(58, $multiplied->get(0, 0));
+        static::assertEquals(64, $multiplied->get(0, 1));
+        static::assertEquals(139, $multiplied->get(1, 0));
+        static::assertEquals(154, $multiplied->get(1, 1));
     }
 
     public function testMultiplyScalar()
@@ -258,15 +258,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $multiplied = $matrix->multiplyScalar(2);
 
-        $this->assertEquals(8, $multiplied->get(0, 0));
-        $this->assertEquals(4, $multiplied->get(0, 1));
-        $this->assertEquals(12, $multiplied->get(0, 2));
-        $this->assertEquals(2, $multiplied->get(1, 0));
-        $this->assertEquals(14, $multiplied->get(1, 1));
-        $this->assertEquals(6, $multiplied->get(1, 2));
-        $this->assertEquals(14, $multiplied->get(2, 0));
-        $this->assertEquals(6, $multiplied->get(2, 1));
-        $this->assertEquals(4, $multiplied->get(2, 2));
+        static::assertEquals(8, $multiplied->get(0, 0));
+        static::assertEquals(4, $multiplied->get(0, 1));
+        static::assertEquals(12, $multiplied->get(0, 2));
+        static::assertEquals(2, $multiplied->get(1, 0));
+        static::assertEquals(14, $multiplied->get(1, 1));
+        static::assertEquals(6, $multiplied->get(1, 2));
+        static::assertEquals(14, $multiplied->get(2, 0));
+        static::assertEquals(6, $multiplied->get(2, 1));
+        static::assertEquals(4, $multiplied->get(2, 2));
     }
 
     public function testDiagonal()
@@ -279,11 +279,11 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $diagonal = $matrix->diagonal();
 
-        $this->assertEquals(1, $diagonal->rows);
-        $this->assertEquals(3, $diagonal->columns);
-        $this->assertEquals(1, $diagonal->get(0, 0));
-        $this->assertEquals(5, $diagonal->get(0, 1));
-        $this->assertEquals(9, $diagonal->get(0, 2));
+        static::assertEquals(1, $diagonal->rows);
+        static::assertEquals(3, $diagonal->columns);
+        static::assertEquals(1, $diagonal->get(0, 0));
+        static::assertEquals(5, $diagonal->get(0, 1));
+        static::assertEquals(9, $diagonal->get(0, 2));
     }
 
     public function testTrace()
@@ -294,7 +294,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [5, 6, 0],
         ]);
 
-        $this->assertEquals(2, $matrix->trace());
+        static::assertEquals(2, $matrix->trace());
     }
 
     public function testRectangularTrace()
@@ -310,9 +310,9 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrix = $this->buildMatrix()->transpose();
 
-        $this->assertEquals(5, $matrix->get(0, 1));
-        $this->assertEquals(7, $matrix->get(2, 1));
-        $this->assertEquals(10, $matrix->get(1, 2));
+        static::assertEquals(5, $matrix->get(0, 1));
+        static::assertEquals(7, $matrix->get(2, 1));
+        static::assertEquals(10, $matrix->get(1, 2));
     }
 
     public function testInverse()
@@ -325,15 +325,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $inverse = $matrix->inverse();
 
-        $this->assertEquals(-24, $inverse->get(0, 0));
-        $this->assertEquals(18, $inverse->get(0, 1));
-        $this->assertEquals(5, $inverse->get(0, 2));
-        $this->assertEquals(20, $inverse->get(1, 0));
-        $this->assertEquals(-15, $inverse->get(1, 1));
-        $this->assertEquals(-4, $inverse->get(1, 2));
-        $this->assertEquals(-5, $inverse->get(2, 0));
-        $this->assertEquals(4, $inverse->get(2, 1));
-        $this->assertEquals(1, $inverse->get(2, 2));
+        static::assertEquals(-24, $inverse->get(0, 0));
+        static::assertEquals(18, $inverse->get(0, 1));
+        static::assertEquals(5, $inverse->get(0, 2));
+        static::assertEquals(20, $inverse->get(1, 0));
+        static::assertEquals(-15, $inverse->get(1, 1));
+        static::assertEquals(-4, $inverse->get(1, 2));
+        static::assertEquals(-5, $inverse->get(2, 0));
+        static::assertEquals(4, $inverse->get(2, 1));
+        static::assertEquals(1, $inverse->get(2, 2));
     }
 
     public function testAdjoint()
@@ -346,15 +346,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $adjoint = $matrix->adjoint();
 
-        $this->assertEquals(-6, $adjoint->get(0, 0));
-        $this->assertEquals(1, $adjoint->get(0, 1));
-        $this->assertEquals(-6, $adjoint->get(0, 2));
-        $this->assertEquals(4, $adjoint->get(1, 0));
-        $this->assertEquals(-1, $adjoint->get(1, 1));
-        $this->assertEquals(2, $adjoint->get(1, 2));
-        $this->assertEquals(4, $adjoint->get(2, 0));
-        $this->assertEquals(-1, $adjoint->get(2, 1));
-        $this->assertEquals(4, $adjoint->get(2, 2));
+        static::assertEquals(-6, $adjoint->get(0, 0));
+        static::assertEquals(1, $adjoint->get(0, 1));
+        static::assertEquals(-6, $adjoint->get(0, 2));
+        static::assertEquals(4, $adjoint->get(1, 0));
+        static::assertEquals(-1, $adjoint->get(1, 1));
+        static::assertEquals(2, $adjoint->get(1, 2));
+        static::assertEquals(4, $adjoint->get(2, 0));
+        static::assertEquals(-1, $adjoint->get(2, 1));
+        static::assertEquals(4, $adjoint->get(2, 2));
     }
 
     public function testConcatenateBottom()
@@ -364,7 +364,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $concatenated = $matrixA->concatenateBottom($matrixB);
 
-        $this->assertEquals([
+        static::assertEquals([
             [1, 2, 3],
             [4, 5, 6],
         ], $concatenated->toArray());
@@ -387,7 +387,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $concatenated = $matrixA->concatenateRight($matrixB);
 
-        $this->assertEquals([
+        static::assertEquals([
             [1, 4],
             [2, 5],
             [3, 6],
@@ -412,7 +412,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [2, 8, 7],
         ]);
 
-        $this->assertEquals(-306, $matrix->determinant());
+        static::assertEquals(-306, $matrix->determinant());
     }
 
     public function testNonSquareDeterminant()
@@ -428,18 +428,18 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrix = $this->buildMatrix()->submatrix(1, 2);
 
-        $this->assertEquals(1, $matrix->get(0, 0));
-        $this->assertEquals(2, $matrix->get(0, 1));
-        $this->assertEquals(4, $matrix->get(0, 2));
-        $this->assertEquals(9, $matrix->get(1, 0));
-        $this->assertEquals(10, $matrix->get(1, 1));
-        $this->assertEquals(12, $matrix->get(1, 2));
+        static::assertEquals(1, $matrix->get(0, 0));
+        static::assertEquals(2, $matrix->get(0, 1));
+        static::assertEquals(4, $matrix->get(0, 2));
+        static::assertEquals(9, $matrix->get(1, 0));
+        static::assertEquals(10, $matrix->get(1, 1));
+        static::assertEquals(12, $matrix->get(1, 2));
     }
 
     public function testToString()
     {
         $matrix = $this->buildMatrix();
 
-        $this->assertEquals('[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]', (string)$matrix);
+        static::assertEquals('[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]', (string)$matrix);
     }
 }
