@@ -304,6 +304,7 @@ class Matrix implements ArrayAccess
 
     /**
      * @return boolean
+     * @deprecated Not useful enough to remain. Test if the transpose is equal, instead.
      */
     public function isSymmetric()
     {
