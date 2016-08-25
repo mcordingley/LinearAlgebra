@@ -191,6 +191,21 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(7, $subtracted->get(2, 2));
     }
 
+    public function testSubtractMatrixWrongSizes()
+    {
+        $matrix1 = $this->buildMatrix();
+
+        $matrix2 = new Matrix([
+            [4, 2, 6],
+            [1, 7, 3],
+            [7, 3, 2],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix1->subtractMatrix($matrix2);
+    }
+
     public function testSubtractScalar()
     {
         $matrix = new Matrix([
