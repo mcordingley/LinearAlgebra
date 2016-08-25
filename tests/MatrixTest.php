@@ -24,7 +24,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
     public function testBadConstruction()
     {
-        $this->setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         new Matrix([
             [1, 2, 3, 4],
@@ -35,14 +35,14 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyRows()
     {
-        $this->setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         new Matrix([]);
     }
 
     public function testEmptyColumns()
     {
-        $this->setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         new Matrix([
             [],

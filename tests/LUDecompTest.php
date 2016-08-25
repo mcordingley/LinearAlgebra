@@ -20,14 +20,14 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
 
     public function testNonSquare()
     {
-        static::setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         new LUDecomposition([[1, 2, 3]]);
     }
 
     public function testSingularByZeroes()
     {
-        static::setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         new LUDecomposition([
             [0, 0],
@@ -40,14 +40,14 @@ class LUDecompTest extends \PHPUnit_Framework_TestCase
         $matrix = $this->buildMatrix();
         $decomp = new LUDecomposition($matrix->toArray());
 
-        static::setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         $decomp->solve([1]);
     }
 
     public function testSingularByDiagonal()
     {
-        static::setExpectedException(MatrixException::class);
+        static::expectException(MatrixException::class);
 
         new LUDecomposition([
             [1, -1, 2],
