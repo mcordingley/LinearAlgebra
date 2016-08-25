@@ -601,6 +601,7 @@ class Matrix implements ArrayAccess
 
     /**
      * @return string
+     * @deprecated
      */
     public function __toString()
     {
