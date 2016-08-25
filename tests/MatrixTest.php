@@ -13,15 +13,6 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    public function testProperties()
-    {
-        $matrix = $this->buildMatrix();
-
-        static::assertEquals(4, $matrix->columns);
-        static::assertEquals(3, $matrix->rows);
-        static::assertNull($matrix->fubar);
-    }
-
     public function testBadConstruction()
     {
         static::expectException(MatrixException::class);
@@ -54,8 +45,8 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
     {
         $matrix = $this->buildMatrix();
 
-        static::assertEquals(3, $matrix->rows);
-        static::assertEquals(4, $matrix->columns);
+        static::assertEquals(3, $matrix->getRowCount());
+        static::assertEquals(4, $matrix->getColumnCount());
     }
 
     public function testIdentity()
@@ -431,24 +422,5 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::expectException(MatrixException::class);
 
         $matrix->determinant();
-    }
-
-    public function testSubmatrix()
-    {
-        $matrix = $this->buildMatrix()->submatrix(1, 2);
-
-        static::assertEquals(1, $matrix->get(0, 0));
-        static::assertEquals(2, $matrix->get(0, 1));
-        static::assertEquals(4, $matrix->get(0, 2));
-        static::assertEquals(9, $matrix->get(1, 0));
-        static::assertEquals(10, $matrix->get(1, 1));
-        static::assertEquals(12, $matrix->get(1, 2));
-    }
-
-    public function testToString()
-    {
-        $matrix = $this->buildMatrix();
-
-        static::assertEquals('[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]', (string)$matrix);
     }
 }
