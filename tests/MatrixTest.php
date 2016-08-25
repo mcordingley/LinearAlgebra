@@ -372,6 +372,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(4, $adjoint->get(2, 2));
     }
 
+    public function testRectangularAdjoint()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::expectException(MatrixException::class);
+
+        $matrix->adjoint();
+    }
+
     public function testConcatenateBottom()
     {
         $matrixA = new Matrix([[1, 2, 3]]);
