@@ -130,7 +130,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [7, 3, 2],
         ]);
 
-        $added = $matrix1->add($matrix2);
+        $added = $matrix1->addMatrix($matrix2);
 
         $this->assertEquals(5, $added->get(0, 0));
         $this->assertEquals(4, $added->get(0, 1));
@@ -151,7 +151,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [7, 3, 2],
         ]);
 
-        $added = $matrix->add(4);
+        $added = $matrix->addScalar(4);
 
         $this->assertEquals(8, $added->get(0, 0));
         $this->assertEquals(6, $added->get(0, 1));
@@ -178,7 +178,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [7, 3, 2],
         ]);
 
-        $subtracted = $matrix1->subtract($matrix2);
+        $subtracted = $matrix1->subtractMatrix($matrix2);
 
         $this->assertEquals(-3, $subtracted->get(0, 0));
         $this->assertEquals(0, $subtracted->get(0, 1));
@@ -214,7 +214,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [7, 3, 2],
         ]);
 
-        $subtracted = $matrix->subtract(4);
+        $subtracted = $matrix->subtractScalar(4);
 
         $this->assertEquals(0, $subtracted->get(0, 0));
         $this->assertEquals(-2, $subtracted->get(0, 1));
@@ -240,7 +240,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [11, 12],
         ]);
 
-        $multiplied = $matrix1->multiply($matrix2);
+        $multiplied = $matrix1->multiplyMatrix($matrix2);
 
         $this->assertEquals(58, $multiplied->get(0, 0));
         $this->assertEquals(64, $multiplied->get(0, 1));
@@ -256,7 +256,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [7, 3, 2],
         ]);
 
-        $multiplied = $matrix->multiply(2);
+        $multiplied = $matrix->multiplyScalar(2);
 
         $this->assertEquals(8, $multiplied->get(0, 0));
         $this->assertEquals(4, $multiplied->get(0, 1));
