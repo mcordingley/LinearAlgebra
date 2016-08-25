@@ -415,6 +415,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(-306, $matrix->determinant());
     }
 
+    public function testNonSquareDeterminant()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::expectException(MatrixException::class);
+
+        $matrix->determinant();
+    }
+
     public function testSubmatrix()
     {
         $matrix = $this->buildMatrix()->submatrix(1, 2);
