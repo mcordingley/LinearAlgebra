@@ -112,6 +112,9 @@ If you need to combine together matrices, you can do so by calling the concatena
     - Drop deprecated functions and properties.
     - Tighten up interface with the `final` and `private` keywords.
 
+- 1.4.0 (future)
+    - Add `entrywise()` to compute the Hadamard product.
+
 - 1.3.2
     - Deprecate `__toString()` magic method.
     - Deprecate `isSymmetric()`.

@@ -290,6 +290,38 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(4, $multiplied->get(2, 2));
     }
 
+    public function testEntrywise()
+    {
+        $matrix1 = new Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+        ]);
+
+        $matrix2 = $matrix1->transpose();
+
+        static::assertEquals([
+            [1,   8, 21],
+            [8,  25, 48],
+            [21, 48, 81],
+        ], $matrix1->entrywise($matrix2)->toArray());
+    }
+
+    public function testEntrywiseWrongSize()
+    {
+        $matrix1 = $this->buildMatrix();
+
+        $matrix2 = new Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix1->entrywise($matrix2);
+    }
+
     public function testDiagonal()
     {
         $matrix = new Matrix([

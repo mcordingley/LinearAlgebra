@@ -261,6 +261,33 @@ class Matrix implements ArrayAccess
     }
 
     /**
+     * @param Matrix $value
+     * @return static
+     * @throws MatrixException
+     * @link https://en.wikipedia.org/wiki/Hadamard_product_%28matrices%29
+     */
+    public function entrywise(Matrix $value)
+    {
+        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
+            throw new MatrixException('Unable to take the entrywise product of matrices of dissimilar size.');
+        }
+
+        $rows = $this->getRowCount();
+        $columns = $this->getColumnCount();
+        $product = [];
+
+        for ($row = 0; $row < $rows; $row++) {
+            $product[] = [];
+
+            for ($column = 0; $column < $columns; $column++) {
+                $product[$row][$column] = $this->get($row, $column) * $value->get($row, $column);
+            }
+        }
+
+        return new static($product);
+    }
+
+    /**
      * @return Matrix
      * @throws MatrixException
      */
