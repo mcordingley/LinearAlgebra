@@ -360,14 +360,26 @@ class Matrix
     }
 
     /**
-     * @return float The matrix's determinant
-     * @throws MatrixException
+     * @return float
      */
     public function determinant(): float
     {
         $this->checkSquare();
 
-        return $this->getLUDecomp()->determinant();
+        try {
+            $decomp = $this->getLUDecomposition();
+        } catch (MatrixException $exception) {
+            // Singular matrix, so determinant is defined to be zero.
+            return 0.0;
+        }
+
+        $determinant = 1.0;
+
+        for ($i = 0; $i < $decomp->rowCount; $i++) {
+            $determinant *= $decomp->get($i, $i);
+        }
+
+        return $determinant;
     }
 
     /**
