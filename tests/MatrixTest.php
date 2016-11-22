@@ -582,6 +582,70 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(0, $lup->get(3, 3));
     }
 
+    public function testGetUpper()
+    {
+        $matrix = new Matrix([
+            [ 2,  0,    2, 0.6],
+            [ 3,  3,    4,  -2],
+            [ 5,  5,    4,   2],
+            [-1, -2,  3.4,  -1],
+        ]);
+
+        $upper = $matrix->getUpper();
+
+        static::assertEquals(2, $upper->get(0, 0));
+        static::assertEquals(0, $upper->get(0, 1));
+        static::assertEquals(2, $upper->get(0, 2));
+        static::assertEquals(0.6, $upper->get(0, 3));
+
+        static::assertEquals(0, $upper->get(1, 0));
+        static::assertEquals(3, $upper->get(1, 1));
+        static::assertEquals(4, $upper->get(1, 2));
+        static::assertEquals(-2, $upper->get(1, 3));
+
+        static::assertEquals(0, $upper->get(2, 0));
+        static::assertEquals(0, $upper->get(2, 1));
+        static::assertEquals(4, $upper->get(2, 2));
+        static::assertEquals(2, $upper->get(2, 3));
+
+        static::assertEquals(0, $upper->get(3, 0));
+        static::assertEquals(0, $upper->get(3, 1));
+        static::assertEquals(0, $upper->get(3, 2));
+        static::assertEquals(-1, $upper->get(3, 3));
+    }
+
+    public function testGetLower()
+    {
+        $matrix = new Matrix([
+            [ 2,  0,    2, 0.6],
+            [ 3,  3,    4,  -2],
+            [ 5,  5,    4,   2],
+            [-1, -2,  3.4,  -1],
+        ]);
+
+        $lower = $matrix->getLower();
+
+        static::assertEquals(1, $lower->get(0, 0));
+        static::assertEquals(0, $lower->get(0, 1));
+        static::assertEquals(0, $lower->get(0, 2));
+        static::assertEquals(0, $lower->get(0, 3));
+
+        static::assertEquals(3, $lower->get(1, 0));
+        static::assertEquals(1, $lower->get(1, 1));
+        static::assertEquals(0, $lower->get(1, 2));
+        static::assertEquals(0, $lower->get(1, 3));
+
+        static::assertEquals(5, $lower->get(2, 0));
+        static::assertEquals(5, $lower->get(2, 1));
+        static::assertEquals(1, $lower->get(2, 2));
+        static::assertEquals(0, $lower->get(2, 3));
+
+        static::assertEquals(-1, $lower->get(3, 0));
+        static::assertEquals(-2, $lower->get(3, 1));
+        static::assertEquals(3.4, $lower->get(3, 2));
+        static::assertEquals(1, $lower->get(3, 3));
+    }
+
     public function testNonSquareDeterminant()
     {
         $matrix = $this->buildMatrix();

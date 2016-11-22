@@ -37,6 +37,16 @@ class Matrix
     protected $lupPermutation;
 
     /**
+     * @var Matrix
+     */
+    protected $upper;
+
+    /**
+     * @var Matrix
+     */
+    protected $lower;
+
+    /**
      * __construct
      *
      * Example:
@@ -455,6 +465,54 @@ class Matrix
 
         $this->lupDecomposition = $decomposition;
         $this->lupPermutation = new static($permutationMatrix);
+    }
+
+    /**
+     * @return Matrix
+     */
+    public function getUpper(): Matrix
+    {
+        if (!$this->upper) {
+            $upper = [];
+
+            for ($i = 0; $i < $this->rowCount; $i++) {
+                $upper[] = [];
+
+                for ($j = 0; $j < $this->columnCount; $j++) {
+                    $upper[$i][] = $j >= $i ? $this->internal[$i][$j] : 0;
+                }
+            }
+
+            $this->upper = new static($upper);
+        }
+
+        return $this->upper;
+    }
+
+    /**
+     * @return Matrix
+     */
+    public function getLower(): Matrix
+    {
+        if (!$this->lower) {
+            $lower = [];
+
+            for ($i = 0; $i < $this->rowCount; $i++) {
+                $lower[] = [];
+
+                for ($j = 0; $j < $this->columnCount; $j++) {
+                    if ($i === $j) {
+                        $lower[$i][] = 1;
+                    } else {
+                        $lower[$i][] = $j < $i ? $this->internal[$i][$j] : 0;
+                    }
+                }
+            }
+
+            $this->lower = new static($lower);
+        }
+
+        return $this->lower;
     }
 
     /**
