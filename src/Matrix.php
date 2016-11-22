@@ -94,24 +94,6 @@ class Matrix
     }
 
     /**
-     * Adds either another matrix or a scalar to the current matrix, returning
-     * a new matrix instance.
-     *
-     * @param Matrix|int|float $value Matrix or scalar to add to this matrix
-     * @return Matrix
-     * @throws MatrixException
-     * @deprecated Use `addMatrix` or `addScalar` instead.
-     */
-    public function add($value)
-    {
-        if ($value instanceof Matrix) {
-            return $this->addMatrix($value);
-        }
-
-        return $this->addScalar($value);
-    }
-
-    /**
      * @param Matrix $value
      * @return Matrix
      * @throws MatrixException
@@ -195,24 +177,6 @@ class Matrix
     public function isSquare()
     {
         return $this->getRowCount() === $this->getColumnCount();
-    }
-
-    /**
-     * Multiplies either another matrix or a scalar with the current matrix,
-     * returning a new matrix instance.
-     *
-     * @param Matrix|int|float $value Matrix or scalar to multiply with this matrix
-     * @return Matrix
-     * @throws MatrixException
-     * @deprecated Use `multiplyMatrix` or `multiplyScalar` instead.
-     */
-    public function multiply($value)
-    {
-        if ($value instanceof Matrix) {
-            return $this->multiplyMatrix($value);
-        }
-
-        return $this->multiplyScalar($value);
     }
 
     /**
@@ -328,31 +292,6 @@ class Matrix
     }
 
     /**
-     * @return boolean
-     * @deprecated Not useful enough to remain. Test if the transpose is equal, instead.
-     */
-    public function isSymmetric()
-    {
-        if (!$this->isSquare()) {
-            return false;
-        }
-
-        for ($i = 0; $i < $this->getRowCount(); $i++) {
-            for ($j = 0; $j < $this->getColumnCount(); $j++) {
-                if ($i == $j) {
-                    continue;
-                }
-
-                if ($this->get($i, $j) != $this->get($j, $i)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * @return array
      */
     public function toArray()
@@ -460,24 +399,6 @@ class Matrix
         }
 
         return new static($literal);
-    }
-
-    /**
-     * Subtracts either another matrix or a scalar from the current matrix,
-     * returning a new matrix instance.
-     *
-     * @param Matrix|int|float $value Matrix or scalar to subtract from this matrix
-     * @return Matrix
-     * @throws MatrixException
-     * @deprecated Use `subtractMatrix` or `subtractScalar` instead.
-     */
-    public function subtract($value)
-    {
-        if ($value instanceof Matrix) {
-            return $this->subtractMatrix($value);
-        }
-
-        return $this->subtractScalar($value);
     }
 
     /**
