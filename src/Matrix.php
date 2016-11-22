@@ -4,47 +4,47 @@ declare(strict_types = 1);
 
 namespace mcordingley\LinearAlgebra;
 
-class Matrix
+final class Matrix
 {
     /**
      * @var int
      */
-    protected $columnCount;
+    private $columnCount;
 
     /**
      * @var int
      */
-    protected $rowCount;
+    private $rowCount;
 
     /**
      * @var array
      */
-    protected $internal;
+    private $internal;
 
     /**
      * @var Matrix
      */
-    protected $luDecomposition;
+    private $luDecomposition;
 
     /**
      * @var Matrix
      */
-    protected $lupDecomposition;
+    private $lupDecomposition;
 
     /**
      * @var Matrix
      */
-    protected $lupPermutation;
+    private $lupPermutation;
 
     /**
      * @var Matrix
      */
-    protected $upper;
+    private $upper;
 
     /**
      * @var Matrix
      */
-    protected $lower;
+    private $lower;
 
     /**
      * __construct
@@ -75,7 +75,7 @@ class Matrix
      * @param array $literal
      * @return boolean
      */
-    protected function isLiteralValid(array $literal): bool
+    private function isLiteralValid(array $literal): bool
     {
         if (!$literal) {
             return false;
