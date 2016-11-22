@@ -518,6 +518,70 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(3, $lu->get(3, 3));
     }
 
+    public function testGetLUPDecomposition()
+    {
+        $matrix = new Matrix([
+            [ 2,  0,    2, 0.6],
+            [ 3,  3,    4,  -2],
+            [ 5,  5,    4,   2],
+            [-1, -2,  3.4,  -1],
+        ]);
+
+        $lup = $matrix->getLUPDecomposition();
+
+        static::assertEquals(5, $lup->get(0, 0));
+        static::assertEquals(5, $lup->get(0, 1));
+        static::assertEquals(4, $lup->get(0, 2));
+        static::assertEquals(2, $lup->get(0, 3));
+
+        static::assertEquals(0.4, $lup->get(1, 0));
+        static::assertEquals(-2, $lup->get(1, 1));
+        static::assertEquals(0.4, $lup->get(1, 2));
+        static::assertEquals(-0.2, $lup->get(1, 3));
+
+        static::assertEquals(-0.2, $lup->get(2, 0));
+        static::assertEquals(0.5, $lup->get(2, 1));
+        static::assertEquals(4, $lup->get(2, 2));
+        static::assertEquals(-0.5, $lup->get(2, 3));
+
+        static::assertEquals(0.6, $lup->get(3, 0));
+        static::assertEquals(0, $lup->get(3, 1));
+        static::assertEquals(0.4, $lup->get(3, 2));
+        static::assertEquals(-3, $lup->get(3, 3));
+    }
+
+    public function testGetLUPPermutation()
+    {
+        $matrix = new Matrix([
+            [ 2,  0,    2, 0.6],
+            [ 3,  3,    4,  -2],
+            [ 5,  5,    4,   2],
+            [-1, -2,  3.4,  -1],
+        ]);
+
+        $lup = $matrix->getLUPPermutation();
+
+        static::assertEquals(0, $lup->get(0, 0));
+        static::assertEquals(0, $lup->get(0, 1));
+        static::assertEquals(1, $lup->get(0, 2));
+        static::assertEquals(0, $lup->get(0, 3));
+
+        static::assertEquals(1, $lup->get(1, 0));
+        static::assertEquals(0, $lup->get(1, 1));
+        static::assertEquals(0, $lup->get(1, 2));
+        static::assertEquals(0, $lup->get(1, 3));
+
+        static::assertEquals(0, $lup->get(2, 0));
+        static::assertEquals(0, $lup->get(2, 1));
+        static::assertEquals(0, $lup->get(2, 2));
+        static::assertEquals(1, $lup->get(2, 3));
+
+        static::assertEquals(0, $lup->get(3, 0));
+        static::assertEquals(1, $lup->get(3, 1));
+        static::assertEquals(0, $lup->get(3, 2));
+        static::assertEquals(0, $lup->get(3, 3));
+    }
+
     public function testNonSquareDeterminant()
     {
         $matrix = $this->buildMatrix();
