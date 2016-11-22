@@ -370,40 +370,6 @@ class Matrix
     }
 
     /**
-     * Returns a new matrix with the selected row and column removed, useful for
-     * calculating determinants or other recursive operations on matrices.
-     *
-     * @param int|null $row Row to remove, null to remove no row.
-     * @param int|null $column Column to remove, null to remove no column.
-     * @return Matrix
-     * @deprecated
-     */
-    public function submatrix($row = null, $column = null)
-    {
-        $literal = [];
-
-        for ($i = 0; $i < $this->getRowCount(); $i++) {
-            if ($i === $row) {
-                continue;
-            }
-
-            $rowLiteral = [];
-
-            for ($j = 0; $j < $this->getColumnCount(); $j++) {
-                if ($j === $column) {
-                    continue;
-                }
-
-                $rowLiteral[] = $this->get($i, $j);
-            }
-
-            $literal[] = $rowLiteral;
-        }
-
-        return new static($literal);
-    }
-
-    /**
      * @param Matrix $value
      * @return Matrix
      * @throws MatrixException
