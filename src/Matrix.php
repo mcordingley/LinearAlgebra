@@ -201,13 +201,22 @@ class Matrix
      */
     public function addMatrix(Matrix $value): Matrix
     {
-        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
-            throw new MatrixException('Cannot add two matrices of different size.');
-        }
+        $this->checkEqualSize($value);
 
         return $this->map(function ($element, $i, $j) use ($value) {
             return $element + $value->get($i, $j);
         });
+    }
+
+    /**
+     * @param Matrix $matrix
+     * @throws MatrixException
+     */
+    private function checkEqualSize(Matrix $matrix)
+    {
+        if ($this->getRowCount() !== $matrix->getRowCount() || $this->getColumnCount() !== $matrix->getColumnCount()) {
+            throw new MatrixException('Operation requires matrices of equal size: ' . print_r($this->internal, true) . ' ' . print_r($matrix->internal, true));
+        }
     }
 
     /**
@@ -228,9 +237,7 @@ class Matrix
      */
     public function subtractMatrix(Matrix $value): Matrix
     {
-        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->columnCount) {
-            throw new MatrixException('Cannot subtract two matrices of different size.');
-        }
+        $this->checkEqualSize($value);
 
         return $this->map(function ($element, $i, $j) use ($value) {
             return $element - $value->get($i, $j);
@@ -299,9 +306,7 @@ class Matrix
      */
     public function entrywise(Matrix $value): Matrix
     {
-        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
-            throw new MatrixException('Unable to take the entrywise product of matrices of dissimilar size.');
-        }
+        $this->checkEqualSize($value);
 
         $rows = $this->getRowCount();
         $columns = $this->getColumnCount();
@@ -324,11 +329,19 @@ class Matrix
      */
     public function adjoint(): Matrix
     {
-        if (!$this->isSquare()) {
-            throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->internal, true));
-        }
+        $this->checkSquare();
 
         return $this->inverse()->multiplyScalar($this->determinant());
+    }
+
+    /**
+     * @throws MatrixException
+     */
+    private function checkSquare()
+    {
+        if (!$this->isSquare()) {
+            throw new MatrixException('Operation can only be called on square matrix: ' . print_r($this->internal, true));
+        }
     }
 
     /**
@@ -337,9 +350,7 @@ class Matrix
      */
     public function inverse(): Matrix
     {
-        if (!$this->isSquare()) {
-            throw new MatrixException('Inverse can only be called on square matrices: ' . print_r($this->internal, true));
-        }
+        $this->checkSquare();
 
         if ($this->determinant() === 0) {
             throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->internal, true));
@@ -354,9 +365,7 @@ class Matrix
      */
     public function determinant(): float
     {
-        if (!$this->isSquare()) {
-            throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->internal, true));
-        }
+        $this->checkSquare();
 
         return $this->getLUDecomp()->determinant();
     }
@@ -367,6 +376,8 @@ class Matrix
     public function getLUDecomposition(): Matrix
     {
         if (!$this->luDecomposition) {
+            $this->checkSquare();
+
             $decomposition = new static($this->toArray());
 
             for ($k = 0; $k < $this->rowCount; $k++) {
@@ -418,6 +429,8 @@ class Matrix
      */
     private function calculateLUP()
     {
+        $this->checkSquare();
+
         $decomposition = new static($this->toArray());
         $permutations = range(0, $this->rowCount - 1);
 
@@ -580,9 +593,7 @@ class Matrix
      */
     public function trace(): float
     {
-        if (!$this->isSquare()) {
-            throw new MatrixException('Trace can only be called on square matrices: ' . print_r($this->internal, true));
-        }
+        $this->checkSquare();
 
         $trace = 0;
 
