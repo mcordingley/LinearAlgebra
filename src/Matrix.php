@@ -37,16 +37,6 @@ final class Matrix
     private $lupPermutation;
 
     /**
-     * @var Matrix
-     */
-    private $upper;
-
-    /**
-     * @var Matrix
-     */
-    private $lower;
-
-    /**
      * __construct
      *
      * Example:
@@ -498,25 +488,21 @@ final class Matrix
      */
     public function upper(bool $unitriangular): Matrix
     {
-        if (!$this->upper) {
-            $triangle = [];
+        $triangle = [];
 
-            for ($row = 0; $row < $this->rowCount; $row++) {
-                $triangle[] = [];
+        for ($row = 0; $row < $this->rowCount; $row++) {
+            $triangle[] = [];
 
-                for ($column = 0; $column < $this->columnCount; $column++) {
-                    if ($unitriangular && $row === $column) {
-                        $triangle[$row][] = 1;
-                    } else {
-                        $triangle[$row][] = $column < $row ? 0 : $this->internal[$row][$column];
-                    }
+            for ($column = 0; $column < $this->columnCount; $column++) {
+                if ($unitriangular && $row === $column) {
+                    $triangle[$row][] = 1;
+                } else {
+                    $triangle[$row][] = $column < $row ? 0 : $this->internal[$row][$column];
                 }
             }
-
-            $this->upper = new static($triangle);
         }
 
-        return $this->upper;
+        return new static($triangle);
     }
 
     /**
@@ -525,25 +511,21 @@ final class Matrix
      */
     public function lower(bool $unitriangular): Matrix
     {
-        if (!$this->lower) {
-            $triangle = [];
+        $triangle = [];
 
-            for ($row = 0; $row < $this->rowCount; $row++) {
-                $triangle[] = [];
+        for ($row = 0; $row < $this->rowCount; $row++) {
+            $triangle[] = [];
 
-                for ($column = 0; $column < $this->columnCount; $column++) {
-                    if ($unitriangular && $row === $column) {
-                        $triangle[$row][] = 1;
-                    } else {
-                        $triangle[$row][] = $row < $column ? 0 : $this->internal[$row][$column];
-                    }
+            for ($column = 0; $column < $this->columnCount; $column++) {
+                if ($unitriangular && $row === $column) {
+                    $triangle[$row][] = 1;
+                } else {
+                    $triangle[$row][] = $row < $column ? 0 : $this->internal[$row][$column];
                 }
             }
-
-            $this->lower = new static($triangle);
         }
 
-        return $this->lower;
+        return new static($triangle);
     }
 
     /**
