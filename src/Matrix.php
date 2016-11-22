@@ -493,7 +493,7 @@ final class Matrix
     }
 
     /**
-     * @param bool $unitriangular
+     * @param bool $unitriangular True to have ones along the diagonal. False to include parent matrix values, instead.
      * @return Matrix
      */
     public function getUpper(bool $unitriangular): Matrix
@@ -520,7 +520,7 @@ final class Matrix
     }
 
     /**
-     * @param bool $unitriangular
+     * @param bool $unitriangular True to have ones along the diagonal. False to include parent matrix values, instead.
      * @return Matrix
      */
     public function getLower(bool $unitriangular): Matrix
