@@ -96,19 +96,54 @@ class Matrix
     }
 
     /**
-     * @param Matrix $value
-     * @return Matrix
-     * @throws MatrixException
+     * @param int $row
+     * @param int $column
+     * @return float
      */
-    public function addMatrix(Matrix $value): Matrix
+    public function get($row, $column): float
     {
-        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
-            throw new MatrixException('Cannot add two matrices of different size.');
-        }
+        return $this->internal[$row][$column];
+    }
 
-        return $this->map(function ($element, $i, $j) use ($value) {
-            return $element + $value->get($i, $j);
-        });
+    /**
+     * @return boolean
+     */
+    public function isSquare(): bool
+    {
+        return $this->columnCount === $this->rowCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getColumnCount(): int
+    {
+        return $this->columnCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRowCount(): int
+    {
+        return $this->rowCount;
+    }
+
+    /**
+     * @param Matrix $matrix
+     * @return boolean
+     */
+    public function equals(Matrix $matrix): bool
+    {
+        return $this->internal === $matrix->internal;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->internal;
     }
 
     /**
@@ -140,13 +175,19 @@ class Matrix
     }
 
     /**
-     * @param int $row
-     * @param int $column
-     * @return float
+     * @param Matrix $value
+     * @return Matrix
+     * @throws MatrixException
      */
-    public function get($row, $column): float
+    public function addMatrix(Matrix $value): Matrix
     {
-        return $this->internal[$row][$column];
+        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
+            throw new MatrixException('Cannot add two matrices of different size.');
+        }
+
+        return $this->map(function ($element, $i, $j) use ($value) {
+            return $element + $value->get($i, $j);
+        });
     }
 
     /**
@@ -161,24 +202,30 @@ class Matrix
     }
 
     /**
+     * @param Matrix $value
      * @return Matrix
      * @throws MatrixException
      */
-    public function adjoint(): Matrix
+    public function subtractMatrix(Matrix $value): Matrix
     {
-        if (!$this->isSquare()) {
-            throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->internal, true));
+        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->columnCount) {
+            throw new MatrixException('Cannot subtract two matrices of different size.');
         }
 
-        return $this->inverse()->multiplyScalar($this->determinant());
+        return $this->map(function ($element, $i, $j) use ($value) {
+            return $element - $value->get($i, $j);
+        });
     }
 
     /**
-     * @return boolean
+     * @param float $value
+     * @return Matrix
      */
-    public function isSquare(): bool
+    public function subtractScalar(float $value): Matrix
     {
-        return $this->getRowCount() === $this->getColumnCount();
+        return $this->map(function ($element) use ($value) {
+            return $element - $value;
+        });
     }
 
     /**
@@ -255,6 +302,19 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
+    public function adjoint(): Matrix
+    {
+        if (!$this->isSquare()) {
+            throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->internal, true));
+        }
+
+        return $this->inverse()->multiplyScalar($this->determinant());
+    }
+
+    /**
+     * @return Matrix
+     * @throws MatrixException
+     */
     public function inverse(): Matrix
     {
         if (!$this->isSquare()) {
@@ -291,14 +351,6 @@ class Matrix
         }
 
         return $this->decomposition;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return $this->internal;
     }
 
     /**
@@ -361,42 +413,6 @@ class Matrix
     }
 
     /**
-     * @param Matrix $matrixB
-     * @return boolean
-     */
-    public function equals(Matrix $matrixB): bool
-    {
-        return $this->internal === $matrixB->internal;
-    }
-
-    /**
-     * @param Matrix $value
-     * @return Matrix
-     * @throws MatrixException
-     */
-    public function subtractMatrix(Matrix $value): Matrix
-    {
-        if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->columnCount) {
-            throw new MatrixException('Cannot subtract two matrices of different size.');
-        }
-
-        return $this->map(function ($element, $i, $j) use ($value) {
-            return $element - $value->get($i, $j);
-        });
-    }
-
-    /**
-     * @param float $value
-     * @return Matrix
-     */
-    public function subtractScalar(float $value): Matrix
-    {
-        return $this->map(function ($element) use ($value) {
-            return $element - $value;
-        });
-    }
-
-    /**
      * @return float
      * @throws MatrixException
      */
@@ -431,21 +447,5 @@ class Matrix
         }
 
         return new static($literal);
-    }
-
-    /**
-     * @return int
-     */
-    public function getColumnCount(): int
-    {
-        return $this->columnCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRowCount(): int
-    {
-        return $this->rowCount;
     }
 }
