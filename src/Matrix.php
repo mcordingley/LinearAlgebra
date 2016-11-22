@@ -582,7 +582,7 @@ final class Matrix
         for ($row = 0; $row < $this->rowCount; $row++) {
             $diagonal[] = [];
 
-            for ($column = 0; $column < $this->rowCount; $column++) {
+            for ($column = 0; $column < $this->columnCount; $column++) {
                 $diagonal[$row][] = $row === $column ? $this->get($row, $column) : 0;
             }
         }
