@@ -53,7 +53,7 @@ class Matrix
      * @param array $literal
      * @return boolean
      */
-    protected function isLiteralValid(array $literal)
+    protected function isLiteralValid(array $literal): bool
     {
         if (!$literal) {
             return false;
@@ -78,7 +78,7 @@ class Matrix
      * @param int $size How many rows and columns the identity matrix should have
      * @return Matrix
      */
-    public static function identity($size)
+    public static function identity(int $size): Matrix
     {
         $literal = [];
 
@@ -98,7 +98,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function addMatrix(Matrix $value)
+    public function addMatrix(Matrix $value): Matrix
     {
         if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
             throw new MatrixException('Cannot add two matrices of different size.');
@@ -120,7 +120,7 @@ class Matrix
      * @param callable $callback
      * @return Matrix
      */
-    public function map(callable $callback)
+    public function map(callable $callback): Matrix
     {
         $literal = [];
 
@@ -142,7 +142,7 @@ class Matrix
      * @param int $column
      * @return float
      */
-    public function get($row, $column)
+    public function get($row, $column): float
     {
         return $this->internal[$row][$column];
     }
@@ -151,7 +151,7 @@ class Matrix
      * @param float $value
      * @return Matrix
      */
-    public function addScalar($value)
+    public function addScalar($value): Matrix
     {
         return $this->map(function ($element) use ($value) {
             return $element + $value;
@@ -162,7 +162,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function adjoint()
+    public function adjoint(): Matrix
     {
         if (!$this->isSquare()) {
             throw new MatrixException('Adjoints can only be called on square matrices: ' . print_r($this->internal, true));
@@ -174,7 +174,7 @@ class Matrix
     /**
      * @return boolean
      */
-    public function isSquare()
+    public function isSquare(): bool
     {
         return $this->getRowCount() === $this->getColumnCount();
     }
@@ -184,7 +184,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function multiplyMatrix(Matrix $value)
+    public function multiplyMatrix(Matrix $value): Matrix
     {
         if ($this->getColumnCount() !== $value->getRowCount()) {
             throw new MatrixException('Cannot multiply matrices of these sizes.');
@@ -215,7 +215,7 @@ class Matrix
      * @param float $value
      * @return Matrix
      */
-    public function multiplyScalar($value)
+    public function multiplyScalar(float $value): Matrix
     {
         return $this->map(function ($element) use ($value) {
             return $element * $value;
@@ -224,11 +224,11 @@ class Matrix
 
     /**
      * @param Matrix $value
-     * @return static
+     * @return Matrix
      * @throws MatrixException
      * @link https://en.wikipedia.org/wiki/Hadamard_product_%28matrices%29
      */
-    public function entrywise(Matrix $value)
+    public function entrywise(Matrix $value): Matrix
     {
         if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->getColumnCount()) {
             throw new MatrixException('Unable to take the entrywise product of matrices of dissimilar size.');
@@ -253,7 +253,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function inverse()
+    public function inverse(): Matrix
     {
         if (!$this->isSquare()) {
             throw new MatrixException('Inverse can only be called on square matrices: ' . print_r($this->internal, true));
@@ -270,7 +270,7 @@ class Matrix
      * @return float The matrix's determinant
      * @throws MatrixException
      */
-    public function determinant()
+    public function determinant(): float
     {
         if (!$this->isSquare()) {
             throw new MatrixException('Determinants can only be called on square matrices: ' . print_r($this->internal, true));
@@ -294,7 +294,7 @@ class Matrix
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->internal;
     }
@@ -304,7 +304,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function concatenateBottom(Matrix $other)
+    public function concatenateBottom(Matrix $other): Matrix
     {
         if ($this->getColumnCount() !== $other->getColumnCount()) {
             throw new MatrixException(
@@ -323,7 +323,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function concatenateRight(Matrix $other)
+    public function concatenateRight(Matrix $other): Matrix
     {
         if ($this->getRowCount() !== $other->getRowCount()) {
             throw new MatrixException(
@@ -346,7 +346,7 @@ class Matrix
     /**
      * @return Matrix
      */
-    public function diagonal()
+    public function diagonal(): Matrix
     {
         $diagonal = [];
         $max = min([$this->getRowCount(), $this->getColumnCount()]);
@@ -362,7 +362,7 @@ class Matrix
      * @param Matrix $matrixB
      * @return boolean
      */
-    public function equals(Matrix $matrixB)
+    public function equals(Matrix $matrixB): bool
     {
         return $this->internal === $matrixB->internal;
     }
@@ -406,7 +406,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function subtractMatrix(Matrix $value)
+    public function subtractMatrix(Matrix $value): Matrix
     {
         if ($this->getRowCount() !== $value->getRowCount() || $this->getColumnCount() !== $value->columnCount) {
             throw new MatrixException('Cannot subtract two matrices of different size.');
@@ -421,7 +421,7 @@ class Matrix
      * @param float $value
      * @return Matrix
      */
-    public function subtractScalar($value)
+    public function subtractScalar(float $value): Matrix
     {
         return $this->map(function ($element) use ($value) {
             return $element - $value;
@@ -432,7 +432,7 @@ class Matrix
      * @return float
      * @throws MatrixException
      */
-    public function trace()
+    public function trace(): float
     {
         if (!$this->isSquare()) {
             throw new MatrixException('Trace can only be called on square matrices: ' . print_r($this->internal, true));
@@ -450,7 +450,7 @@ class Matrix
     /**
      * @return Matrix
      */
-    public function transpose()
+    public function transpose(): Matrix
     {
         $literal = [];
 
@@ -468,7 +468,7 @@ class Matrix
     /**
      * @return int
      */
-    public function getColumnCount()
+    public function getColumnCount(): int
     {
         return $this->columnCount;
     }
@@ -476,7 +476,7 @@ class Matrix
     /**
      * @return int
      */
-    public function getRowCount()
+    public function getRowCount(): int
     {
         return $this->rowCount;
     }

@@ -111,7 +111,7 @@ final class LUDecomposition extends Matrix
      *
      * @return float
      */
-    public function determinant()
+    public function determinant(): float
     {
         $rowCount = $this->getRowCount();
         $determinant = $this->parity;   // Start with +1 for an even # of row swaps, -1 for an odd #
@@ -199,7 +199,7 @@ final class LUDecomposition extends Matrix
      *
      * @return Matrix
      */
-    public function inverse()
+    public function inverse(): Matrix
     {
         $inverse = [];
         $rowCount = $this->getRowCount();
