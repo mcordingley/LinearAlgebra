@@ -2,9 +2,7 @@
 
 namespace mcordingley\LinearAlgebra;
 
-use ArrayAccess;
-
-class Matrix implements ArrayAccess
+class Matrix
 {
     /**
      * @var int
@@ -547,66 +545,6 @@ class Matrix implements ArrayAccess
     }
 
     /**
-     * @param mixed $offset
-     * @return bool
-     * @deprecated Use `get()` instead of ArrayAccess methods.
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->internal[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     * @return mixed
-     * @deprecated Use `get()` instead of ArrayAccess methods.
-     */
-    public function offsetGet($offset)
-    {
-        return $this->internal[$offset];
-    }
-
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     * @throws MatrixException
-     * @deprecated Use `get()` instead of ArrayAccess methods.
-     */
-    public function offsetSet($offset, $value)
-    {
-        throw new MatrixException('Attempt to set a value on a matrix. Matrix instances are immutable.');
-    }
-
-    /**
-     * @param mixed $offset
-     * @throws MatrixException
-     * @deprecated Use `get()` instead of ArrayAccess methods.
-     */
-    public function offsetUnset($offset)
-    {
-        throw new MatrixException('Attempt to unset a value on a matrix. Matrix instances are immutable.');
-    }
-
-    /**
-     * Magic method to make the public "properties" read-only.
-     *
-     * @param string $property
-     * @return int|null
-     * @deprecated Use `getColumns` or `getRows` instead
-     */
-    public function __get($property)
-    {
-        switch ($property) {
-            case 'columns':
-                return $this->getColumnCount();
-            case 'rows':
-                return $this->getRowCount();
-            default:
-                return null;
-        }
-    }
-
-    /**
      * @return int
      */
     public function getColumnCount()
@@ -620,18 +558,5 @@ class Matrix implements ArrayAccess
     public function getRowCount()
     {
         return $this->rowCount;
-    }
-
-    /**
-     * @return string
-     * @deprecated
-     */
-    public function __toString()
-    {
-        $rowStrings = array_map(function ($row) {
-            return '[' . implode(', ', $row) . ']';
-        }, $this->internal);
-
-        return '[' . implode(', ', $rowStrings) . ']';
     }
 }
