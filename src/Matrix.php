@@ -496,7 +496,7 @@ final class Matrix
      * @param bool $unitriangular True to have ones along the diagonal. False to include parent matrix values, instead.
      * @return Matrix
      */
-    public function getUpper(bool $unitriangular): Matrix
+    public function upper(bool $unitriangular): Matrix
     {
         if (!$this->upper) {
             $triangle = [];
@@ -523,7 +523,7 @@ final class Matrix
      * @param bool $unitriangular True to have ones along the diagonal. False to include parent matrix values, instead.
      * @return Matrix
      */
-    public function getLower(bool $unitriangular): Matrix
+    public function lower(bool $unitriangular): Matrix
     {
         if (!$this->lower) {
             $triangle = [];

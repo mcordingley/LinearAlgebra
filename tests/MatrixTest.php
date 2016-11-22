@@ -595,7 +595,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [-1, -2,  3.4,  -1],
         ]);
 
-        $upper = $matrix->getUpper(true);
+        $upper = $matrix->upper(true);
 
         static::assertEquals(1, $upper->get(0, 0));
         static::assertEquals(0, $upper->get(0, 1));
@@ -627,7 +627,7 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
             [-1, -2,  3.4,  -1],
         ]);
 
-        $lower = $matrix->getLower(true);
+        $lower = $matrix->lower(true);
 
         static::assertEquals(1, $lower->get(0, 0));
         static::assertEquals(0, $lower->get(0, 1));
