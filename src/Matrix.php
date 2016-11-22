@@ -493,48 +493,54 @@ class Matrix
     }
 
     /**
+     * @param bool $unitriangular
      * @return Matrix
      */
-    public function getUpper(): Matrix
+    public function getUpper(bool $unitriangular): Matrix
     {
         if (!$this->upper) {
-            $upper = [];
+            $triangle = [];
 
-            for ($i = 0; $i < $this->rowCount; $i++) {
-                $upper[] = [];
+            for ($row = 0; $row < $this->rowCount; $row++) {
+                $triangle[] = [];
 
-                for ($j = 0; $j < $this->columnCount; $j++) {
-                    $upper[$i][] = $j >= $i ? $this->internal[$i][$j] : 0;
+                for ($column = 0; $column < $this->columnCount; $column++) {
+                    if ($unitriangular && $row === $column) {
+                        $triangle[$row][] = 1;
+                    } else {
+                        $triangle[$row][] = $column < $row ? 0 : $this->internal[$row][$column];
+                    }
                 }
             }
 
-            $this->upper = new static($upper);
+            $this->upper = new static($triangle);
         }
 
         return $this->upper;
     }
 
     /**
+     * @param bool $unitriangular
      * @return Matrix
      */
-    public function getLower(): Matrix
+    public function getLower(bool $unitriangular): Matrix
     {
         if (!$this->lower) {
-            $lower = [];
+            $triangle = [];
 
-            for ($i = 0; $i < $this->rowCount; $i++) {
-                $lower[] = [];
+            for ($row = 0; $row < $this->rowCount; $row++) {
+                $triangle[] = [];
 
-                for ($j = 0; $j < $this->columnCount; $j++) {
-                    if ($i === $j) {
-                        $lower[$i][] = 1;
+                for ($column = 0; $column < $this->columnCount; $column++) {
+                    if ($unitriangular && $row === $column) {
+                        $triangle[$row][] = 1;
                     } else {
-                        $lower[$i][] = $j < $i ? $this->internal[$i][$j] : 0;
+                        $triangle[$row][] = $row < $column ? 0 : $this->internal[$row][$column];
                     }
                 }
             }
 
-            $this->lower = new static($lower);
+            $this->lower = new static($triangle);
         }
 
         return $this->lower;
