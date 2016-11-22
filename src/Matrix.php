@@ -22,9 +22,9 @@ class Matrix
     protected $internal;
 
     /**
-     * @var LUDecomposition
+     * @var Matrix
      */
-    protected $decomposition;
+    protected $luDecomposition;
 
     /**
      * __construct
@@ -342,15 +342,29 @@ class Matrix
     }
 
     /**
-     * @return LUDecomposition
+     * @return Matrix
      */
-    protected function getLUDecomp()
+    public function getLUDecomposition(): Matrix
     {
-        if (!$this->decomposition) {
-            $this->decomposition = new LUDecomposition($this->internal);
+        if (!$this->luDecomposition) {
+            $decomposition = new static($this->toArray());
+
+            for ($k = 0; $k < $this->rowCount; $k++) {
+                for ($i = $k + 1; $i < $this->rowCount; $i++) {
+                    $decomposition->internal[$i][$k] = $decomposition->internal[$i][$k] / $decomposition->internal[$k][$k];
+                }
+
+                for ($i = $k + 1; $i < $this->rowCount; $i++) {
+                    for ($j = $k + 1; $j < $this->rowCount; $j++) {
+                        $decomposition->internal[$i][$j] = $decomposition->internal[$i][$j] - $decomposition->internal[$i][$k] * $decomposition->internal[$k][$j];
+                    }
+                }
+            }
+
+            $this->luDecomposition = $decomposition;
         }
 
-        return $this->decomposition;
+        return $this->luDecomposition;
     }
 
     /**
