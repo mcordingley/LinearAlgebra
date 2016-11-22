@@ -332,11 +332,15 @@ class MatrixTest extends \PHPUnit_Framework_TestCase
 
         $diagonal = $matrix->diagonal();
 
-        static::assertEquals(1, $diagonal->getRowCount());
-        static::assertEquals(3, $diagonal->getColumnCount());
         static::assertEquals(1, $diagonal->get(0, 0));
-        static::assertEquals(5, $diagonal->get(0, 1));
-        static::assertEquals(9, $diagonal->get(0, 2));
+        static::assertEquals(0, $diagonal->get(0, 1));
+        static::assertEquals(0, $diagonal->get(0, 2));
+        static::assertEquals(0, $diagonal->get(1, 0));
+        static::assertEquals(5, $diagonal->get(1, 1));
+        static::assertEquals(0, $diagonal->get(1, 2));
+        static::assertEquals(0, $diagonal->get(2, 0));
+        static::assertEquals(0, $diagonal->get(2, 1));
+        static::assertEquals(9, $diagonal->get(2, 2));
     }
 
     public function testTrace()

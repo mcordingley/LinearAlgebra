@@ -596,13 +596,16 @@ class Matrix
     public function diagonal(): Matrix
     {
         $diagonal = [];
-        $max = min([$this->getRowCount(), $this->getColumnCount()]);
 
-        for ($i = 0; $i < $max; $i++) {
-            $diagonal[] = $this->get($i, $i);
+        for ($row = 0; $row < $this->rowCount; $row++) {
+            $diagonal[] = [];
+
+            for ($column = 0; $column < $this->rowCount; $column++) {
+                $diagonal[$row][] = $row === $column ? $this->get($row, $column) : 0;
+            }
         }
 
-        return new static([$diagonal]);
+        return new static($diagonal);
     }
 
     /**
