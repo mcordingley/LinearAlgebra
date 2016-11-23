@@ -4,7 +4,7 @@ namespace mcordingley\LinearAlgebra;
 
 use Exception;
 
-class MatrixException extends Exception
+final class MatrixException extends Exception
 {
     //
 }
