@@ -9,16 +9,6 @@ use mcordingley\LinearAlgebra\Decomposition\LU;
 final class Matrix
 {
     /**
-     * @var int
-     */
-    private $columnCount;
-
-    /**
-     * @var int
-     */
-    private $rowCount;
-
-    /**
      * @var array
      */
     private $internal;
@@ -36,21 +26,18 @@ final class Matrix
      */
     public function __construct(array $literal)
     {
-        if (!$this->isLiteralValid($literal)) {
+        if (!static::isLiteralValid($literal)) {
             throw new MatrixException('Invalid array provided: ' . print_r($literal, true));
         }
 
         $this->internal = $literal;
-
-        $this->rowCount = count($literal);
-        $this->columnCount = count($literal[0]);
     }
 
     /**
      * @param array $literal
      * @return boolean
      */
-    private function isLiteralValid(array $literal): bool
+    private static function isLiteralValid(array $literal): bool
     {
         if (!$literal) {
             return false;
@@ -105,7 +92,7 @@ final class Matrix
      */
     public function isSquare(): bool
     {
-        return $this->columnCount === $this->rowCount;
+        return $this->getColumnCount() === $this->getRowCount();
     }
 
     /**
@@ -113,7 +100,7 @@ final class Matrix
      */
     public function getColumnCount(): int
     {
-        return $this->columnCount;
+        return count($this->internal[0]);
     }
 
     /**
@@ -121,7 +108,7 @@ final class Matrix
      */
     public function getRowCount(): int
     {
-        return $this->rowCount;
+        return count($this->internal);
     }
 
     /**
@@ -156,10 +143,10 @@ final class Matrix
     {
         $literal = [];
 
-        for ($i = 0; $i < $this->getRowCount(); $i++) {
+        for ($i = 0, $rows = $this->getRowCount(); $i < $rows; $i++) {
             $row = [];
 
-            for ($j = 0; $j < $this->getColumnCount(); $j++) {
+            for ($j = 0, $columns = $this->getColumnCount(); $j < $columns; $j++) {
                 $row[] = $callback($this->get($i, $j), $i, $j, $this);
             }
 
@@ -243,13 +230,13 @@ final class Matrix
 
         $literal = [];
 
-        for ($i = 0; $i < $this->getRowCount(); $i++) {
+        for ($i = 0, $rows = $this->getRowCount(); $i < $rows; $i++) {
             $row = [];
 
-            for ($j = 0; $j < $value->columnCount; $j++) {
+            for ($j = 0, $valueColumns = $value->getColumnCount(); $j < $valueColumns; $j++) {
                 $sum = 0;
 
-                for ($k = 0; $k < $this->getColumnCount(); $k++) {
+                for ($k = 0, $columns = $this->getColumnCount(); $k < $columns; $k++) {
                     $sum += $this->get($i, $k) * $value->get($k, $j);
                 }
 
@@ -283,14 +270,12 @@ final class Matrix
     {
         $this->checkEqualSize($value);
 
-        $rows = $this->getRowCount();
-        $columns = $this->getColumnCount();
         $product = [];
 
-        for ($row = 0; $row < $rows; $row++) {
+        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
             $product[] = [];
 
-            for ($column = 0; $column < $columns; $column++) {
+            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
                 $product[$row][$column] = $this->get($row, $column) * $value->get($row, $column);
             }
         }
@@ -350,7 +335,7 @@ final class Matrix
 
         $determinant = 1.0;
 
-        for ($i = 0; $i < $decomp->rowCount; $i++) {
+        for ($i = 0, $size = $decomp->getRowCount(); $i < $size; $i++) {
             $determinant *= $decomp->get($i, $i);
         }
 
@@ -365,10 +350,10 @@ final class Matrix
     {
         $triangle = [];
 
-        for ($row = 0; $row < $this->rowCount; $row++) {
+        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
             $triangle[] = [];
 
-            for ($column = 0; $column < $this->columnCount; $column++) {
+            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
                 if ($unitriangular && $row === $column) {
                     $triangle[$row][] = 1;
                 } else {
@@ -388,10 +373,10 @@ final class Matrix
     {
         $triangle = [];
 
-        for ($row = 0; $row < $this->rowCount; $row++) {
+        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
             $triangle[] = [];
 
-            for ($column = 0; $column < $this->columnCount; $column++) {
+            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
                 if ($unitriangular && $row === $column) {
                     $triangle[$row][] = 1;
                 } else {
@@ -440,7 +425,7 @@ final class Matrix
 
         $concatenated = [];
 
-        for ($i = 0; $i < $this->getRowCount(); $i++) {
+        for ($i = 0, $rows = $this->getRowCount(); $i < $rows; $i++) {
             $concatenated[] = array_merge($this->internal[$i], $other->internal[$i]);
         }
 
@@ -454,10 +439,10 @@ final class Matrix
     {
         $diagonal = [];
 
-        for ($row = 0; $row < $this->rowCount; $row++) {
+        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
             $diagonal[] = [];
 
-            for ($column = 0; $column < $this->columnCount; $column++) {
+            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
                 $diagonal[$row][] = $row === $column ? $this->get($row, $column) : 0;
             }
         }
@@ -475,7 +460,7 @@ final class Matrix
 
         $trace = 0;
 
-        for ($i = 0; $i < $this->getRowCount(); $i++) {
+        for ($i = 0, $rows = $this->getRowCount(); $i < $rows; $i++) {
             $trace += $this->get($i, $i);
         }
 
@@ -489,10 +474,10 @@ final class Matrix
     {
         $literal = [];
 
-        for ($i = 0; $i < $this->getColumnCount(); $i++) {
+        for ($i = 0, $columns = $this->getColumnCount(); $i < $columns; $i++) {
             $literal[] = [];
 
-            for ($j = 0; $j < $this->getRowCount(); $j++) {
+            for ($j = 0, $rows = $this->getRowCount(); $j < $rows; $j++) {
                 $literal[$i][] = $this->get($j, $i);
             }
         }
