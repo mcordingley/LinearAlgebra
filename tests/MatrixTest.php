@@ -408,7 +408,7 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         $matrix->inverse();
     }
 
-    public function testAdjoint()
+    public function testAdjugate()
     {
         $matrix = new Matrix([
             [1, -1, 2],
@@ -416,7 +416,7 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
             [0, 1, -1],
         ]);
 
-        $adjoint = $matrix->adjoint();
+        $adjoint = $matrix->adjugate();
 
         static::assertEquals(-6, $adjoint->get(0, 0));
         static::assertEquals(1, $adjoint->get(0, 1));

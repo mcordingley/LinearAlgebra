@@ -287,7 +287,7 @@ final class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function adjoint(): Matrix
+    public function adjugate(): Matrix
     {
         $this->checkSquare();
 
