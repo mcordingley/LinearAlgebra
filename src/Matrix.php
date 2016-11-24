@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace mcordingley\LinearAlgebra;
 
+use mcordingley\LinearAlgebra\Decomposition\LU;
+
 final class Matrix
 {
     /**
@@ -22,23 +24,6 @@ final class Matrix
     private $internal;
 
     /**
-     * @var Matrix
-     */
-    private $luDecomposition;
-
-    /**
-     * @var Matrix
-     */
-    private $lupDecomposition;
-
-    /**
-     * @var Matrix
-     */
-    private $lupPermutation;
-
-    /**
-     * __construct
-     *
      * Example:
      *      $transform = new Matrix([
      *          [0, 1, 2],
@@ -357,7 +342,7 @@ final class Matrix
         $this->checkSquare();
 
         try {
-            $decomp = $this->getLUDecomposition();
+            $decomp = (new LU($this))->getUpper();
         } catch (MatrixException $exception) {
             // Singular matrix, so determinant is defined to be zero.
             return 0.0;
@@ -370,116 +355,6 @@ final class Matrix
         }
 
         return $determinant;
-    }
-
-    /**
-     * @return Matrix
-     */
-    public function getLUDecomposition(): Matrix
-    {
-        if (!$this->luDecomposition) {
-            $this->checkSquare();
-
-            $decomposition = new static($this->toArray());
-
-            for ($k = 0; $k < $this->rowCount; $k++) {
-                for ($i = $k + 1; $i < $this->rowCount; $i++) {
-                    $decomposition->internal[$i][$k] = $decomposition->internal[$i][$k] / $decomposition->internal[$k][$k];
-                }
-
-                for ($i = $k + 1; $i < $this->rowCount; $i++) {
-                    for ($j = $k + 1; $j < $this->rowCount; $j++) {
-                        $decomposition->internal[$i][$j] = $decomposition->internal[$i][$j] - $decomposition->internal[$i][$k] * $decomposition->internal[$k][$j];
-                    }
-                }
-            }
-
-            $this->luDecomposition = $decomposition;
-        }
-
-        return $this->luDecomposition;
-    }
-
-    /**
-     * @return Matrix
-     * @throws MatrixException
-     */
-    public function getLUPDecomposition(): Matrix
-    {
-        if (!$this->lupDecomposition) {
-            $this->calculateLUP();
-        }
-
-        return $this->lupDecomposition;
-    }
-
-    /**
-     * @return Matrix
-     * @throws MatrixException
-     */
-    public function getLUPPermutation(): Matrix
-    {
-        if (!$this->lupDecomposition) {
-            $this->calculateLUP();
-        }
-
-        return $this->lupPermutation;
-    }
-
-    /**
-     * @throws MatrixException
-     */
-    private function calculateLUP()
-    {
-        $this->checkSquare();
-
-        $decomposition = new static($this->toArray());
-        $permutations = range(0, $this->rowCount - 1);
-
-        for ($k = 0; $k < $this->rowCount; $k++) {
-            $p = 0.0;
-            $kPrime = $k;
-
-            for ($i = $k; $i < $this->rowCount; $i++) {
-                $absolute = abs($decomposition->internal[$i][$k]);
-
-                if ($absolute > $p) {
-                    $p = $absolute;
-                    $kPrime = $i;
-                }
-            }
-
-            if ($p === 0.0) {
-                throw new MatrixException('Cannot take the LUP decomposition of a singular matrix: ' . print_r($this->internal, true));
-            }
-
-            list($permutations[$k], $permutations[$kPrime]) = [$permutations[$kPrime], $permutations[$k]];
-
-            for ($i = 0; $i < $this->rowCount; $i++) {
-                list($decomposition->internal[$k][$i], $decomposition->internal[$kPrime][$i]) = [$decomposition->internal[$kPrime][$i], $decomposition->internal[$k][$i]];
-            }
-
-            for ($i = $k + 1; $i < $this->rowCount; $i++) {
-                $decomposition->internal[$i][$k] = $decomposition->internal[$i][$k] / $decomposition->internal[$k][$k];
-
-                for ($j = $k + 1; $j < $this->rowCount; $j++) {
-                    $decomposition->internal[$i][$j] = $decomposition->internal[$i][$j] - $decomposition->internal[$i][$k] * $decomposition->internal[$k][$j];
-                }
-            }
-        }
-
-        $permutationMatrix = [];
-
-        for ($i = 0; $i < $this->rowCount; $i++) {
-            $permutationMatrix[] = [];
-
-            for ($j = 0; $j < $this->rowCount; $j++) {
-                $permutationMatrix[$i][] = $permutations[$i] === $j ? 1 : 0;
-            }
-        }
-
-        $this->lupDecomposition = $decomposition;
-        $this->lupPermutation = new static($permutationMatrix);
     }
 
     /**
