@@ -496,6 +496,18 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         static::assertEquals(-306, $matrix->determinant());
     }
 
+    public function testSingularDeterminant()
+    {
+        $matrix = new Matrix([
+            [0, 1],
+            [0, 1],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix->determinant();
+    }
+
     public function testGetUpper()
     {
         $matrix = new Matrix([
