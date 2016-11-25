@@ -24,6 +24,18 @@ final class LUPTest extends PHPUnit_Framework_TestCase
         new LUP($matrix);
     }
 
+    public function testSingularMatrix()
+    {
+        $matrix = new Matrix([
+            [0, 1],
+            [0, 1],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        new LUP($matrix);
+    }
+
     public function testGetLower()
     {
         $lower = $this->getDecomposition()->getLower();
