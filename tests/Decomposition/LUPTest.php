@@ -6,10 +6,24 @@ namespace mcordingley\LinearAlgebraTest;
 
 use mcordingley\LinearAlgebra\Decomposition\LUP;
 use mcordingley\LinearAlgebra\Matrix;
+use mcordingley\LinearAlgebra\MatrixException;
 use PHPUnit_Framework_TestCase;
 
 final class LUPTest extends PHPUnit_Framework_TestCase
 {
+    public function testNonSquare()
+    {
+        $matrix = new Matrix([
+            [2,  3,  1,  5],
+            [6, 13,  5, 19],
+            [2, 19, 10, 23],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        new LUP($matrix);
+    }
+
     public function testGetLower()
     {
         $lower = $this->getDecomposition()->getLower();
