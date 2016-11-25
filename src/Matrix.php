@@ -312,11 +312,72 @@ final class Matrix
     {
         $this->checkSquare();
 
-        if ($this->determinant() === 0) {
-            throw new MatrixException('This matrix has a zero determinant and is therefore not invertable: ' . print_r($this->internal, true));
+        $size = $this->getRowCount();
+        $transpose = $this->transpose();
+        $aTa = $transpose->multiplyMatrix($this);
+
+        $padded = $aTa->pad((int) pow(2, ceil(log($size, 2))));
+        $inverted = $this->recursiveSolveInverse($padded);
+        $trimmed = $inverted->sliceRows(0, $size)->sliceColumns(0, $size);
+
+        return $trimmed->multiplyMatrix($transpose);
+    }
+
+    /**
+     * @param int $size
+     * @return Matrix
+     */
+    private function pad(int $size): self
+    {
+        $nextPower = pow(2, ceil(log($size, 2)));
+        $padded = $this->toArray();
+
+        for ($row = 0; $row < $size; $row++) {
+            for ($column = $size; $column < $nextPower; $column++) {
+                $padded[$row][$column] = $row === $column ? 1 : 0;
+            }
         }
 
-        return $this->getLUDecomp()->inverse();
+        for ($row = $size; $row < $nextPower; $row++) {
+            $padded[] = [];
+
+            for ($column = 0; $column < $nextPower; $column++) {
+                $padded[$row][$column] = $row === $column ? 1 : 0;
+            }
+        }
+
+        return new static($padded);
+    }
+
+    /**
+     * @param Matrix $source
+     * @return Matrix
+     */
+    private function recursiveSolveInverse(self $source): self
+    {
+
+    }
+
+    /**
+     * @param int $offset
+     * @param int|null $length
+     * @return Matrix
+     */
+    private function sliceRows(int $offset, int $length = null): self
+    {
+        return new static(array_slice($this->toArray(), $offset, $length));
+    }
+
+    /**
+     * @param int $offset
+     * @param int|null $length
+     * @return Matrix
+     */
+    private function sliceColumns(int $offset, int $length = null): self
+    {
+        return new static(array_map(function (array $row) use ($offset, $length) {
+            return array_slice($row, $offset, $length);
+        }, $this->toArray()));
     }
 
     /**
