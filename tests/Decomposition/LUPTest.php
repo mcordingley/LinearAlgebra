@@ -36,9 +36,9 @@ final class LUPTest extends PHPUnit_Framework_TestCase
         new LUP($matrix);
     }
 
-    public function testGetLower()
+    public function testLower()
     {
-        $lower = $this->getDecomposition()->getLower();
+        $lower = $this->getDecomposition()->lower();
 
         static::assertEquals(1, $lower->get(0, 0));
         static::assertEquals(0, $lower->get(0, 1));
@@ -72,9 +72,9 @@ final class LUPTest extends PHPUnit_Framework_TestCase
 
         return new LUP($matrix);
     }
-    public function testGetUpper()
+    public function testUpper()
     {
-        $upper = $this->getDecomposition()->getUpper();
+        $upper = $this->getDecomposition()->upper();
 
         static::assertEquals(5, $upper->get(0, 0));
         static::assertEquals(5, $upper->get(0, 1));
@@ -97,14 +97,14 @@ final class LUPTest extends PHPUnit_Framework_TestCase
         static::assertEquals(-3, $upper->get(3, 3));
     }
 
-    public function testGetParity()
+    public function testParity()
     {
-        static::assertEquals(3, $this->getDecomposition()->getParity());
+        static::assertEquals(3, $this->getDecomposition()->parity());
     }
 
-    public function testGetPermutationArray()
+    public function testPermutationArray()
     {
-        $permutation = $this->getDecomposition()->getPermutationArray();
+        $permutation = $this->getDecomposition()->permutationArray();
 
         static::assertEquals(2, $permutation[0]);
         static::assertEquals(0, $permutation[1]);
@@ -112,9 +112,9 @@ final class LUPTest extends PHPUnit_Framework_TestCase
         static::assertEquals(1, $permutation[3]);
     }
 
-    public function testGetPermutationMatrix()
+    public function testPermutationMatrix()
     {
-        $permutation = $this->getDecomposition()->getPermutationMatrix();
+        $permutation = $this->getDecomposition()->permutationMatrix();
 
         static::assertEquals(0, $permutation->get(0, 0));
         static::assertEquals(0, $permutation->get(0, 1));

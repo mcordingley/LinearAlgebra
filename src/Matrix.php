@@ -416,7 +416,7 @@ final class Matrix
             return 0.0;
         }
 
-        $upper = $decomp->getUpper();
+        $upper = $decomp->upper();
 
         $determinant = 1.0;
 
@@ -424,7 +424,7 @@ final class Matrix
             $determinant *= $upper->get($i, $i);
         }
 
-        $sign = $decomp->getParity() % 2 ? -1 : 1;
+        $sign = $decomp->parity() % 2 ? -1 : 1;
 
         return $sign * $determinant;
     }

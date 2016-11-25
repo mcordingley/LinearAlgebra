@@ -88,7 +88,7 @@ final class LUP
     /**
      * @return Matrix
      */
-    public function getLower(): Matrix
+    public function lower(): Matrix
     {
         return $this->decomposition->lower(true);
     }
@@ -96,7 +96,7 @@ final class LUP
     /**
      * @return Matrix
      */
-    public function getUpper(): Matrix
+    public function upper(): Matrix
     {
         return $this->decomposition->upper(false);
     }
@@ -104,7 +104,7 @@ final class LUP
     /**
      * @return int
      */
-    public function getParity(): int
+    public function parity(): int
     {
         return $this->parity;
     }
@@ -112,7 +112,7 @@ final class LUP
     /**
      * @return Matrix
      */
-    public function getPermutationMatrix(): Matrix
+    public function permutationMatrix(): Matrix
     {
         $size = count($this->permutation);
         $permutationMatrix = [];
@@ -131,7 +131,7 @@ final class LUP
     /**
      * @return array
      */
-    public function getPermutationArray(): array
+    public function permutationArray(): array
     {
         return $this->permutation;
     }

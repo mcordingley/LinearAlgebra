@@ -53,7 +53,7 @@ final class LU
     /**
      * @return Matrix
      */
-    public function getLower(): Matrix
+    public function lower(): Matrix
     {
         return $this->decomposition->lower(true);
     }
@@ -61,7 +61,7 @@ final class LU
     /**
      * @return Matrix
      */
-    public function getUpper(): Matrix
+    public function upper(): Matrix
     {
         return $this->decomposition->upper(false);
     }

@@ -24,9 +24,9 @@ final class LUTest extends PHPUnit_Framework_TestCase
         new LU($matrix);
     }
 
-    public function testGetLower()
+    public function testLower()
     {
-        $lower = $this->getDecomposition()->getLower();
+        $lower = $this->getDecomposition()->lower();
 
         static::assertEquals(1, $lower->get(0, 0));
         static::assertEquals(0, $lower->get(0, 1));
@@ -61,9 +61,9 @@ final class LUTest extends PHPUnit_Framework_TestCase
         return new LU($matrix);
     }
 
-    public function testGetUpper()
+    public function testUpper()
     {
-        $upper = $this->getDecomposition()->getUpper();
+        $upper = $this->getDecomposition()->upper();
 
         static::assertEquals(2, $upper->get(0, 0));
         static::assertEquals(3, $upper->get(0, 1));
