@@ -12,7 +12,7 @@ Stand-alone Linear Algebra Library for PHP
 
 Alternately, include this in your composer.json and then update:
 
-    "mcordingley/linearalgebra": "^1.3.0"
+    "mcordingley/linearalgebra": "^2.0.0"
 
 If Composer isn't an option for you, clone this repository and run `build-phar.php` to generate a phar
 archive that you can include into your project. PHP will autoload classes from inside the archive as needed.
@@ -65,11 +65,14 @@ In addition to these basic operations, the Matrix class offers other common
 matrix operations:
 
     $matrix->inverse()
-    $matrix->adjoint()
+    $matrix->adjugate()
     $matrix->determinant()
     $matrix->trace()
     $matrix->transpose()
-    $matrix->submatrix()
+
+You can get the upper and lower triangular matrices by calling `upper(bool)` and `lower(bool)`. The lone argument tells
+whether the main diagonal of the triangular matrix should be set to ones (`true`) or the value of the parent matrix
+(`false`).
 
 It's also possible to run a map over the matrix:
 
@@ -104,16 +107,23 @@ If you need to combine together matrices, you can do so by calling the concatena
     //     [3,2,1],
     // ]
 
+LU and LUP decomposition methods are available as separate classes and both expose `lower()` and `upper()` for the L
+and U portions of the decompositions, respectively. The LUP decomposition additionally exposes `permutationMatrix` and
+`permutationArray` to fetch the P component of the decomposition as well as `parity` to return the total number of
+pivots performed.
+
 ## Change-log
 
-- 2.0.0 (future)
+- 2.0.0
     - Drop support for PHP 5.x
     - Introduce strict scalar type hints
     - Drop deprecated functions and properties.
     - Tighten up interface with the `final` and `private` keywords.
-
-- 1.4.0 (future)
+    - `diagonal()` now returns a full matrix, not a vector.
+    - Rename `adjoint()` to `adjugate()` for clarity.
     - Add `entrywise()` to compute the Hadamard product.
+    - Add `upper()` and `lower()`
+    - Add `LU` and `LUP` decompositions as classes.
 
 - 1.3.2
     - Deprecate `__toString()` magic method.
