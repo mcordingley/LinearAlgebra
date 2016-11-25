@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace mcordingley\LinearAlgebra;
 
-use mcordingley\LinearAlgebra\Decomposition\LU;
+use mcordingley\LinearAlgebra\Decomposition\LUP;
 
 final class Matrix
 {
@@ -410,19 +410,23 @@ final class Matrix
         $this->checkSquare();
 
         try {
-            $decomp = (new LU($this))->getUpper();
+            $decomp = new LUP($this);
         } catch (MatrixException $exception) {
             // Singular matrix, so determinant is defined to be zero.
             return 0.0;
         }
 
+        $upper = $decomp->getUpper();
+
         $determinant = 1.0;
 
-        for ($i = 0, $size = $decomp->getRowCount(); $i < $size; $i++) {
-            $determinant *= $decomp->get($i, $i);
+        for ($i = 0, $size = $upper->getRowCount(); $i < $size; $i++) {
+            $determinant *= $upper->get($i, $i);
         }
 
-        return $determinant;
+        $sign = $decomp->getParity() % 2 ? -1 : 1;
+
+        return $sign * $determinant;
     }
 
     /**
