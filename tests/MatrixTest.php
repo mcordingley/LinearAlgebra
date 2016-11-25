@@ -435,7 +435,7 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
 
         static::expectException(MatrixException::class);
 
-        $matrix->adjoint();
+        $matrix->adjugate();
     }
 
     public function testConcatenateBottom()
