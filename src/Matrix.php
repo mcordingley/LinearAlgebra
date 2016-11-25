@@ -117,7 +117,7 @@ final class Matrix
      */
     public function equals(Matrix $matrix): bool
     {
-        return $this->internal === $matrix->internal;
+        return $this->toArray() === $matrix->toArray();
     }
 
     /**
@@ -401,21 +401,13 @@ final class Matrix
      */
     public function upper(bool $unitriangular): self
     {
-        $triangle = [];
-
-        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
-            $triangle[] = [];
-
-            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
-                if ($unitriangular && $row === $column) {
-                    $triangle[$row][] = 1;
-                } else {
-                    $triangle[$row][] = $column < $row ? 0 : $this->internal[$row][$column];
-                }
+        return $this->map(function (float $element, int $i, int $j) use ($unitriangular) {
+            if ($unitriangular && $i === $j) {
+                return 1;
             }
-        }
 
-        return new static($triangle);
+            return $j < $i ? 0 : $element;
+        });
     }
 
     /**
@@ -424,21 +416,13 @@ final class Matrix
      */
     public function lower(bool $unitriangular): self
     {
-        $triangle = [];
-
-        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
-            $triangle[] = [];
-
-            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
-                if ($unitriangular && $row === $column) {
-                    $triangle[$row][] = 1;
-                } else {
-                    $triangle[$row][] = $row < $column ? 0 : $this->internal[$row][$column];
-                }
+        return $this->map(function (float $element, int $i, int $j) use ($unitriangular) {
+            if ($unitriangular && $i === $j) {
+                return 1;
             }
-        }
 
-        return new static($triangle);
+            return $i < $j ? 0 : $element;
+        });
     }
 
     /**
@@ -451,13 +435,13 @@ final class Matrix
         if ($this->getColumnCount() !== $other->getColumnCount()) {
             throw new MatrixException(
                 'Cannot concatenate matrices of incompatible size: '
-                . print_r($this->internal, true)
+                . print_r($this->toArray(), true)
                 . ' and '
-                . print_r($other->internal, true)
+                . print_r($other->toArray(), true)
             );
         }
 
-        return new static(array_merge($this->internal, $other->internal));
+        return new static(array_merge($this->toArray(), $other->toArray()));
     }
 
     /**
@@ -470,19 +454,15 @@ final class Matrix
         if ($this->getRowCount() !== $other->getRowCount()) {
             throw new MatrixException(
                 'Cannot concatenate matrices of incompatible size: '
-                . print_r($this->internal, true)
+                . print_r($this->toArray(), true)
                 . ' and '
-                . print_r($other->internal, true)
+                . print_r($other->toArray(), true)
             );
         }
 
-        $concatenated = [];
-
-        for ($i = 0, $rows = $this->getRowCount(); $i < $rows; $i++) {
-            $concatenated[] = array_merge($this->internal[$i], $other->internal[$i]);
-        }
-
-        return new static($concatenated);
+        return new static(array_map(function (array $original, array $other) {
+            return array_merge($original, $other);
+        }, $this->toArray(), $other->toArray()));
     }
 
     /**
