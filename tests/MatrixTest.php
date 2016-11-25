@@ -503,9 +503,7 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
             [0, 1],
         ]);
 
-        static::expectException(MatrixException::class);
-
-        $matrix->determinant();
+        static::assertEquals(0, $matrix->determinant());
     }
 
     public function testGetUpper()
