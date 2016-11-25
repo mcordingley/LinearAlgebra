@@ -97,6 +97,11 @@ final class LUPTest extends PHPUnit_Framework_TestCase
         static::assertEquals(-3, $upper->get(3, 3));
     }
 
+    public function testGetParity()
+    {
+        static::assertEquals(3, $this->getDecomposition()->getParity());
+    }
+
     public function testGetPermutationArray()
     {
         $permutation = $this->getDecomposition()->getPermutationArray();

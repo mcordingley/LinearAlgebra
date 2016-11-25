@@ -12,6 +12,9 @@ final class LUP
     /** @var Matrix */
     private $decomposition;
 
+    /** @var int */
+    private $parity = 0;
+
     /** @var array */
     private $permutation;
 
@@ -57,7 +60,14 @@ final class LUP
                 throw new MatrixException('Cannot take the LUP decomposition of a singular matrix: ' . print_r($sourceLiteral, true));
             }
 
-            list($this->permutation[$k], $this->permutation[$kPrime]) = [$this->permutation[$kPrime], $this->permutation[$k]];
+            if ($k !== $kPrime) {
+                list($this->permutation[$k], $this->permutation[$kPrime]) = [
+                    $this->permutation[$kPrime],
+                    $this->permutation[$k]
+                ];
+
+                $this->parity++;
+            }
 
             for ($i = 0; $i < $size; $i++) {
                 list($decompositionLiteral[$k][$i], $decompositionLiteral[$kPrime][$i]) = [$decompositionLiteral[$kPrime][$i], $decompositionLiteral[$k][$i]];
@@ -89,6 +99,14 @@ final class LUP
     public function getUpper(): Matrix
     {
         return $this->decomposition->upper(false);
+    }
+
+    /**
+     * @return int
+     */
+    public function getParity(): int
+    {
+        return $this->parity;
     }
 
     /**
