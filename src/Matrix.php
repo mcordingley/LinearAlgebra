@@ -347,7 +347,37 @@ final class Matrix
      */
     private function recursiveSolveInverse(self $source): self
     {
+        $size = $source->getRowCount();
 
+        if ($size === 1) {
+            return new static([[1 / $source->get(0, 0)]]);
+        }
+
+        $half = (int) ($size / 2);
+
+        // Partition source matrix.
+        $B = $source->sliceRows(0, $half)->sliceColumns(0, $half);
+        $CT = $source->sliceRows(0, $half)->sliceColumns($half);
+        $D = $source->sliceRows($half)->sliceColumns($half);
+        $C = $source->sliceRows($half)->sliceColumns(0, $half);
+
+        // Handle intermediate calculations.
+        $Binv = $this->recursiveSolveInverse($B);
+        $W = $C->multiplyMatrix($Binv);
+        $WT = $W->transpose();
+        $X = $W->multiplyMatrix($CT);
+        $S = $D->subtractMatrix($X);
+        $Sinv = $this->recursiveSolveInverse($S);
+        $V = $Sinv;
+        $Y = $Sinv->multiplyMatrix($W);
+        $YT = $Y->transpose();
+        $T = $YT->multiplyScalar(-1);
+        $U = $Y->multiplyScalar(-1);
+        $Z = $WT->multiplyMatrix($Y);
+        $R = $Binv->addMatrix($Z);
+
+        // Stitch together intermediate results into the final result
+        return $R->concatenateRight($T)->concatenateBottom($U->concatenateRight($V));
     }
 
     /**
