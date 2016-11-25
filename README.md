@@ -80,6 +80,9 @@ It's also possible to run a map over the matrix:
         return $element * $element
     });
 
+Submatrices may be extracted with `sliceColumns($offset, $length)` and `sliceRows($offset, $length)`. The semantics of
+the arguments are the same as PHP's `array_slice`.
+
 If you need to combine together matrices, you can do so by calling the concatenation methods:
 
     $m1 = new Matrix([
@@ -123,6 +126,7 @@ pivots performed.
     - Rename `adjoint()` to `adjugate()` for clarity.
     - Add `entrywise()` to compute the Hadamard product.
     - Add `upper()` and `lower()`
+    - Add `sliceColumns()` and `sliceRows()`
     - Add `LU` and `LUP` decompositions as classes.
 
 - 1.3.2

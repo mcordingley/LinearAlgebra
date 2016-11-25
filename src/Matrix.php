@@ -385,7 +385,7 @@ final class Matrix
      * @param int|null $length
      * @return self
      */
-    private function sliceRows(int $offset, int $length = null): self
+    public function sliceRows(int $offset, int $length = null): self
     {
         return new static(array_slice($this->toArray(), $offset, $length));
     }
@@ -395,7 +395,7 @@ final class Matrix
      * @param int|null $length
      * @return self
      */
-    private function sliceColumns(int $offset, int $length = null): self
+    public function sliceColumns(int $offset, int $length = null): self
     {
         return new static(array_map(function (array $row) use ($offset, $length) {
             return array_slice($row, $offset, $length);
