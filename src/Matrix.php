@@ -165,7 +165,7 @@ final class Matrix
     {
         $this->checkEqualSize($value);
 
-        return $this->map(function ($element, $i, $j) use ($value) {
+        return $this->map(function (float $element, int $i, int $j) use ($value) {
             return $element + $value->get($i, $j);
         });
     }
@@ -187,7 +187,7 @@ final class Matrix
      */
     public function addScalar(float $value): self
     {
-        return $this->map(function ($element) use ($value) {
+        return $this->map(function (float $element) use ($value) {
             return $element + $value;
         });
     }
@@ -201,7 +201,7 @@ final class Matrix
     {
         $this->checkEqualSize($value);
 
-        return $this->map(function ($element, $i, $j) use ($value) {
+        return $this->map(function (float $element, int $i, int $j) use ($value) {
             return $element - $value->get($i, $j);
         });
     }
@@ -212,7 +212,7 @@ final class Matrix
      */
     public function subtractScalar(float $value): self
     {
-        return $this->map(function ($element) use ($value) {
+        return $this->map(function (float $element) use ($value) {
             return $element - $value;
         });
     }
@@ -255,7 +255,7 @@ final class Matrix
      */
     public function multiplyScalar(float $value): self
     {
-        return $this->map(function ($element) use ($value) {
+        return $this->map(function (float $element) use ($value) {
             return $element * $value;
         });
     }
@@ -270,7 +270,7 @@ final class Matrix
     {
         $this->checkEqualSize($value);
 
-        return $this->map(function ($element, $i, $j) use ($value) {
+        return $this->map(function (float $element, int $i, int $j) use ($value) {
             return $element * $value->get($i, $j);
         });
     }
@@ -490,17 +490,9 @@ final class Matrix
      */
     public function diagonal(): self
     {
-        $diagonal = [];
-
-        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
-            $diagonal[] = [];
-
-            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
-                $diagonal[$row][] = $row === $column ? $this->get($row, $column) : 0;
-            }
-        }
-
-        return new static($diagonal);
+        return $this->map(function (float $element, int $i, int $j) {
+            return $i === $j ? $element : 0;
+        });
     }
 
     /**
