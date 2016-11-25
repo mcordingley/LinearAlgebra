@@ -308,7 +308,7 @@ final class Matrix
         $transpose = $this->transpose();
         $aTa = $transpose->multiplyMatrix($this);
 
-        $padded = $aTa->pad((int) pow(2, ceil(log($size, 2))));
+        $padded = $aTa->pad($size);
         $inverted = $this->recursiveSolveInverse($padded);
         $trimmed = $inverted->sliceRows(0, $size)->sliceColumns(0, $size);
 
