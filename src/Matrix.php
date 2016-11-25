@@ -270,17 +270,9 @@ final class Matrix
     {
         $this->checkEqualSize($value);
 
-        $product = [];
-
-        for ($row = 0, $rows = $this->getRowCount(); $row < $rows; $row++) {
-            $product[] = [];
-
-            for ($column = 0, $columns = $this->getColumnCount(); $column < $columns; $column++) {
-                $product[$row][$column] = $this->get($row, $column) * $value->get($row, $column);
-            }
-        }
-
-        return new static($product);
+        return $this->map(function ($element, $i, $j) use ($value) {
+            return $element * $value->get($i, $j);
+        });
     }
 
     /**
