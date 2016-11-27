@@ -478,6 +478,66 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testSpliceColumns()
+    {
+        $matrix = new Matrix([
+            [1, -1, 2],
+            [4, 0, 6],
+            [0, 1, -1],
+        ]);
+
+        $spliced = $matrix->spliceColumns(1, 1, [
+            [8],
+            [5],
+            [2],
+        ]);
+
+        static::assertEquals(1, $spliced->get(0, 0));
+        static::assertEquals(8, $spliced->get(0, 1));
+        static::assertEquals(2, $spliced->get(0, 2));
+
+        static::assertEquals(4, $spliced->get(1, 0));
+        static::assertEquals(5, $spliced->get(1, 1));
+        static::assertEquals(6, $spliced->get(1, 2));
+
+        static::assertEquals(0, $spliced->get(2, 0));
+        static::assertEquals(2, $spliced->get(2, 1));
+        static::assertEquals(-1, $spliced->get(2, 2));
+    }
+
+    public function testSpliceBadColumns()
+    {
+        $matrix = new Matrix([
+            [1, -1, 2],
+            [4, 0, 6],
+            [0, 1, -1],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix->spliceColumns(1, 1, [
+            [5],
+            [2],
+        ]);
+    }
+
+    public function testSpliceUnevenColumns()
+    {
+        $matrix = new Matrix([
+            [1, -1, 2],
+            [4, 0, 6],
+            [0, 1, -1],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix->spliceColumns(1, 1, [
+            [8, 3],
+            [5],
+            [2],
+        ]);
+    }
+
     public function testConcatenateBottom()
     {
         $matrixA = new Matrix([[1, 2, 3]]);

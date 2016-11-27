@@ -444,6 +444,42 @@ final class Matrix
     }
 
     /**
+     * @param int $offset
+     * @param int|null $length
+     * @param array|null $replacement
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function spliceColumns(int $offset, int $length = null, array $replacement = null): self
+    {
+        if ($replacement) {
+            if ($this->getColumnCount() !== count($replacement)) {
+                throw new MatrixException(
+                    'Cannot splice ['
+                    . count($replacement)
+                    . '] columns into matrix of ['
+                    . $this->getColumnCount()
+                    . '] columns.'
+                );
+            }
+
+            if (!static::subArraysAreEqualSize($replacement)) {
+                throw new MatrixException('Cannot splice in new columns of unequal size.');
+            }
+        }
+
+        $rowIndex = 0;
+
+        $spliced = array_map(function (array $row) use ($offset, $length, $replacement, &$rowIndex) {
+            array_splice($row, $offset, $length, $replacement[$rowIndex++]);
+
+            return $row;
+        }, $this->toArray());
+
+        return new static($spliced);
+    }
+
+    /**
      * @return float
      */
     public function determinant(): float
