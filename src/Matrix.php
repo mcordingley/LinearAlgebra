@@ -39,11 +39,7 @@ final class Matrix
      */
     private static function isLiteralValid(array $literal): bool
     {
-        if (!$literal) {
-            return false;
-        }
-
-        return static::subArraysAreEqualSize($literal);
+        return $literal && $literal[0] && static::subArraysAreEqualSize($literal);
     }
 
     /**
@@ -53,10 +49,6 @@ final class Matrix
     private static function subArraysAreEqualSize(array $subArrays): bool
     {
         $firstSize = count($subArrays[0]);
-
-        if (!$firstSize) {
-            return false;
-        }
 
         foreach ($subArrays as $subArray) {
             if (count($subArray) !== $firstSize) {
