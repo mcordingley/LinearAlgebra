@@ -43,14 +43,23 @@ final class Matrix
             return false;
         }
 
-        $firstRowSize = count($literal[0]);
+        return static::subArraysAreEqualSize($literal);
+    }
 
-        if (!$firstRowSize) {
+    /**
+     * @param array $subArrays
+     * @return bool
+     */
+    private static function subArraysAreEqualSize(array $subArrays): bool
+    {
+        $firstSize = count($subArrays[0]);
+
+        if (!$firstSize) {
             return false;
         }
 
-        foreach ($literal as $row) {
-            if (count($row) !== $firstRowSize) {
+        foreach ($subArrays as $subArray) {
+            if (count($subArray) !== $firstSize) {
                 return false;
             }
         }
