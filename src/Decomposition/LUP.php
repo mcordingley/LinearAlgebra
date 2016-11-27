@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace mcordingley\LinearAlgebra\Decomposition;
+namespace MCordingley\LinearAlgebra\Decomposition;
 
-use mcordingley\LinearAlgebra\Matrix;
-use mcordingley\LinearAlgebra\MatrixException;
+use MCordingley\LinearAlgebra\Matrix;
+use MCordingley\LinearAlgebra\MatrixException;
 
 final class LUP
 {

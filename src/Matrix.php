@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace mcordingley\LinearAlgebra;
+namespace MCordingley\LinearAlgebra;
 
-use mcordingley\LinearAlgebra\Decomposition\LUP;
+use MCordingley\LinearAlgebra\Decomposition\LUP;
 
 final class Matrix
 {

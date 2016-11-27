@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace mcordingley\LinearAlgebraTest;
+namespace MCordingley\LinearAlgebraTest;
 
-use mcordingley\LinearAlgebra\Decomposition\LUP;
-use mcordingley\LinearAlgebra\Matrix;
-use mcordingley\LinearAlgebra\MatrixException;
+use MCordingley\LinearAlgebra\Decomposition\LUP;
+use MCordingley\LinearAlgebra\Matrix;
+use MCordingley\LinearAlgebra\MatrixException;
 use PHPUnit_Framework_TestCase;
 
 final class LUPTest extends PHPUnit_Framework_TestCase

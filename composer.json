@@ -25,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "mcordingley\\LinearAlgebra\\": "src/"
+            "MCordingley\\LinearAlgebra\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "mcordingley\\LinearAlgebraTest\\": "tests/"
+            "MCordingley\\LinearAlgebraTest\\": "tests/"
         }
     }
 }

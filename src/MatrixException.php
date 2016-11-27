@@ -1,6 +1,6 @@
 <?php
 
-namespace mcordingley\LinearAlgebra;
+namespace MCordingley\LinearAlgebra;
 
 use Exception;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace mcordingley\LinearAlgebraTest;
+namespace MCordingley\LinearAlgebraTest;
 
-use mcordingley\LinearAlgebra\Matrix;
-use mcordingley\LinearAlgebra\MatrixException;
+use MCordingley\LinearAlgebra\Matrix;
+use MCordingley\LinearAlgebra\MatrixException;
 use PHPUnit_Framework_TestCase;
 
 final class MatrixTest extends PHPUnit_Framework_TestCase
