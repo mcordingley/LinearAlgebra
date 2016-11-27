@@ -6,6 +6,15 @@
 
 Stand-alone Linear Algebra Library for PHP
 
+## New Major Version
+
+LinearAlgebra has just reached version 2.0. This release includes several breaking changes. Check the changelog for
+specifics about what has changed, but the biggest changes are that the root namespace has been capitalized and that the
+library now depends on PHP 7.0 or higher. A number of lesser-used functions have been removed, new functions added, and
+the internals of the package are now much cleaner.
+
+If you're still using PHP 5.x, the 1.0 series still exists and supports PHP 5, though it will receive no further updates.
+
 ## Installation
 
     composer require mcordingley/LinearAlgebra
@@ -21,7 +30,7 @@ archive that you can include into your project. PHP will autoload classes from i
 
 Start with a `use` statement for the class:
 
-    use mcordingley\LinearAlgebra\Matrix;
+    use MCordingley\LinearAlgebra\Matrix;
 
 Then, instantiate a new instance of the matrix class like so:
 
@@ -83,6 +92,11 @@ It's also possible to run a map over the matrix:
 Submatrices may be extracted with `sliceColumns($offset, $length)` and `sliceRows($offset, $length)`. The semantics of
 the arguments are the same as PHP's `array_slice`.
 
+Similarly, `spliceColumns($offset, $length, $replacement)` and `spliceRows($offset, $length, $replacement)` can be used
+to create new matrices with specific rows or columns removed or replaced. Unlike the native PHP `array_splice`, these
+operations do not modify the matrix in place and return the removed elements, but instead return a new matrix with the
+splice applied.
+
 If you need to combine together matrices, you can do so by calling the concatenation methods:
 
     $m1 = new Matrix([
@@ -127,6 +141,7 @@ pivots performed.
     - Add `entrywise()` to compute the Hadamard product.
     - Add `upper()` and `lower()`
     - Add `sliceColumns()` and `sliceRows()`
+    - Add `spliceColumns()` and `spliceRows()`
     - Add `LU` and `LUP` decompositions as classes.
 
 - 1.3.2
