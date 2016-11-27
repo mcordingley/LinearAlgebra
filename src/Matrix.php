@@ -421,18 +421,18 @@ final class Matrix
     public function spliceRows(int $offset, int $length = null, array $replacement = null): self
     {
         if ($replacement) {
-            $columns = $this->getColumnCount();
+            if ($this->getColumnCount() !== count($replacement[0])) {
+                throw new MatrixException(
+                    'Cannot splice ['
+                    . count($replacement)
+                    . '] columns into matrix of ['
+                    . $this->getRowCount()
+                    . '] column.'
+                );
+            }
 
-            foreach ($replacement as $replacementRow) {
-                if ($columns !== count($replacementRow)) {
-                    throw new MatrixException(
-                        'Cannot splice new row of size ['
-                        . count($replacementRow)
-                        . '] into a matrix with ['
-                        . $columns
-                        . '] columns.'
-                    );
-                }
+            if (!static::subArraysAreEqualSize($replacement)) {
+                throw new MatrixException('Cannot splice in new rows of unequal size.');
             }
         }
 
@@ -453,13 +453,13 @@ final class Matrix
     public function spliceColumns(int $offset, int $length = null, array $replacement = null): self
     {
         if ($replacement) {
-            if ($this->getColumnCount() !== count($replacement)) {
+            if ($this->getRowCount() !== count($replacement)) {
                 throw new MatrixException(
                     'Cannot splice ['
                     . count($replacement)
-                    . '] columns into matrix of ['
-                    . $this->getColumnCount()
-                    . '] columns.'
+                    . '] row into matrix of ['
+                    . $this->getRowCount()
+                    . '] rows.'
                 );
             }
 
@@ -471,7 +471,7 @@ final class Matrix
         $rowIndex = 0;
 
         $spliced = array_map(function (array $row) use ($offset, $length, $replacement, &$rowIndex) {
-            array_splice($row, $offset, $length, $replacement[$rowIndex++]);
+            array_splice($row, $offset, $length, $replacement ? $replacement[$rowIndex++] : null);
 
             return $row;
         }, $this->toArray());
@@ -543,16 +543,7 @@ final class Matrix
      */
     public function concatenateBottom(self $other): self
     {
-        if ($this->getColumnCount() !== $other->getColumnCount()) {
-            throw new MatrixException(
-                'Cannot concatenate matrices of incompatible size: '
-                . print_r($this->toArray(), true)
-                . ' and '
-                . print_r($other->toArray(), true)
-            );
-        }
-
-        return new static(array_merge($this->toArray(), $other->toArray()));
+        return $this->spliceRows($this->getRowCount(), 0, $other->toArray());
     }
 
     /**
@@ -562,18 +553,7 @@ final class Matrix
      */
     public function concatenateRight(self $other): self
     {
-        if ($this->getRowCount() !== $other->getRowCount()) {
-            throw new MatrixException(
-                'Cannot concatenate matrices of incompatible size: '
-                . print_r($this->toArray(), true)
-                . ' and '
-                . print_r($other->toArray(), true)
-            );
-        }
-
-        return new static(array_map(function (array $original, array $other) {
-            return array_merge($original, $other);
-        }, $this->toArray(), $other->toArray()));
+        return $this->spliceColumns($this->getColumnCount(), 0, $other->toArray());
     }
 
     /**

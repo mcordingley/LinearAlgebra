@@ -478,6 +478,22 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testSpliceUnevenRows()
+    {
+        $matrix = new Matrix([
+            [1, -1, 2],
+            [4, 0, 6],
+            [0, 1, -1],
+        ]);
+
+        static::expectException(MatrixException::class);
+
+        $matrix->spliceRows(1, 1, [
+            [8, 5, 1],
+            [2],
+        ]);
+    }
+
     public function testSpliceColumns()
     {
         $matrix = new Matrix([
@@ -563,8 +579,17 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
 
     public function testConcatenateRight()
     {
-        $matrixA = new Matrix([[1], [2], [3]]);
-        $matrixB = new Matrix([[4], [5], [6]]);
+        $matrixA = new Matrix([
+            [1],
+            [2],
+            [3],
+        ]);
+
+        $matrixB = new Matrix([
+            [4],
+            [5],
+            [6],
+        ]);
 
         $concatenated = $matrixA->concatenateRight($matrixB);
 
