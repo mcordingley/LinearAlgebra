@@ -403,6 +403,38 @@ final class Matrix
     }
 
     /**
+     * @param int $offset
+     * @param int|null $length
+     * @param array|null $replacement
+     * @return Matrix
+     * @throws MatrixException
+     */
+    public function spliceRows(int $offset, int $length = null, array $replacement = null): self
+    {
+        if ($replacement) {
+            $columns = $this->getColumnCount();
+
+            foreach ($replacement as $replacementRow) {
+                if ($columns !== count($replacementRow)) {
+                    throw new MatrixException(
+                        'Cannot splice new row of size ['
+                        . count($replacementRow)
+                        . '] into a matrix with ['
+                        . $columns
+                        . '] columns.'
+                    );
+                }
+            }
+        }
+
+        $spliced = $this->toArray();
+
+        array_splice($spliced, $offset, $length, $replacement);
+
+        return new static($spliced);
+    }
+
+    /**
      * @return float
      */
     public function determinant(): float
