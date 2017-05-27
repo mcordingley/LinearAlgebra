@@ -70,6 +70,16 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         static::assertEquals(1, $identity->get(2, 2));
     }
 
+    public function testIsSquare()
+    {
+        $matrix = new Matrix([
+            [1, 2],
+            [3, 4],
+        ]);
+
+        static::assertTrue($matrix->isSquare());
+    }
+
     public function testMap()
     {
         $matrix = new Matrix([
