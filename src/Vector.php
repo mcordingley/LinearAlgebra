@@ -21,7 +21,7 @@ class Vector
     public function __construct(array $literal)
     {
         if (!static::isLiteralValid($literal)) {
-            throw new VEctorException('Invalid array provided: ' . print_r($literal, true));
+            throw new VectorException('Invalid array provided: ' . print_r($literal, true));
         }
 
         $this->literal = $literal;
