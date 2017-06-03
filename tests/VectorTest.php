@@ -1,6 +1,7 @@
 <?php
 namespace MathPHP\Tests\LinearAlgebra;
 
+use MCordingley\LinearAlgebra\Matrix;
 use MCordingley\LinearAlgebra\MatrixException;
 use MCordingley\LinearAlgebra\Vector;
 
@@ -62,7 +63,36 @@ class VectorTest extends \PHPUnit_Framework_TestCase
 
     public function testOuterProduct()
     {
+        $vector1 = new Vector([
+            [1,2]
+        ]);
+        $vector2 = new Vector([
+            [3,4,5]
+        ]);
 
+        $this->assertEquals(new Matrix([[3,4,5],[6,8,10]]), $vector1->outerProduct($vector2));
+
+        //this test case appear  A ⨂ B != B ⨂ A
+        $vector1 = new Vector([
+            [3,4,5]
+        ]);
+        $vector2 = new Vector([
+            [1,2]
+        ]);
+
+        $this->assertEquals(new Matrix([[3,6],[4,8],[5,10]]), $vector1->outerProduct($vector2));
+    }
+
+    public function testCrossProduct()
+    {
+        $vector1 = new Vector([
+            [2,3,4]
+        ]);
+        $vector2 = new Vector([
+            [5,6,7]
+        ]);
+
+        $this->assertEquals(new Vector([[-3,6,-3]]), $vector1->crossProduct($vector2));
     }
 
     public function testNormalize()

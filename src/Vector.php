@@ -115,6 +115,7 @@ class Vector extends Matrix
     /**************************************************************************
      * VECTOR OPERATIONS - Return a Vector or Matrix
      *  - outerProduct
+     *  - crossProduct
      *  - normalize
      *  - projection
      **************************************************************************/
@@ -124,20 +125,52 @@ class Vector extends Matrix
      * https://en.wikipedia.org/wiki/Outer_product
      * Same as direct product.
      *
+     *
+     *
+     *          | a₀ |                  | a₀b₀    a₀b₁    a₀b₂ |
+     * A ⨂ B = | a₁ | ⨂ |b₀ b₁ b₂|  =  | a₁b₀    a₁b₁    a₁b₂ |
+     *          | a₂ |                  | a₂b₀    a₂b₁    a₂b₂ |
+     *
+     *
      * @param Vector $other
      *
      * @return Matrix
      */
     public function outerProduct(Vector $other): Matrix
     {
-        $R = [];
+        $literal = array();
         for ($i = 0; $i < $this->size; $i++) {
             for ($j = 0; $j < $other->getSize(); $j++) {
-                $R[$i][$j] = $this->internal[$i] * $other[$j];
+                $literal[$i][$j] = $this->vector[$i] * $other->getVector()[$j];
             }
         }
 
-        return new Matrix($R);
+        return new Matrix($literal);
+    }
+
+    /**
+     *
+     * Cross product (AxB)
+     * https://en.wikipedia.org/wiki/Cross_product
+     *
+     *
+     * A X B = (a₁b₂ - b₁a₂) - (a₀b₂ - b₀a₂) + (a₀b₁ - b₀a₁)
+     *
+     * @param Vector $other
+     * @return Vector
+     * @throws VectorException
+     */
+    public function crossProduct(Vector $other): Vector
+    {
+        if ($other->getSize() !== 3 || $this->size !== 3) {
+            throw new VectorException('Vectors have to have 3 size');
+        }
+
+        $x =   ($this->vector[1] * $other->vector[2]) - ($this->vector[2] * $other->vector[1]);
+        $y = -(($this->vector[0] * $other->vector[2]) - ($this->vector[2] * $other->vector[0]));
+        $z =   ($this->vector[0] * $other->vector[1]) - ($this->vector[1] * $other->vector[0]);
+
+        return new Vector([[$x, $y, $z]]);
     }
 
     /**
