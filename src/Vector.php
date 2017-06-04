@@ -82,7 +82,7 @@ class Vector extends Matrix
      * https://en.wikipedia.org/wiki/Dot_product
      *
      * @param self $other
-     * @return float
+     * @return number
      * @throws VectorException
      */
     public function dotProduct(self $other)
@@ -157,10 +157,10 @@ class Vector extends Matrix
      * A X B = (a₁b₂ - b₁a₂) - (a₀b₂ - b₀a₂) + (a₀b₁ - b₀a₁)
      *
      * @param Vector $other
-     * @return Vector
+     * @return self
      * @throws VectorException
      */
-    public function crossProduct(Vector $other): Vector
+    public function crossProduct(Vector $other): self
     {
         if ($other->getSize() !== 3 || $this->size !== 3) {
             throw new VectorException('Vectors have to have 3 size');
@@ -186,7 +186,7 @@ class Vector extends Matrix
      *  where |A| is the l²-norm (|A|₂)
      *
      */
-    public function normalize()
+    public function normalize(): self
     {
         $norm = $this->l2norm();
 
@@ -205,7 +205,7 @@ class Vector extends Matrix
      *
      * @return self
      */
-    public function projection(self $other)
+    public function projection(self $other): self
     {
         return $other->multiplyScalar($this->dotProduct($other) / (($other->l2norm())**2));
     }
@@ -249,7 +249,7 @@ class Vector extends Matrix
      *
      * @return float
      */
-    public function l2Norm()
+    public function l2Norm(): float
     {
         $literal = array();
         for ($i = 0, $rows = $this->getSize(); $i < $rows; $i++) {
