@@ -120,6 +120,13 @@ class VectorTest extends \PHPUnit_Framework_TestCase
 
     public function testProjection()
     {
+        $vector1 = new Vector([
+            [1,1]
+        ]);
+        $vector2 = new Vector([
+            [3,1]
+        ]);
 
+        $this->assertEquals(new Vector([[12/10, 4/10]]), $vector1->projection($vector2));
     }
 }
