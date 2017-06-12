@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace MCordingley\LinearAlgebra;
 
-class Vector extends Matrix
+final class Vector extends Matrix
 {
     /**
      * Number of elements
@@ -127,9 +127,9 @@ class Vector extends Matrix
      *
      *
      *
-     *          | a₀ |                  | a₀b₀    a₀b₁    a₀b₂ |
-     * A ⨂ B = | a₁ | ⨂ |b₀ b₁ b₂|  =  | a₁b₀    a₁b₁    a₁b₂ |
-     *          | a₂ |                  | a₂b₀    a₂b₁    a₂b₂ |
+     *          | a₀ |                   | a₀b₀    a₀b₁    a₀b₂ |
+     * A ⨂ B = | a₁ | ⨂ |b₀ b₁b₂|  =  | a₁b₀   a₁b₁  a₁b₂|
+     *          | a₂ |                  | a₂b₀   a₂b₁  a₂b₂|
      *
      *
      * @param Vector $other
