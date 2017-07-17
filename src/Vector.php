@@ -7,11 +7,6 @@ namespace MCordingley\LinearAlgebra;
 final class Vector extends Matrix
 {
     /**
-     * Number of elements
-     * @var int
-     */
-    private $size;
-    /**
      * @var array
      */
     private $vector;
@@ -21,7 +16,6 @@ final class Vector extends Matrix
         parent::__construct($literal);
 
         $this->vector = $literal[0];
-        $this->size = count($this->vector);
     }
 
     /**************************************************************************
@@ -45,7 +39,7 @@ final class Vector extends Matrix
      */
     public function getSize(): int
     {
-        return $this->size;
+        return count($this->internal[0]);
     }
 
     /**************************************************************************
@@ -87,7 +81,7 @@ final class Vector extends Matrix
      */
     public function dotProduct(self $other)
     {
-        if ($other->getSize() !== $this->size) {
+        if ($other->getSize() !== $this->getSize()) {
             throw new VectorException('Vectors have to have same size');
         }
 
@@ -139,7 +133,7 @@ final class Vector extends Matrix
     public function outerProduct(Vector $other): Matrix
     {
         $literal = array();
-        for ($i = 0; $i < $this->size; $i++) {
+        for ($i = 0; $i < $this->getSize(); $i++) {
             for ($j = 0; $j < $other->getSize(); $j++) {
                 $literal[$i][$j] = $this->vector[$i] * $other->getVector()[$j];
             }
@@ -162,7 +156,7 @@ final class Vector extends Matrix
      */
     public function crossProduct(Vector $other): self
     {
-        if ($other->getSize() !== 3 || $this->size !== 3) {
+        if ($other->getSize() !== 3 || $this->getSize() !== 3) {
             throw new VectorException('Vectors have to have 3 size');
         }
 
