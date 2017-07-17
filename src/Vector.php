@@ -191,13 +191,9 @@ final class Vector extends Matrix
      */
     public function l1Norm(): float
     {
-        $sum = 0;
-
-        foreach ($this->toArray() as $value) {
-            $sum += abs($value);
-        }
-
-        return $sum;
+        return array_reduce($this->toArray(), function (float $carry, float $value) {
+            return $carry + abs($value);
+        }, 0);
     }
 
     /**
@@ -214,13 +210,9 @@ final class Vector extends Matrix
      */
     public function l2Norm(): float
     {
-        $literal = [];
-
-        for ($i = 0, $rows = $this->getSize(); $i < $rows; $i++) {
-            $literal[] = $this->toArray()[$i] ** 2;
-        }
-
-        return sqrt(array_sum($literal));
+        return sqrt(array_reduce($this->toArray(), function (float $carry, float $value) {
+            return $carry + pow($value, 2);
+        }, 0));
     }
 
     /**
@@ -228,18 +220,14 @@ final class Vector extends Matrix
      *
      * |x|∞ = max |x|
      *
-     * @return number
+     * @return float
      */
-    public function maxNorm()
+    public function maxNorm(): float
     {
-        $max = abs($this->toArray()[0]);
+        return array_reduce($this->toArray(), function (float $carry, float $value) {
+            $value = abs($value);
 
-        foreach($this->toArray() as $value) {
-            if(abs($value) > $max) {
-                $max = abs($value);
-            }
-        }
-
-        return $max;
+            return $carry > $value ? $carry : $value;
+        }, -INF);
     }
 }
