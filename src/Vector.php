@@ -33,7 +33,6 @@ final class Vector extends Matrix
     }
 
     /**
-     * Get item count
      * @return int number of items
      */
     public function getSize(): int
@@ -42,36 +41,30 @@ final class Vector extends Matrix
     }
 
     /**
-     * Sum of all elements
-     *
-     * @return number
+     * @return float
      */
-    public function sum()
+    public function sum(): float
     {
         return array_sum($this->toArray());
     }
 
     /**
-     * Vector length (magnitude)
-     * Same as l2-norm
-     *
-     * @return number
+     * @return float
      */
-    public function length()
+    public function length(): float
     {
         return $this->l2norm();
     }
 
     /**
-     *
      * Dot product (inner product) (A⋅B)
      * https://en.wikipedia.org/wiki/Dot_product
      *
      * @param self $other
-     * @return number
+     * @return float
      * @throws VectorException
      */
-    public function dotProduct(self $other)
+    public function dotProduct(self $other): float
     {
         if ($other->getSize() !== $this->getSize()) {
             throw new VectorException('Vectors have to have same size');
@@ -90,10 +83,9 @@ final class Vector extends Matrix
      * Inner product (convience method for dot product) (A⋅B)
      *
      * @param Vector $other
-     *
-     * @return number
+     * @return float
      */
-    public function innerProduct(Vector $other)
+    public function innerProduct(Vector $other): float
     {
         return $this->dotProduct($other);
     }
@@ -111,7 +103,6 @@ final class Vector extends Matrix
      *
      *
      * @param Vector $other
-     *
      * @return Matrix
      */
     public function outerProduct(Vector $other): Matrix
@@ -196,9 +187,9 @@ final class Vector extends Matrix
      *
      * |x|₁ = ∑|xᵢ|
      *
-     * @return number
+     * @return float
      */
-    public function l1Norm()
+    public function l1Norm(): float
     {
         $sum = 0;
 
