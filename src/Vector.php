@@ -33,7 +33,7 @@ final class Vector extends Matrix
     }
 
     /**
-     * @return int number of items
+     * @return int
      */
     public function getSize(): int
     {
@@ -57,12 +57,10 @@ final class Vector extends Matrix
     }
 
     /**
-     * Dot product (inner product) (A⋅B)
-     * https://en.wikipedia.org/wiki/Dot_product
-     *
      * @param self $other
      * @return float
      * @throws VectorException
+     * @link https://en.wikipedia.org/wiki/Dot_product
      */
     public function dotProduct(self $other): float
     {
@@ -80,8 +78,6 @@ final class Vector extends Matrix
     }
 
     /**
-     * Inner product (convience method for dot product) (A⋅B)
-     *
      * @param Vector $other
      * @return float
      */
@@ -91,12 +87,6 @@ final class Vector extends Matrix
     }
 
     /**
-     * Outer product (A⨂B)
-     * https://en.wikipedia.org/wiki/Outer_product
-     * Same as direct product.
-     *
-     *
-     *
      *          | a₀ |                   | a₀b₀    a₀b₁    a₀b₂ |
      * A ⨂ B = | a₁ | ⨂ |b₀ b₁b₂|  =  | a₁b₀   a₁b₁  a₁b₂|
      *          | a₂ |                  | a₂b₀   a₂b₁  a₂b₂|
@@ -104,6 +94,7 @@ final class Vector extends Matrix
      *
      * @param Vector $other
      * @return Matrix
+     * @link https://en.wikipedia.org/wiki/Outer_product
      */
     public function outerProduct(Vector $other): Matrix
     {
@@ -118,16 +109,10 @@ final class Vector extends Matrix
     }
 
     /**
-     *
-     * Cross product (AxB)
-     * https://en.wikipedia.org/wiki/Cross_product
-     *
-     *
-     * A X B = (a₁b₂ - b₁a₂) - (a₀b₂ - b₀a₂) + (a₀b₁ - b₀a₁)
-     *
      * @param Vector $other
      * @return self
      * @throws VectorException
+     * @link https://en.wikipedia.org/wiki/Cross_product
      */
     public function crossProduct(Vector $other): self
     {
@@ -143,10 +128,8 @@ final class Vector extends Matrix
     }
 
     /**
-     * Normalize (Â)
      * The normalized vector Â is a vector in the same direction of A
      * but with a norm (length) of 1. It is a unit vector.
-     * http://mathworld.wolfram.com/NormalizedVector.html
      *
      *      A
      * Â ≡ ---
@@ -154,6 +137,7 @@ final class Vector extends Matrix
      *
      *  where |A| is the l²-norm (|A|₂)
      *
+     * @link http://mathworld.wolfram.com/NormalizedVector.html
      */
     public function normalize(): self
     {
@@ -161,16 +145,13 @@ final class Vector extends Matrix
     }
 
     /**
-     * Projection of A onto B
-     * https://en.wikipedia.org/wiki/Vector_projection#Vector_projection
-     *
      *          A⋅B
      * projᵇA = --- B
      *          |B|²
      *
      * @param self $other
-     *
      * @return self
+     * @link https://en.wikipedia.org/wiki/Vector_projection#Vector_projection
      */
     public function projection(self $other): self
     {
@@ -178,14 +159,10 @@ final class Vector extends Matrix
     }
 
     /**
-     * l₁-norm (|x|₁)
-     * Also known as Taxicab norm or Manhattan norm
-     *
-     * https://en.wikipedia.org/wiki/Norm_(mathematics)#Taxicab_norm_or_Manhattan_norm
-     *
      * |x|₁ = ∑|xᵢ|
      *
      * @return float
+     * @link https://en.wikipedia.org/wiki/Norm_(mathematics)#Taxicab_norm_or_Manhattan_norm
      */
     public function l1Norm(): float
     {
@@ -195,16 +172,15 @@ final class Vector extends Matrix
     }
 
     /**
-     * l²-norm (|x|₂)
-     * Also known as Euclidean norm, Euclidean length, L² distance, ℓ² distance
-     * Used to normalize a vector.
-     *
-     * http://mathworld.wolfram.com/L2-Norm.html
-     * https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm
      *         ______
      * |x|₂ = √∑|xᵢ|²
      *
+     * Also known as Euclidean norm, Euclidean length, L² distance, ℓ² distance
+     * Used to normalize a vector.
+     *
      * @return float
+     * @link http://mathworld.wolfram.com/L2-Norm.html
+     * @link https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm
      */
     public function l2Norm(): float
     {
@@ -214,9 +190,9 @@ final class Vector extends Matrix
     }
 
     /**
-     * Max norm (infinity norm) (|x|∞)
-     *
      * |x|∞ = max |x|
+     *
+     * Max norm (infinity norm) (|x|∞)
      *
      * @return float
      */
