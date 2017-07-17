@@ -6,9 +6,22 @@ namespace MCordingley\LinearAlgebra;
 
 final class Vector extends Matrix
 {
+    /**
+     * @param array $literal
+     */
     public function __construct(array $literal)
     {
-        parent::__construct($literal);
+        parent::__construct([$literal]);
+    }
+
+    /**
+     * @param Matrix $matrix
+     * @param int $row
+     * @return Vector
+     */
+    public static function fromMatrix(Matrix $matrix, int $row = 0): self
+    {
+        return new self($matrix->toArray()[$row]);
     }
 
     /**************************************************************************
@@ -156,7 +169,7 @@ final class Vector extends Matrix
         $y = -(($this->toArray()[0] * $other->toArray()[2]) - ($this->toArray()[2] * $other->toArray()[0]));
         $z =   ($this->toArray()[0] * $other->toArray()[1]) - ($this->toArray()[1] * $other->toArray()[0]);
 
-        return new Vector([[$x, $y, $z]]);
+        return new self([$x, $y, $z]);
     }
 
     /**
@@ -176,7 +189,7 @@ final class Vector extends Matrix
     {
         $norm = $this->l2norm();
 
-        return $this->divideScalar($norm);
+        return self::fromMatrix($this->divideScalar($norm));
     }
 
     /**
@@ -193,7 +206,7 @@ final class Vector extends Matrix
      */
     public function projection(self $other): self
     {
-        return $other->multiplyScalar($this->dotProduct($other) / (($other->l2norm())**2));
+        return self::fromMatrix($other->multiplyScalar($this->dotProduct($other) / ($other->l2norm() ** 2)));
     }
 
     /**************************************************************************
