@@ -8,9 +8,7 @@ use MCordingley\LinearAlgebra\Decomposition\LUP;
 
 class Matrix
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $internal;
 
     /**
@@ -263,17 +261,13 @@ class Matrix
 
 
     /**
-     *
-     * Scalar divide
-     * kA = [k / a₁, k / a₂, k / a₃ ...]
-     *
      * @param float $value
      * @return self
      * @throws MatrixException
      */
     public function divideScalar(float $value): self
     {
-        if($value == 0) {
+        if ($value == 0) {
             throw new MatrixException("Zero can not be denominator.");
         }
 
