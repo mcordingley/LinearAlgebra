@@ -6,12 +6,12 @@ namespace MCordingley\LinearAlgebra;
 
 use MCordingley\LinearAlgebra\Decomposition\LUP;
 
-final class Matrix
+class Matrix
 {
     /**
      * @var array
      */
-    private $internal;
+    protected $internal;
 
     /**
      * Example:
@@ -258,6 +258,27 @@ final class Matrix
     {
         return $this->map(function (float $element) use ($value) {
             return $element * $value;
+        });
+    }
+
+
+    /**
+     *
+     * Scalar divide
+     * kA = [k / a₁, k / a₂, k / a₃ ...]
+     *
+     * @param float $value
+     * @return self
+     * @throws MatrixException
+     */
+    public function divideScalar(float $value): self
+    {
+        if($value == 0) {
+            throw new MatrixException("Zero can not be denominator.");
+        }
+
+        return $this->map(function (float $element) use ($value) {
+            return $element / $value;
         });
     }
 
