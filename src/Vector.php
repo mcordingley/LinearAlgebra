@@ -24,12 +24,6 @@ final class Vector extends Matrix
         return new self($matrix->toArray()[$row]);
     }
 
-    /**************************************************************************
-     * BASIC VECTOR GETTERS
-     *  - getVector
-     *  - getSize
-     **************************************************************************/
-
     /**
      * @return array
      */
@@ -46,13 +40,6 @@ final class Vector extends Matrix
     {
         return count($this->internal[0]);
     }
-
-    /**************************************************************************
-     * VECTOR OPERATIONS - Return a number
-     *  - sum
-     *  - length (magnitude)
-     *  - dotProduct (innerProduct)
-     **************************************************************************/
 
     /**
      * Sum of all elements
@@ -110,14 +97,6 @@ final class Vector extends Matrix
     {
         return $this->dotProduct($other);
     }
-
-    /**************************************************************************
-     * VECTOR OPERATIONS - Return a Vector or Matrix
-     *  - outerProduct
-     *  - crossProduct
-     *  - normalize
-     *  - projection
-     **************************************************************************/
 
     /**
      * Outer product (A⨂B)
@@ -208,13 +187,6 @@ final class Vector extends Matrix
     {
         return self::fromMatrix($other->multiplyScalar($this->dotProduct($other) / ($other->l2norm() ** 2)));
     }
-
-    /**************************************************************************
-     * VECTOR NORMS
-     *  - l1Norm
-     *  - l2Norm
-     *  - maxNorm
-     **************************************************************************/
 
     /**
      * l₁-norm (|x|₁)
