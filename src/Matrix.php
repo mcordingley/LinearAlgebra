@@ -116,7 +116,7 @@ class Matrix
      */
     public function equals(Matrix $matrix): bool
     {
-        return $this->toArray() === $matrix->toArray();
+        return $this->internal === $matrix->internal;
     }
 
     /**
