@@ -61,7 +61,7 @@ class Matrix
      * @param int $size How many rows and columns the identity matrix should have
      * @return self
      */
-    public static function identity(int $size): self
+    final public static function identity(int $size): self
     {
         $literal = [];
 
@@ -81,7 +81,7 @@ class Matrix
      * @param int $column
      * @return float
      */
-    public function get($row, $column): float
+    final public function get($row, $column): float
     {
         return $this->internal[$row][$column];
     }
@@ -89,7 +89,7 @@ class Matrix
     /**
      * @return boolean
      */
-    public function isSquare(): bool
+    final public function isSquare(): bool
     {
         return $this->getColumnCount() === $this->getRowCount();
     }
@@ -97,7 +97,7 @@ class Matrix
     /**
      * @return int
      */
-    public function getColumnCount(): int
+    final public function getColumnCount(): int
     {
         return count($this->internal[0]);
     }
@@ -105,7 +105,7 @@ class Matrix
     /**
      * @return int
      */
-    public function getRowCount(): int
+    final public function getRowCount(): int
     {
         return count($this->internal);
     }
@@ -114,7 +114,7 @@ class Matrix
      * @param Matrix $matrix
      * @return boolean
      */
-    public function equals(Matrix $matrix): bool
+    final public function equals(Matrix $matrix): bool
     {
         return $this->internal === $matrix->internal;
     }
@@ -138,7 +138,7 @@ class Matrix
      * @param callable $callback
      * @return self
      */
-    public function map(callable $callback): self
+    final public function map(callable $callback): self
     {
         $literal = [];
 
@@ -160,7 +160,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function addMatrix(self $value): self
+    final public function addMatrix(self $value): self
     {
         $this->checkEqualSize($value);
 
@@ -184,7 +184,7 @@ class Matrix
      * @param float $value
      * @return self
      */
-    public function addScalar(float $value): self
+    final public function addScalar(float $value): self
     {
         return $this->map(function (float $element) use ($value) {
             return $element + $value;
@@ -196,7 +196,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function subtractMatrix(self $value): self
+    final public function subtractMatrix(self $value): self
     {
         $this->checkEqualSize($value);
 
@@ -209,7 +209,7 @@ class Matrix
      * @param float $value
      * @return self
      */
-    public function subtractScalar(float $value): self
+    final public function subtractScalar(float $value): self
     {
         return $this->map(function (float $element) use ($value) {
             return $element - $value;
@@ -221,7 +221,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function multiplyMatrix(self $value): self
+    final public function multiplyMatrix(self $value): self
     {
         if ($this->getColumnCount() !== $value->getRowCount()) {
             throw new MatrixException('Cannot multiply matrices of these sizes.');
@@ -252,7 +252,7 @@ class Matrix
      * @param float $value
      * @return self
      */
-    public function multiplyScalar(float $value): self
+    final public function multiplyScalar(float $value): self
     {
         return $this->map(function (float $element) use ($value) {
             return $element * $value;
@@ -265,7 +265,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function divideScalar(float $value): self
+    final public function divideScalar(float $value): self
     {
         if ($value == 0) {
             throw new MatrixException("Zero can not be denominator.");
@@ -282,7 +282,7 @@ class Matrix
      * @throws MatrixException
      * @link https://en.wikipedia.org/wiki/Hadamard_product_%28matrices%29
      */
-    public function entrywise(self $value): self
+    final public function entrywise(self $value): self
     {
         $this->checkEqualSize($value);
 
@@ -295,7 +295,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function adjugate(): self
+    final public function adjugate(): self
     {
         $this->checkSquare();
 
@@ -316,7 +316,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function inverse(): self
+    final public function inverse(): self
     {
         $this->checkSquare();
 
@@ -401,7 +401,7 @@ class Matrix
      * @param int|null $length
      * @return self
      */
-    public function sliceRows(int $offset, int $length = null): self
+    final public function sliceRows(int $offset, int $length = null): self
     {
         return new static(array_slice($this->toArray(), $offset, $length));
     }
@@ -411,7 +411,7 @@ class Matrix
      * @param int|null $length
      * @return self
      */
-    public function sliceColumns(int $offset, int $length = null): self
+    final public function sliceColumns(int $offset, int $length = null): self
     {
         return new static(array_map(function (array $row) use ($offset, $length) {
             return array_slice($row, $offset, $length);
@@ -425,7 +425,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function spliceRows(int $offset, int $length = null, array $replacement = null): self
+    final public function spliceRows(int $offset, int $length = null, array $replacement = null): self
     {
         if ($replacement) {
             if ($this->getColumnCount() !== count($replacement[0])) {
@@ -457,7 +457,7 @@ class Matrix
      * @return Matrix
      * @throws MatrixException
      */
-    public function spliceColumns(int $offset, int $length = null, array $replacement = null): self
+    final public function spliceColumns(int $offset, int $length = null, array $replacement = null): self
     {
         if ($replacement) {
             if ($this->getRowCount() !== count($replacement)) {
@@ -489,7 +489,7 @@ class Matrix
     /**
      * @return float
      */
-    public function determinant(): float
+    final public function determinant(): float
     {
         $this->checkSquare();
 
@@ -517,7 +517,7 @@ class Matrix
      * @param bool $unitriangular True to have ones along the diagonal. False to include parent matrix values, instead.
      * @return self
      */
-    public function upper(bool $unitriangular): self
+    final public function upper(bool $unitriangular): self
     {
         return $this->map(function (float $element, int $i, int $j) use ($unitriangular) {
             if ($unitriangular && $i === $j) {
@@ -532,7 +532,7 @@ class Matrix
      * @param bool $unitriangular True to have ones along the diagonal. False to include parent matrix values, instead.
      * @return self
      */
-    public function lower(bool $unitriangular): self
+    final public function lower(bool $unitriangular): self
     {
         return $this->map(function (float $element, int $i, int $j) use ($unitriangular) {
             if ($unitriangular && $i === $j) {
@@ -548,7 +548,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function concatenateBottom(self $other): self
+    final public function concatenateBottom(self $other): self
     {
         return $this->spliceRows($this->getRowCount(), 0, $other->toArray());
     }
@@ -558,7 +558,7 @@ class Matrix
      * @return self
      * @throws MatrixException
      */
-    public function concatenateRight(self $other): self
+    final public function concatenateRight(self $other): self
     {
         return $this->spliceColumns($this->getColumnCount(), 0, $other->toArray());
     }
@@ -566,7 +566,7 @@ class Matrix
     /**
      * @return self
      */
-    public function diagonal(): self
+    final public function diagonal(): self
     {
         return $this->map(function (float $element, int $i, int $j) {
             return $i === $j ? $element : 0;
@@ -577,7 +577,7 @@ class Matrix
      * @return float
      * @throws MatrixException
      */
-    public function trace(): float
+    final public function trace(): float
     {
         $this->checkSquare();
 
@@ -593,7 +593,7 @@ class Matrix
     /**
      * @return self
      */
-    public function transpose(): self
+    final public function transpose(): self
     {
         $literal = [];
 
