@@ -6,16 +6,9 @@ namespace MCordingley\LinearAlgebra;
 
 final class Vector extends Matrix
 {
-    /**
-     * @var array
-     */
-    private $vector;
-
     public function __construct(array $literal)
     {
         parent::__construct($literal);
-
-        $this->vector = $literal[0];
     }
 
     /**************************************************************************
@@ -30,7 +23,7 @@ final class Vector extends Matrix
      */
     public function getVector(): array
     {
-        return $this->vector;
+        return $this->internal[0];
     }
 
     /**
@@ -56,7 +49,7 @@ final class Vector extends Matrix
      */
     public function sum()
     {
-        return array_sum($this->vector);
+        return array_sum($this->getVector());
     }
 
     /**
@@ -89,7 +82,7 @@ final class Vector extends Matrix
             function ($a, $b) {
                 return $a * $b;
             },
-            $this->vector,
+            $this->getVector(),
             $other->getVector()
         ));
     }
@@ -135,7 +128,7 @@ final class Vector extends Matrix
         $literal = array();
         for ($i = 0; $i < $this->getSize(); $i++) {
             for ($j = 0; $j < $other->getSize(); $j++) {
-                $literal[$i][$j] = $this->vector[$i] * $other->getVector()[$j];
+                $literal[$i][$j] = $this->getVector()[$i] * $other->getVector()[$j];
             }
         }
 
@@ -160,9 +153,9 @@ final class Vector extends Matrix
             throw new VectorException('Vectors have to have 3 size');
         }
 
-        $x =   ($this->vector[1] * $other->vector[2]) - ($this->vector[2] * $other->vector[1]);
-        $y = -(($this->vector[0] * $other->vector[2]) - ($this->vector[2] * $other->vector[0]));
-        $z =   ($this->vector[0] * $other->vector[1]) - ($this->vector[1] * $other->vector[0]);
+        $x =   ($this->getVector()[1] * $other->getVector()[2]) - ($this->getVector()[2] * $other->getVector()[1]);
+        $y = -(($this->getVector()[0] * $other->getVector()[2]) - ($this->getVector()[2] * $other->getVector()[0]));
+        $z =   ($this->getVector()[0] * $other->getVector()[1]) - ($this->getVector()[1] * $other->getVector()[0]);
 
         return new Vector([[$x, $y, $z]]);
     }
@@ -224,7 +217,8 @@ final class Vector extends Matrix
     public function l1Norm()
     {
         $sum = 0;
-        foreach($this->vector as $value) {
+
+        foreach ($this->getVector() as $value) {
             $sum += abs($value);
         }
 
@@ -245,9 +239,10 @@ final class Vector extends Matrix
      */
     public function l2Norm(): float
     {
-        $literal = array();
+        $literal = [];
+
         for ($i = 0, $rows = $this->getSize(); $i < $rows; $i++) {
-            $literal[] = $this->vector[$i]**2;
+            $literal[] = $this->getVector()[$i] ** 2;
         }
 
         return sqrt(array_sum($literal));
@@ -262,8 +257,9 @@ final class Vector extends Matrix
      */
     public function maxNorm()
     {
-        $max = abs($this->vector[0]);
-        foreach($this->vector as $value) {
+        $max = abs($this->getVector()[0]);
+
+        foreach($this->getVector() as $value) {
             if(abs($value) > $max) {
                 $max = abs($value);
             }
