@@ -18,10 +18,9 @@ final class Vector extends Matrix
      **************************************************************************/
 
     /**
-     * Get matrix
-     * @return array of arrays
+     * @return array
      */
-    public function getVector(): array
+    public function toArray(): array
     {
         return $this->internal[0];
     }
@@ -49,7 +48,7 @@ final class Vector extends Matrix
      */
     public function sum()
     {
-        return array_sum($this->getVector());
+        return array_sum($this->toArray());
     }
 
     /**
@@ -82,8 +81,8 @@ final class Vector extends Matrix
             function ($a, $b) {
                 return $a * $b;
             },
-            $this->getVector(),
-            $other->getVector()
+            $this->toArray(),
+            $other->toArray()
         ));
     }
 
@@ -128,7 +127,7 @@ final class Vector extends Matrix
         $literal = array();
         for ($i = 0; $i < $this->getSize(); $i++) {
             for ($j = 0; $j < $other->getSize(); $j++) {
-                $literal[$i][$j] = $this->getVector()[$i] * $other->getVector()[$j];
+                $literal[$i][$j] = $this->toArray()[$i] * $other->toArray()[$j];
             }
         }
 
@@ -153,9 +152,9 @@ final class Vector extends Matrix
             throw new VectorException('Vectors have to have 3 size');
         }
 
-        $x =   ($this->getVector()[1] * $other->getVector()[2]) - ($this->getVector()[2] * $other->getVector()[1]);
-        $y = -(($this->getVector()[0] * $other->getVector()[2]) - ($this->getVector()[2] * $other->getVector()[0]));
-        $z =   ($this->getVector()[0] * $other->getVector()[1]) - ($this->getVector()[1] * $other->getVector()[0]);
+        $x =   ($this->toArray()[1] * $other->toArray()[2]) - ($this->toArray()[2] * $other->toArray()[1]);
+        $y = -(($this->toArray()[0] * $other->toArray()[2]) - ($this->toArray()[2] * $other->toArray()[0]));
+        $z =   ($this->toArray()[0] * $other->toArray()[1]) - ($this->toArray()[1] * $other->toArray()[0]);
 
         return new Vector([[$x, $y, $z]]);
     }
@@ -218,7 +217,7 @@ final class Vector extends Matrix
     {
         $sum = 0;
 
-        foreach ($this->getVector() as $value) {
+        foreach ($this->toArray() as $value) {
             $sum += abs($value);
         }
 
@@ -242,7 +241,7 @@ final class Vector extends Matrix
         $literal = [];
 
         for ($i = 0, $rows = $this->getSize(); $i < $rows; $i++) {
-            $literal[] = $this->getVector()[$i] ** 2;
+            $literal[] = $this->toArray()[$i] ** 2;
         }
 
         return sqrt(array_sum($literal));
@@ -257,9 +256,9 @@ final class Vector extends Matrix
      */
     public function maxNorm()
     {
-        $max = abs($this->getVector()[0]);
+        $max = abs($this->toArray()[0]);
 
-        foreach($this->getVector() as $value) {
+        foreach($this->toArray() as $value) {
             if(abs($value) > $max) {
                 $max = abs($value);
             }
