@@ -71,7 +71,7 @@ final class Vector extends Matrix
         }
 
         return array_sum(array_map(
-            function ($a, $b) {
+            function (float $a, float $b) {
                 return $a * $b;
             },
             $this->toArray(),
