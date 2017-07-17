@@ -157,9 +157,7 @@ final class Vector extends Matrix
      */
     public function normalize(): self
     {
-        $norm = $this->l2norm();
-
-        return self::fromMatrix($this->divideScalar($norm));
+        return self::fromMatrix($this->divideScalar($this->l2norm()));
     }
 
     /**
