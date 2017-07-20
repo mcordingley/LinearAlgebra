@@ -27,6 +27,8 @@ archive that you can include into your project. PHP will autoload classes from i
 
 ## Usage
 
+### Matrix
+
 Start with a `use` statement for the class:
 
     use MCordingley\LinearAlgebra\Matrix;
@@ -128,7 +130,46 @@ and U portions of the decompositions, respectively. The LUP decomposition additi
 `permutationArray` to fetch the P component of the decomposition as well as `parity` to return the total number of
 pivots performed.
 
+### Vector
+
+As with `Matrix`, import the class into your current namespace:
+
+    use MCordingley\LinearAlgebra\Vector;
+
+Since a `Vector` is a special case of a `Matrix`, `Vector` inherits from `Matrix`. As such, every method available on
+`Matrix` is also available on `Vector`. `Vector` also exposes additional methods specific to working with vectors.
+
+Creating a `Vector` differs from creating a `Matrix` only in that the constructor takes an array of scalars, rather
+than an array of arrays:
+
+    $vector = new Vector([1, 2, 3, 4]);
+
+Note that `Vector` instances are all row vectors. If you need a column vector, `transpose()` the vector to get a
+`Matrix` with a single column.
+
+If you need to cast a `Matrix` into a `Vector`, call the factory method `fromMatrix()`:
+
+    $vector = Vector::fromMatrix($matrix);
+
+`toArray()` is overridden to return an array of scalars to mirror how the constructor works. It is equivalent to
+calling `$matrix->toArray()[0]` on a `Matrix` instance.
+
+`getSize()` is provided as an alias for `getColumnCount()`. `sum()` will return the sum of the `Vector` elements,
+while `dotProduct($otherVector)` will return the sum of the pair-wise products of `$vector` and `$otherVector`,
+and is also availabe aliased as `innerProduct($otherVector)`. `outerProduct($otherVector)` will return a new Matrix
+representing the outer product of the two vectors. `crossProduct($otherVector)` is also available. Vectors may be
+normalized with `normalize()`. They may also be projected onto other vectors with `project($otherVector)`.
+
+For measures of vector magnitude, `l1Norm()`, `l2Norm()`, and `maxNorm()` are all available, with `length()` as
+an aliax for `l2Norm()`.
+
+Links to relevant Wikipedia articles are provided in the function documentation for additional detail.
+
+
 ## Change-log
+
+- 2.1.0
+    - Add `Vector` as a subclass of `Matrix`. Thanks to battlecook for this contribution.
 
 - 2.0.0
     - Drop support for PHP 5.x
