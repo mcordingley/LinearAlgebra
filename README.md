@@ -5,15 +5,6 @@
 
 Stand-alone Linear Algebra Library for PHP
 
-## New Major Version
-
-LinearAlgebra has just reached version 2.0. This release includes several breaking changes. Check the changelog for
-specifics about what has changed, but the biggest changes are that the root namespace has been capitalized and that the
-library now depends on PHP 7.0 or higher. A number of lesser-used functions have been removed, new functions added, and
-the internals of the package are now much cleaner.
-
-If you're still using PHP 5.x, the 1.0 series still exists and supports PHP 5, though it will receive no further updates.
-
 ## Installation
 
     composer require mcordingley/LinearAlgebra
