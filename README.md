@@ -152,7 +152,7 @@ representing the outer product of the two vectors. `crossProduct($otherVector)` 
 normalized with `normalize()`. They may also be projected onto other vectors with `project($otherVector)`.
 
 For measures of vector magnitude, `l1Norm()`, `l2Norm()`, and `maxNorm()` are all available, with `length()` as
-an aliax for `l2Norm()`.
+an alias for `l2Norm()`.
 
 Links to relevant Wikipedia articles are provided in the function documentation for additional detail.
 
