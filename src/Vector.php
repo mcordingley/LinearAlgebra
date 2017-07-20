@@ -37,7 +37,7 @@ final class Vector extends Matrix
      */
     public function getSize(): int
     {
-        return count($this->internal[0]);
+        return $this->getColumnCount();
     }
 
     /**
