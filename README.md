@@ -11,7 +11,7 @@ Stand-alone Linear Algebra Library for PHP
 
 Alternately, include this in your composer.json and then update:
 
-    "mcordingley/linearalgebra": "^2.0.0"
+    "mcordingley/linearalgebra": "^2.1.0"
 
 If Composer isn't an option for you, clone this repository and run `build-phar.php` to generate a phar
 archive that you can include into your project. PHP will autoload classes from inside the archive as needed.
