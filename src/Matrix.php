@@ -87,6 +87,19 @@ class Matrix
     }
 
     /**
+     * @param int $row
+     * @param int $column
+     * @param float $value
+     */
+    final public function set($row, $column, $value)
+    {
+        if(isset($this->internal[$row][$column]))
+        {
+            $this->internal[$row][$column] = $value;
+        }
+    }
+
+    /**
      * @return boolean
      */
     final public function isSquare(): bool
