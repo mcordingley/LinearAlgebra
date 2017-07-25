@@ -105,6 +105,14 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         static::assertEquals(8, $matrix->get(1, 3));
     }
 
+    public function testSet()
+    {
+        $matrix = $this->buildMatrix();
+        $matrix->set(1, 3, 4);
+
+        static::assertEquals(4, $matrix->get(1, 3));
+    }
+
     public function testEquals()
     {
         $matrix1 = new Matrix([
