@@ -1,5 +1,8 @@
 <?php
-namespace MathPHP\Tests\LinearAlgebra;
+
+declare(strict_types = 1);
+
+namespace MCordingley\LinearAlgebraTest;
 
 use MCordingley\LinearAlgebra\Matrix;
 use MCordingley\LinearAlgebra\MatrixException;

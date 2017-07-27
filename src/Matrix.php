@@ -81,7 +81,7 @@ class Matrix
      * @param int $column
      * @return float
      */
-    public function get($row, $column): float
+    final public function get($row, $column): float
     {
         return $this->internal[$row][$column];
     }
