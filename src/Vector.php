@@ -116,7 +116,8 @@ final class Vector extends Matrix
      */
     public function outerProduct(Vector $other): Matrix
     {
-        $literal = array();
+        $literal = [];
+
         for ($i = 0; $i < $this->getSize(); $i++) {
             for ($j = 0; $j < $other->getSize(); $j++) {
                 $literal[$i][$j] = $this->toArray()[$i] * $other->toArray()[$j];
