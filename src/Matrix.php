@@ -152,7 +152,7 @@ class Matrix
             $literal[] = $row;
         }
 
-        return new static($literal);
+        return new self($literal);
     }
 
     /**
