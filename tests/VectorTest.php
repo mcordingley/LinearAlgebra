@@ -27,6 +27,22 @@ class VectorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Vector::class, self::buildVector());
     }
 
+    public function testMap()
+    {
+        $vector = self::buildVector();
+
+        $mapped = $vector->map(function ($value, $row, $column) {
+            return $value + $row + $column;
+        });
+
+        static::assertInstanceOf(Matrix::class, $mapped);
+
+        static::assertEquals(1, $mapped->get(0, 0));
+        static::assertEquals(3, $mapped->get(0, 1));
+        static::assertEquals(5, $mapped->get(0, 2));
+        static::assertEquals(7, $mapped->get(0, 3));
+    }
+
     public function testGetSize()
     {
         $vector = self::buildVector();
