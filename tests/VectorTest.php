@@ -146,4 +146,19 @@ class VectorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(new Vector([12 / 10, 4 / 10]), $vector1->projection($vector2));
     }
+
+    public function testOffsetExists()
+    {
+        $vector = self::buildVector();
+
+        static::assertTrue(isset($vector[0]));
+        static::assertFalse(isset($vector[100]));
+    }
+
+    public function testOffsetGet()
+    {
+        $vector = self::buildVector();
+
+        static::assertEquals(2, $vector[1]);
+    }
 }

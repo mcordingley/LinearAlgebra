@@ -6,6 +6,7 @@ namespace MCordingley\LinearAlgebraTest;
 
 use MCordingley\LinearAlgebra\Matrix;
 use MCordingley\LinearAlgebra\MatrixException;
+use MCordingley\LinearAlgebra\Vector;
 use PHPUnit_Framework_TestCase;
 
 final class MatrixTest extends PHPUnit_Framework_TestCase
@@ -712,5 +713,40 @@ final class MatrixTest extends PHPUnit_Framework_TestCase
         static::expectException(MatrixException::class);
 
         $matrix->determinant();
+    }
+
+    public function testOffsetExists()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::assertTrue(isset($matrix[0]));
+        static::assertFalse(isset($matrix[100]));
+    }
+
+    public function testOffsetGet()
+    {
+        $matrix = $this->buildMatrix();
+
+        $vector = $matrix[1];
+
+        static::assertInstanceOf(Vector::class, $vector);
+    }
+
+    public function testOffsetSet()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::expectException(MatrixException::class);
+
+        $matrix[0] = true;
+    }
+
+    public function testOffsetUnset()
+    {
+        $matrix = $this->buildMatrix();
+
+        static::expectException(MatrixException::class);
+
+        unset($matrix[0]);
     }
 }
