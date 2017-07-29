@@ -50,6 +50,32 @@ class VectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $vector->getSize());
     }
 
+    public function testAddVector()
+    {
+        $vector1 = new Vector([1, 2, 3, 4]);
+        $vector2 = new Vector([-1, 3, 5, 2]);
+
+        $added = $vector1->addVector($vector2);
+
+        static::assertEquals(0, $added->get(0, 0));
+        static::assertEquals(5, $added->get(0, 1));
+        static::assertEquals(8, $added->get(0, 2));
+        static::assertEquals(6, $added->get(0, 3));
+    }
+
+    public function testSubtractVector()
+    {
+        $vector1 = new Vector([1, 2, 3, 4]);
+        $vector2 = new Vector([-1, 3, 5, 2]);
+
+        $added = $vector1->subtractVector($vector2);
+
+        static::assertEquals(2, $added->get(0, 0));
+        static::assertEquals(-1, $added->get(0, 1));
+        static::assertEquals(-2, $added->get(0, 2));
+        static::assertEquals(2, $added->get(0, 3));
+    }
+
     public function testSum()
     {
         $vector = self::buildVector();

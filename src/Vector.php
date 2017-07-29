@@ -41,6 +41,24 @@ final class Vector extends Matrix
     }
 
     /**
+     * @param Vector $other
+     * @return Vector
+     */
+    public function addVector(self $other): self
+    {
+        return self::fromMatrix($this->addMatrix($other));
+    }
+
+    /**
+     * @param Vector $other
+     * @return Vector
+     */
+    public function subtractVector(self $other): self
+    {
+        return self::fromMatrix($this->subtractMatrix($other));
+    }
+
+    /**
      * @return float
      */
     public function sum(): float
