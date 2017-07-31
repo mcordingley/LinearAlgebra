@@ -21,7 +21,7 @@ final class Vector extends Matrix
      */
     public static function fromMatrix(Matrix $matrix, int $row = 0): self
     {
-        return new self($matrix->toArray()[$row]);
+        return $matrix[$row];
     }
 
     /**
@@ -38,6 +38,24 @@ final class Vector extends Matrix
     public function getSize(): int
     {
         return $this->getColumnCount();
+    }
+
+    /**
+     * @param Vector $other
+     * @return Vector
+     */
+    public function addVector(self $other): self
+    {
+        return self::fromMatrix($this->addMatrix($other));
+    }
+
+    /**
+     * @param Vector $other
+     * @return Vector
+     */
+    public function subtractVector(self $other): self
+    {
+        return self::fromMatrix($this->subtractMatrix($other));
     }
 
     /**
@@ -98,7 +116,8 @@ final class Vector extends Matrix
      */
     public function outerProduct(Vector $other): Matrix
     {
-        $literal = array();
+        $literal = [];
+
         for ($i = 0; $i < $this->getSize(); $i++) {
             for ($j = 0; $j < $other->getSize(); $j++) {
                 $literal[$i][$j] = $this->toArray()[$i] * $other->toArray()[$j];
@@ -203,5 +222,24 @@ final class Vector extends Matrix
 
             return $carry > $value ? $carry : $value;
         }, -INF);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->internal[0][$offset]);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return float|null
+     * @throws MatrixException
+     */
+    public function offsetGet($offset)
+    {
+        return $this->offsetExists($offset) ? $this->internal[0][$offset] : null;
     }
 }

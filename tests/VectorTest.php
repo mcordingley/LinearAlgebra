@@ -27,11 +27,53 @@ class VectorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Vector::class, self::buildVector());
     }
 
+    public function testMap()
+    {
+        $vector = self::buildVector();
+
+        $mapped = $vector->map(function ($value, $row, $column) {
+            return $value + $row + $column;
+        });
+
+        static::assertInstanceOf(Matrix::class, $mapped);
+
+        static::assertEquals(1, $mapped->get(0, 0));
+        static::assertEquals(3, $mapped->get(0, 1));
+        static::assertEquals(5, $mapped->get(0, 2));
+        static::assertEquals(7, $mapped->get(0, 3));
+    }
+
     public function testGetSize()
     {
         $vector = self::buildVector();
 
         $this->assertEquals(4, $vector->getSize());
+    }
+
+    public function testAddVector()
+    {
+        $vector1 = new Vector([1, 2, 3, 4]);
+        $vector2 = new Vector([-1, 3, 5, 2]);
+
+        $added = $vector1->addVector($vector2);
+
+        static::assertEquals(0, $added->get(0, 0));
+        static::assertEquals(5, $added->get(0, 1));
+        static::assertEquals(8, $added->get(0, 2));
+        static::assertEquals(6, $added->get(0, 3));
+    }
+
+    public function testSubtractVector()
+    {
+        $vector1 = new Vector([1, 2, 3, 4]);
+        $vector2 = new Vector([-1, 3, 5, 2]);
+
+        $added = $vector1->subtractVector($vector2);
+
+        static::assertEquals(2, $added->get(0, 0));
+        static::assertEquals(-1, $added->get(0, 1));
+        static::assertEquals(-2, $added->get(0, 2));
+        static::assertEquals(2, $added->get(0, 3));
     }
 
     public function testSum()
@@ -103,5 +145,20 @@ class VectorTest extends \PHPUnit_Framework_TestCase
         $vector2 = new Vector([3, 1]);
 
         $this->assertEquals(new Vector([12 / 10, 4 / 10]), $vector1->projection($vector2));
+    }
+
+    public function testOffsetExists()
+    {
+        $vector = self::buildVector();
+
+        static::assertTrue(isset($vector[0]));
+        static::assertFalse(isset($vector[100]));
+    }
+
+    public function testOffsetGet()
+    {
+        $vector = self::buildVector();
+
+        static::assertEquals(2, $vector[1]);
     }
 }

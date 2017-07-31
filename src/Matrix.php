@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace MCordingley\LinearAlgebra;
 
+use ArrayAccess;
 use MCordingley\LinearAlgebra\Decomposition\LUP;
 
-class Matrix
+class Matrix implements ArrayAccess
 {
     /** @var array */
     protected $internal;
@@ -152,7 +153,7 @@ class Matrix
             $literal[] = $row;
         }
 
-        return new static($literal);
+        return new self($literal);
     }
 
     /**
@@ -606,5 +607,43 @@ class Matrix
         }
 
         return new static($literal);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->internal[$offset]);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return Vector|null
+     * @throws MatrixException
+     */
+    public function offsetGet($offset)
+    {
+        return $this->offsetExists($offset) ? new Vector($this->internal[$offset]) : null;
+    }
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     * @throws MatrixException
+     */
+    final public function offsetSet($offset, $value)
+    {
+        throw new MatrixException('Matrices are immutable.');
+    }
+
+    /**
+     * @param mixed $offset
+     * @throws MatrixException
+     */
+    final public function offsetUnset($offset)
+    {
+        throw new MatrixException('Matrices are immutable.');
     }
 }
