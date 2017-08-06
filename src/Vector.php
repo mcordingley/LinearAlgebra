@@ -75,6 +75,14 @@ final class Vector extends Matrix
     }
 
     /**
+     * @return float
+     */
+    public function magnitude()
+    {
+        return $this->length();
+    }
+
+    /**
      * @param self $other
      * @return float
      * @throws VectorException
