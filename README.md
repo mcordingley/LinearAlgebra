@@ -159,6 +159,12 @@ Links to relevant Wikipedia articles are provided in the function documentation 
 
 ## Change-log
 
+- 2.2.0
+    - Implement the `ArrayAccess` interface on `Matrix` to return row vectors.
+    - Implement the `ArrayAccess` interface on `Vector` to return scalars.
+    - Add `addVector()` and `subtractVector()` to `Vector`
+    - Add `magnitude()` as an alias to `length()` on `Vector`
+
 - 2.1.0
     - Add `Vector` as a subclass of `Matrix`. Thanks to battlecook for this contribution.
 
