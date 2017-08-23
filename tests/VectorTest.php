@@ -90,6 +90,13 @@ class VectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(5, $vector->length());
     }
 
+    public function testMagnitude()
+    {
+        $vector = new Vector([3, 4]);
+
+        $this->assertEquals(5, $vector->magnitude());
+    }
+
     public function testDotProduct()
     {
         $vector1 = new Vector([1, 2, 3, 4]);
