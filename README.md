@@ -165,6 +165,9 @@ Links to relevant Wikipedia articles are provided in the function documentation 
     - Add `addVector()` and `subtractVector()` to `Vector`
     - Add `magnitude()` as an alias to `length()` on `Vector`
 
+- 2.1.1
+    - Fix a bug involving inheritance with `map()` on `Vector`.
+
 - 2.1.0
     - Add `Vector` as a subclass of `Matrix`. Thanks to battlecook for this contribution.
 
