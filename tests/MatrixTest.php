@@ -7,9 +7,9 @@ namespace MCordingley\LinearAlgebraTest;
 use MCordingley\LinearAlgebra\Matrix;
 use MCordingley\LinearAlgebra\MatrixException;
 use MCordingley\LinearAlgebra\Vector;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-final class MatrixTest extends PHPUnit_Framework_TestCase
+final class MatrixTest extends TestCase
 {
     private function buildMatrix()
     {

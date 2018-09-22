@@ -7,9 +7,9 @@ namespace MCordingley\LinearAlgebraTest;
 use MCordingley\LinearAlgebra\Decomposition\LUP;
 use MCordingley\LinearAlgebra\Matrix;
 use MCordingley\LinearAlgebra\MatrixException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-final class LUPTest extends PHPUnit_Framework_TestCase
+final class LUPTest extends TestCase
 {
     public function testNonSquare()
     {
