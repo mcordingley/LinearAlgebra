@@ -86,6 +86,21 @@ final class Vector extends Matrix
      * @param self $other
      * @return float
      * @throws VectorException
+     * @link https://en.wikipedia.org/wiki/Cosine_similarity
+     */
+    public function cosineSimilarity(self $other): float
+    {
+        if ($other->getSize() !== $this->getSize()) {
+            throw new VectorException('Vectors have to have same size');
+        }
+
+        return $this->dotProduct($other) / ($this->l2Norm() * $other->l2Norm());
+    }
+
+    /**
+     * @param self $other
+     * @return float
+     * @throws VectorException
      * @link https://en.wikipedia.org/wiki/Dot_product
      */
     public function dotProduct(self $other): float
