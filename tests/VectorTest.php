@@ -7,8 +7,9 @@ namespace MCordingley\LinearAlgebraTest;
 use MCordingley\LinearAlgebra\Matrix;
 use MCordingley\LinearAlgebra\MatrixException;
 use MCordingley\LinearAlgebra\Vector;
+use PHPUnit\Framework\TestCase;
 
-class VectorTest extends \PHPUnit_Framework_TestCase
+class VectorTest extends TestCase
 {
     private function buildVector()
     {
@@ -88,6 +89,13 @@ class VectorTest extends \PHPUnit_Framework_TestCase
         $vector = new Vector([3, 4]);
 
         $this->assertEquals(5, $vector->length());
+    }
+
+    public function testMagnitude()
+    {
+        $vector = new Vector([3, 4]);
+
+        $this->assertEquals(5, $vector->magnitude());
     }
 
     public function testDotProduct()

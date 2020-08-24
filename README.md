@@ -1,6 +1,7 @@
 # Matrix
 
 [![Build Status](https://api.travis-ci.org/repositories/mcordingley/LinearAlgebra.svg)](https://travis-ci.org/mcordingley/LinearAlgebra)
+[![Code Climate](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/gpa.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra)
 [![Code Coverage](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/coverage.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra)
 
 Stand-alone Linear Algebra Library for PHP
@@ -158,6 +159,15 @@ Links to relevant Wikipedia articles are provided in the function documentation 
 
 
 ## Change-log
+
+- 2.2.0
+    - Implement the `ArrayAccess` interface on `Matrix` to return row vectors.
+    - Implement the `ArrayAccess` interface on `Vector` to return scalars.
+    - Add `addVector()` and `subtractVector()` to `Vector`
+    - Add `magnitude()` as an alias to `length()` on `Vector`
+
+- 2.1.1
+    - Fix a bug involving inheritance with `map()` on `Vector`.
 
 - 2.1.0
     - Add `Vector` as a subclass of `Matrix`. Thanks to battlecook for this contribution.
