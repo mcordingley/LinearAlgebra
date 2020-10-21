@@ -106,6 +106,14 @@ class VectorTest extends TestCase
         $this->assertEquals((1 * -1) + (2 * 3) + (3 * 5) + (4 * 2), $vector1->dotProduct($vector2));
     }
 
+    public function testCosineSimilarity()
+    {
+        $vector1 = new Vector([1, 0, 1, 1]);
+        $vector2 = new Vector([2, 0, 2, 2]);
+
+        $this->assertEquals(1.00, $vector1->cosineSimilarity($vector2));
+    }
+
     public function testOuterProduct()
     {
         $vector1 = new Vector([1, 2]);
