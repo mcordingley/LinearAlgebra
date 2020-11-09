@@ -101,6 +101,28 @@ final class Vector extends Matrix
      * @param self $other
      * @return float
      * @throws VectorException
+     * @link https://en.wikipedia.org/wiki/Euclidean_distance
+     */
+    public function euclideanDistance(self $other): float
+    {
+        return sqrt(array_sum(array_map(
+            function (float $a, float $b) {
+                return pow($a - $b, 2);
+            },
+            $this->toArray(),
+            $other->toArray()
+        )));
+    }
+
+    public function euclideanSimilarity(self $other): float
+    {
+        return $this->euclideanDistance($other);
+    }
+
+    /**
+     * @param self $other
+     * @return float
+     * @throws VectorException
      * @link https://en.wikipedia.org/wiki/Dot_product
      */
     public function dotProduct(self $other): float
