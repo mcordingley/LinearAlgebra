@@ -114,6 +114,22 @@ class VectorTest extends TestCase
         $this->assertEquals(1.00, $vector1->cosineSimilarity($vector2));
     }
 
+    public function testEuclideanDistance()
+    {
+        $vector1 = new Vector([-1, 2, 3]);
+        $vector2 = new Vector([4, 0, -3]);
+
+        $this->assertEquals(8.06225774829855, $vector1->euclideanDistance($vector2));
+    }
+
+    public function testEuclideanSimilarity()
+    {
+        $vector1 = new Vector([-1, 2, 3]);
+        $vector2 = new Vector([4, 0, -3]);
+
+        $this->assertEquals(8.06225774829855, $vector1->euclideanSimilarity($vector2));
+    }
+
     public function testOuterProduct()
     {
         $vector1 = new Vector([1, 2]);
