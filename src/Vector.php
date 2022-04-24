@@ -261,7 +261,7 @@ final class Vector extends Matrix
      * @return float|null
      * @throws MatrixException
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): float|null
     {
         return $this->offsetExists($offset) ? $this->internal[0][$offset] : null;
     }
