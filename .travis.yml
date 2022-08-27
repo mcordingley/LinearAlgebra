@@ -7,7 +7,7 @@ php:
 install: composer install
         
 before_script:
-- echo 'xdebug.mode=coverage' >> /usr/local/etc/php/php.ini
+- echo 'xdebug.mode=coverage' >> /etc/php/php.ini
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 - ./cc-test-reporter before-build
