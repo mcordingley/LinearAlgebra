@@ -620,10 +620,10 @@ class Matrix implements ArrayAccess
 
     /**
      * @param mixed $offset
-     * @return Vector|null
+     * @return Vector|float|null
      * @throws MatrixException
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): Vector|float|null
     {
         return $this->offsetExists($offset) ? new Vector($this->internal[$offset]) : null;
     }
@@ -633,7 +633,7 @@ class Matrix implements ArrayAccess
      * @param mixed $value
      * @throws MatrixException
      */
-    final public function offsetSet($offset, $value)
+    final public function offsetSet($offset, $value): void
     {
         throw new MatrixException('Matrices are immutable.');
     }
@@ -642,7 +642,7 @@ class Matrix implements ArrayAccess
      * @param mixed $offset
      * @throws MatrixException
      */
-    final public function offsetUnset($offset)
+    final public function offsetUnset($offset): void
     {
         throw new MatrixException('Matrices are immutable.');
     }
