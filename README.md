@@ -150,7 +150,8 @@ calling `$matrix->toArray()[0]` on a `Matrix` instance.
 while `dotProduct($otherVector)` will return the sum of the pair-wise products of `$vector` and `$otherVector`,
 and is also availabe aliased as `innerProduct($otherVector)`. `outerProduct($otherVector)` will return a new Matrix
 representing the outer product of the two vectors. `crossProduct($otherVector)` is also available. Vectors may be
-normalized with `normalize()`. They may also be projected onto other vectors with `project($otherVector)`.
+normalized with `normalize()`. They may also be projected onto other vectors with `project($otherVector)`. The
+Euclidean distance may also be calculated between two vectors with `euclideanDistance($otherVector)`.
 
 For measures of vector magnitude, `l1Norm()`, `l2Norm()`, and `maxNorm()` are all available, with `length()` as
 an alias for `l2Norm()`.
@@ -162,7 +163,8 @@ Links to relevant Wikipedia articles are provided in the function documentation 
 
 - 3.0.0
     - Update to PHP 8 to start taking advantage of new features.
-    - Adds som previously-missing type assertions enabled by PHP 8.
+    - Adds some previously-missing type assertions enabled by PHP 8.
+    - Adds `euclideanDistance` to `Vector`.
 
 - 2.2.0
     - Implement the `ArrayAccess` interface on `Matrix` to return row vectors.
