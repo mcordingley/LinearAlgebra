@@ -12,7 +12,7 @@ Stand-alone Linear Algebra Library for PHP
 
 Alternately, include this in your composer.json and then update:
 
-    "mcordingley/linearalgebra": "^2.1.0"
+    "mcordingley/linearalgebra": "^3.0.0"
 
 If Composer isn't an option for you, clone this repository and run `build-phar.php` to generate a phar
 archive that you can include into your project. PHP will autoload classes from inside the archive as needed.
@@ -159,6 +159,10 @@ Links to relevant Wikipedia articles are provided in the function documentation 
 
 
 ## Change-log
+
+- 3.0.0
+    - Update to PHP 8 to start taking advantage of new features.
+    - Adds som previously-missing type assertions enabled by PHP 8.
 
 - 2.2.0
     - Implement the `ArrayAccess` interface on `Matrix` to return row vectors.
