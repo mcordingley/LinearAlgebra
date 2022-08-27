@@ -9,7 +9,6 @@
          processIsolation="false"
          stopOnError="false"
          stopOnFailure="false"
-         syntaxCheck="true"
          verbose="true"
 >
     <testsuites>
@@ -17,10 +16,4 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-      <whitelist processUncoveredFilesFromWhitelist="true">
-        <directory suffix=".php">src</directory>
-      </whitelist>
-    </filter>
 </phpunit>
