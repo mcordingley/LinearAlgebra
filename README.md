@@ -1,6 +1,6 @@
 # Matrix
 
-[![Build Status](https://api.travis-ci.com/repositories/mcordingley/LinearAlgebra.svg)](https://travis-ci.com/mcordingley/LinearAlgebra)
+[![Build Status](https://api.travis-ci.com/repositories/mcordingley/LinearAlgebra.svg)](https://travis-ci.com/github/mcordingley/LinearAlgebra)
 [![Code Climate](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/gpa.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra)
 [![Code Coverage](https://codeclimate.com/github/mcordingley/LinearAlgebra/badges/coverage.svg)](https://codeclimate.com/github/mcordingley/LinearAlgebra)
 
